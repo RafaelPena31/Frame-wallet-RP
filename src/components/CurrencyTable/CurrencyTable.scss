@@ -1,0 +1,22 @@
+.currency-table {
+    width: 100%;
+    border-collapse: collapse;
+    display: grid;
+    grid-template-columns: 0.5fr 5fr 1fr 1fr;
+        .header-table {
+            display: flex;
+            padding: 0.8rem;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .data-table {
+            display: flex;
+            padding: 0.8rem;
+            justify-content: flex-start;
+            align-items: center;
+            img {
+                width: 25px;
+                margin-right: 0.8rem;
+        }
+    }
+}
