@@ -16,6 +16,22 @@ function Homepage() {
       </Header>
       <main>
         <div className="table-currency">
+          <div className="currency-table">
+            <div className="header-table">#</div>
+            <div className="header-table">Name</div>
+            <div className="header-table">Price</div>
+            <div className="header-table">$$</div>
+          </div>
+          <CurrencyTable 
+          currencyControler={[
+              {id:1, name:'Ardor', price:43000, icon: ardorIcon}
+            ]} 
+          />
+          <CurrencyTable 
+          currencyControler={[
+              {id:1, name:'Ardor', price:43000, icon: ardorIcon}
+            ]} 
+          />
           <CurrencyTable 
           currencyControler={[
               {id:1, name:'Ardor', price:43000, icon: ardorIcon}

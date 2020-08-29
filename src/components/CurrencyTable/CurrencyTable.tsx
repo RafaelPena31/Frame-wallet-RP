@@ -16,13 +16,7 @@ interface Props {
 const CurrencyTable: React.FC<Props> = ({ currencyControler }) => {
   return (
     <>
-      <div className="currency-table">
 
-            <div className="header-table">#</div>
-            <div className="header-table">Name</div>
-            <div className="header-table">Price</div>
-            <div className="header-table">Buy</div>
-      </div>
           {currencyControler.map((currencyControl) => {
             return (
               <div className="currency-table" key={currencyControl.id}>

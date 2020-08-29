@@ -18,7 +18,9 @@ const Header: React.FC<Props> = (props) => {
         </div>
         <Menu />
       </section>
-      {props.children}
+      <section className="button-currency">
+       {props.children}
+      </section>
     </header>
   );
 }

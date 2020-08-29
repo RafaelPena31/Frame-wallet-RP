@@ -1,22 +1,72 @@
+@import '../../styles//variable';
+
 .currency-table {
     width: 100%;
     border-collapse: collapse;
+    background: #f5f5f5;
+    border: {
+        top:1px solid #ebebeb;
+        right:none;
+        bottom:none;
+        left:none;
+    }
+    font-size: 1rem;
+    &:first-child {
+        border-top: none;
+    }
+    &:last-child {
+        border: {
+            top:1px solid #ebebeb;
+            right:none;
+            bottom:1px solid #ebebeb;
+            left:none;
+        }
+    }
     display: grid;
-    grid-template-columns: 0.5fr 5fr 1fr 1fr;
+    grid-template-columns: 0.5fr 3fr 1fr 1fr;
         .header-table {
             display: flex;
             padding: 0.8rem;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
         }
         .data-table {
             display: flex;
-            padding: 0.8rem;
-            justify-content: flex-start;
+            padding: 0.8rem 0.5rem;
+            justify-content: center;
             align-items: center;
             img {
                 width: 25px;
                 margin-right: 0.8rem;
+            }
+            a {
+                background: $transaction-button;
+                color: #ffffff;
+                padding: 0.5rem 0.9rem;
+                border-radius: 2px;
+                &:hover {
+                    background: $transaction-button-hover;
+                }
+            }
+        }
+}
+
+@media (min-width: 700px) {
+    .currency-table { 
+        .header-table {
+            justify-content: flex-start;
+            &:last-child {
+                justify-content: center;
+            }
+        }
+        .data-table {
+            justify-content: flex-start;
+            a {
+                padding: 0.5rem 2.5rem;
+            }
+            &:last-child {
+                justify-content: center;
+            }
         }
     }
 }
