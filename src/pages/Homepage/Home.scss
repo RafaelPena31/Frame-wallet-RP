@@ -26,6 +26,18 @@
 }
 
 .header {
+    .logo h1{
+        color: #fff;
+        font-size: 1.7em;
+        font-weight: bold;
+    }
+    .container-logo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+    }
     section {
         button {
             width: 80%;
