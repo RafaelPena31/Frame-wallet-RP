@@ -2,7 +2,7 @@ import React from 'react'
 import { Routes } from './routes'
 import './styles/set.scss'
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className='App'>
       <Routes />

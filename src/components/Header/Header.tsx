@@ -3,7 +3,7 @@ import { BsWallet } from 'react-icons/bs'
 import './Header.scss'
 import Menu from './Menu/Menu'
 
-function Header() {
+function Header(): JSX.Element {
   return (
     <header className='header'>
       <section className='container-logo'>

@@ -64,7 +64,7 @@ type Coin = {
   icon: number
 }
 
-function Homepage() {
+function Homepage(): JSX.Element {
   const [loading, setLoading] = useState(false)
   const [visible, setVisible] = useState(false)
   const [icon, setIcon] = useState(0)
@@ -140,11 +140,6 @@ function Homepage() {
 
   function handleCancel() {
     setVisible(false)
-  }
-
-  type Test = {
-    icon: string
-    name: string
   }
 
   function handleCreateCurrencyBox(e: FormEvent) {
