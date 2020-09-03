@@ -8,7 +8,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   onchange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const InputCurrency = ({ name, label, type, onchange }: Props) => {
+const InputCurrency: React.FC<Props> = ({ name, label, type, onchange }: Props) => {
   return (
     <div className='input-currency'>
       <label htmlFor={name}>{label}</label>

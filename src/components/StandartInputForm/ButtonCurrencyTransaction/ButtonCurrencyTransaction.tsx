@@ -6,7 +6,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   onclick: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const ButtonCurrencyTransaction = ({ label, onclick }: Props) => {
+const ButtonCurrencyTransaction: React.FC<Props> = ({ label, onclick }: Props) => {
   return (
     <div className='button-currency-transaction'>
       <button type='button' onClick={onclick}>

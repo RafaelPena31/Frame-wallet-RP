@@ -78,56 +78,56 @@ function Homepage() {
   ]
 
   const currencyIconArray = [
-    { icon: ardorIcon, name: 'Ardor', sigla: 'ARDR' },
-    { icon: ArkIcon, name: 'Ark', sigla: 'ARK' },
-    { icon: AugurIcon, name: 'Augur', sigla: 'REP' },
-    { icon: BasicattentiontokenIcon, name: 'Basic Attention Token', sigla: 'BAT' },
-    { icon: BinancecoinIcon, name: 'Binance Coin', sigla: 'BNB' },
-    { icon: BitcoinIcon, name: 'Bitcoin', sigla: 'BTC' },
-    { icon: BitcoinCashIcon, name: 'Bitcoin Cash', sigla: 'BCH' },
-    { icon: BitcoinDarkIcon, name: 'Bitcoin Dark', sigla: 'BTCD' },
-    { icon: BitconnectIcon, name: 'Bit Connect', sigla: 'BBC' },
-    { icon: BitshareIcon, name: 'Bit Shares', sigla: 'BTS' },
-    { icon: BytecoinIcon, name: 'Bytecoin', sigla: 'BCN' },
-    { icon: CardanoIcon, name: 'Cardano', sigla: 'ADA' },
-    { icon: DashIcon, name: 'Dash', sigla: 'DASH' },
-    { icon: DecredIcon, name: 'Decred', sigla: 'DCR' },
-    { icon: DigixdaoIcon, name: 'Digixdao', sigla: 'DGD' },
-    { icon: DogecoinIcon, name: 'Dogecoin', sigla: 'DOGE' },
-    { icon: EosIcon, name: 'Eos', sigla: 'EOS' },
-    { icon: EthereumIcon, name: 'Ethereum', sigla: 'ETH' },
-    { icon: EthereumClassicIcon, name: 'Ethereum-classic', sigla: 'ETC' },
-    { icon: FactomIcon, name: 'Factom', sigla: 'FCT' },
-    { icon: GasIcon, name: 'Gas', sigla: 'GAS' },
-    { icon: GolemIcon, name: 'Golem', sigla: 'GNT' },
-    { icon: HshareIcon, name: 'Hshare', sigla: 'HSR' },
-    { icon: IotaIcon, name: 'Iota', sigla: 'MIOTA' },
-    { icon: KomodoIcon, name: 'Komodo', sigla: 'KMD' },
-    { icon: KybernetworkIcon, name: 'Kyber Network', sigla: 'KNC' },
-    { icon: LiskIcon, name: 'Lisk', sigla: 'LSK' },
-    { icon: LitecoinIcon, name: 'Litecoin', sigla: 'LTC' },
-    { icon: MaidsafecoinIcon, name: 'MaidSafeCoin', sigla: 'MAID' },
-    { icon: MonacoinIcon, name: 'MonaCoin', sigla: 'MONA' },
-    { icon: MoneroIcon, name: 'Monero', sigla: 'XMR' },
-    { icon: NemIcon, name: 'Nem', sigla: 'XEM' },
-    { icon: NeoIcon, name: 'Neo', sigla: 'NEO' },
-    { icon: OmisegoIcon, name: 'Omisego', sigla: 'OMG' },
-    { icon: PivxIcon, name: 'Pivx', sigla: 'PIVX' },
-    { icon: PopulousIcon, name: 'Populous', sigla: 'PPT' },
-    { icon: QtumIcon, name: 'Qtum', sigla: 'QTUM' },
-    { icon: RippleIcon, name: 'Ripple', sigla: 'XRP' },
-    { icon: SaltIcon, name: 'Salt', sigla: 'SALT' },
-    { icon: SteemIcon, name: 'Steem', sigla: 'STEEM' },
-    { icon: StellarIcon, name: 'Stellar Lumens', sigla: 'XLM' },
-    { icon: StratisIcon, name: 'Stratis', sigla: 'STRAT' },
-    { icon: TenxIcon, name: 'Tenx', sigla: 'PAY' },
-    { icon: TetherIcon, name: 'Tether', sigla: 'USDT' },
-    { icon: TronIcon, name: 'Tron', sigla: 'TRX' },
-    { icon: VergeIcon, name: 'Verge', sigla: 'XVG' },
-    { icon: VertcoinIcon, name: 'Vertcoin', sigla: 'VTC' },
-    { icon: WaltonkIcon, name: 'Walton', sigla: 'WTC' },
-    { icon: WavesIcon, name: 'Waves', sigla: 'WAVES' },
-    { icon: ZcashIcon, name: 'Zcash', sigla: 'ZEC' }
+    { iconSet: ardorIcon, name: 'Ardor', sigla: 'ARDR' },
+    { iconSet: ArkIcon, name: 'Ark', sigla: 'ARK' },
+    { iconSet: AugurIcon, name: 'Augur', sigla: 'REP' },
+    { iconSet: BasicattentiontokenIcon, name: 'Basic Attention Token', sigla: 'BAT' },
+    { iconSet: BinancecoinIcon, name: 'Binance Coin', sigla: 'BNB' },
+    { iconSet: BitcoinIcon, name: 'Bitcoin', sigla: 'BTC' },
+    { iconSet: BitcoinCashIcon, name: 'Bitcoin Cash', sigla: 'BCH' },
+    { iconSet: BitcoinDarkIcon, name: 'Bitcoin Dark', sigla: 'BTCD' },
+    { iconSet: BitconnectIcon, name: 'Bit Connect', sigla: 'BBC' },
+    { iconSet: BitshareIcon, name: 'Bit Shares', sigla: 'BTS' },
+    { iconSet: BytecoinIcon, name: 'Bytecoin', sigla: 'BCN' },
+    { iconSet: CardanoIcon, name: 'Cardano', sigla: 'ADA' },
+    { iconSet: DashIcon, name: 'Dash', sigla: 'DASH' },
+    { iconSet: DecredIcon, name: 'Decred', sigla: 'DCR' },
+    { iconSet: DigixdaoIcon, name: 'Digixdao', sigla: 'DGD' },
+    { iconSet: DogecoinIcon, name: 'Dogecoin', sigla: 'DOGE' },
+    { iconSet: EosIcon, name: 'Eos', sigla: 'EOS' },
+    { iconSet: EthereumIcon, name: 'Ethereum', sigla: 'ETH' },
+    { iconSet: EthereumClassicIcon, name: 'Ethereum-classic', sigla: 'ETC' },
+    { iconSet: FactomIcon, name: 'Factom', sigla: 'FCT' },
+    { iconSet: GasIcon, name: 'Gas', sigla: 'GAS' },
+    { iconSet: GolemIcon, name: 'Golem', sigla: 'GNT' },
+    { iconSet: HshareIcon, name: 'Hshare', sigla: 'HSR' },
+    { iconSet: IotaIcon, name: 'Iota', sigla: 'MIOTA' },
+    { iconSet: KomodoIcon, name: 'Komodo', sigla: 'KMD' },
+    { iconSet: KybernetworkIcon, name: 'Kyber Network', sigla: 'KNC' },
+    { iconSet: LiskIcon, name: 'Lisk', sigla: 'LSK' },
+    { iconSet: LitecoinIcon, name: 'Litecoin', sigla: 'LTC' },
+    { iconSet: MaidsafecoinIcon, name: 'MaidSafeCoin', sigla: 'MAID' },
+    { iconSet: MonacoinIcon, name: 'MonaCoin', sigla: 'MONA' },
+    { iconSet: MoneroIcon, name: 'Monero', sigla: 'XMR' },
+    { iconSet: NemIcon, name: 'Nem', sigla: 'XEM' },
+    { iconSet: NeoIcon, name: 'Neo', sigla: 'NEO' },
+    { iconSet: OmisegoIcon, name: 'Omisego', sigla: 'OMG' },
+    { iconSet: PivxIcon, name: 'Pivx', sigla: 'PIVX' },
+    { iconSet: PopulousIcon, name: 'Populous', sigla: 'PPT' },
+    { iconSet: QtumIcon, name: 'Qtum', sigla: 'QTUM' },
+    { iconSet: RippleIcon, name: 'Ripple', sigla: 'XRP' },
+    { iconSet: SaltIcon, name: 'Salt', sigla: 'SALT' },
+    { iconSet: SteemIcon, name: 'Steem', sigla: 'STEEM' },
+    { iconSet: StellarIcon, name: 'Stellar Lumens', sigla: 'XLM' },
+    { iconSet: StratisIcon, name: 'Stratis', sigla: 'STRAT' },
+    { iconSet: TenxIcon, name: 'Tenx', sigla: 'PAY' },
+    { iconSet: TetherIcon, name: 'Tether', sigla: 'USDT' },
+    { iconSet: TronIcon, name: 'Tron', sigla: 'TRX' },
+    { iconSet: VergeIcon, name: 'Verge', sigla: 'XVG' },
+    { iconSet: VertcoinIcon, name: 'Vertcoin', sigla: 'VTC' },
+    { iconSet: WaltonkIcon, name: 'Walton', sigla: 'WTC' },
+    { iconSet: WavesIcon, name: 'Waves', sigla: 'WAVES' },
+    { iconSet: ZcashIcon, name: 'Zcash', sigla: 'ZEC' }
   ]
 
   function showModal() {
@@ -142,10 +142,15 @@ function Homepage() {
     setVisible(false)
   }
 
+  type Test = {
+    icon: string
+    name: string
+  }
+
   function handleCreateCurrencyBox(e: FormEvent) {
     e.preventDefault()
 
-    const { icon: string, name } = currencyIconArray[icon]
+    const { name } = currencyIconArray[icon]
 
     setCurrencyList([...currencyList, { name, value: currencyValue, icon }])
   }
@@ -248,7 +253,7 @@ function Homepage() {
                 id={currency.icon}
                 name={currencyIconArray[currency.icon].name}
                 price={currency.value}
-                icon={currencyIconArray[currency.icon].icon}
+                icon={currencyIconArray[currency.icon].iconSet}
                 sigla={currencyIconArray[currency.icon].sigla}
                 onclick={showModal}
               />
