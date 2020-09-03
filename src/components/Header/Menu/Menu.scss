@@ -7,6 +7,9 @@
     justify-content: space-evenly;
     align-items: center;
     flex-flow: row;
+    :last-child {
+        border: 1px solid #fff;
+    }
     a {
         color: #fff;
         text-decoration: none;
@@ -25,7 +28,7 @@
     
 }
 
-@media (min-width: 700px) {
+@media (min-width: 830px) {
     .menu {
         justify-content: flex-end;
         :last-child {

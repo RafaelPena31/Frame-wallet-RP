@@ -1,15 +1,14 @@
-import React from 'react';
-import './Menu.scss';
-
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import './Menu.scss'
 
 function Menu() {
   return (
-    <nav className="menu">
-      <Link to="/">Home</Link>
-      <Link to="/">Wallet</Link>
+    <nav className='menu'>
+      <Link to='/'>Home</Link>
+      <Link to='/'>Wallet</Link>
     </nav>
-  );
+  )
 }
 
-export default Menu;
+export default Menu

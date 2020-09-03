@@ -1,72 +1,109 @@
-@import '../../styles//variable';
+@import '../../styles/variable';
 
 .currency-table {
+  width: 100%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  border: {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0.5px solid $border-color;
+  }
+  .header-table {
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: $color-text-secondary;
     width: 100%;
-    border-collapse: collapse;
-    background: #f5f5f5;
-    border: {
-        top:1px solid #ebebeb;
-        right:none;
-        bottom:none;
-        left:none;
-    }
-    font-size: 1rem;
     &:first-child {
-        border-top: none;
+      width: 100%;
+      min-width: 0;
+      max-width: 40px;
     }
     &:last-child {
-        border: {
-            top:1px solid #ebebeb;
-            right:none;
-            bottom:1px solid #ebebeb;
-            left:none;
-        }
+      width: 100%;
+      max-width: 120px;
     }
-    display: grid;
-    grid-template-columns: 0.5fr 3fr 1fr 1fr;
-        .header-table {
-            display: flex;
-            padding: 0.8rem;
-            justify-content: center;
-            align-items: center;
-        }
-        .data-table {
-            display: flex;
-            padding: 0.8rem 0.5rem;
-            justify-content: center;
-            align-items: center;
-            img {
-                width: 25px;
-                margin-right: 0.8rem;
-            }
-            a {
-                background: $transaction-button;
-                color: #ffffff;
-                padding: 0.5rem 0.9rem;
-                border-radius: 2px;
-                &:hover {
-                    background: $transaction-button-hover;
-                }
-            }
-        }
+    padding: 0.7rem;
+  }
+  .data-table {
+    font-size: 0.7rem;
+    font-weight: 500;
+    width: 100%;
+    color: $color-text;
+    &:first-child {
+      width: 100%;
+      min-width: 0;
+      max-width: 40px;
+      color: $color-text-secondary;
+    }
+    &:last-child {
+      width: 100%;
+      max-width: 120px;
+    }
+    padding: 0.7rem;
+    img {
+      width: 23px;
+      margin-right: 5px;
+    }
+    a {
+      padding: 0.6rem 1.5rem;
+      background: $transaction-button;
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.6rem;
+      border-radius: 5px;
+      &:hover {
+        background: $transaction-button-hover;
+      }
+    }
+    span {
+      margin-left: 0.5rem;
+      color: $color-text-secondary;
+    }
+  }
 }
 
-@media (min-width: 700px) {
-    .currency-table { 
-        .header-table {
-            justify-content: flex-start;
-            &:last-child {
-                justify-content: center;
-            }
-        }
-        .data-table {
-            justify-content: flex-start;
-            a {
-                padding: 0.5rem 2.5rem;
-            }
-            &:last-child {
-                justify-content: center;
-            }
-        }
+@media (min-width: 400px) {
+  .currency-table {
+    .header-table {
+      font-size: 0.8rem;
     }
+    .data-table {
+      font-size: 1rem;
+      a {
+        font-size: 0.7rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 620px) {
+  .currency-table {
+    .header-table {
+      text-align: left;
+      padding: 1rem 2rem;
+      &:last-child {
+        width: 100%;
+        max-width: 150px;
+      }
+    }
+    .data-table {
+      padding: 1.3rem 2rem;
+      font-size: 1.2rem;
+      &:last-child {
+        width: 100%;
+        max-width: 150px;
+      }
+      img {
+        width: 38px;
+        margin-right: 15px;
+      }
+      a {
+        padding: 0.63rem 2rem;
+        font-size: 1rem;
+      }
+    }
+  }
 }

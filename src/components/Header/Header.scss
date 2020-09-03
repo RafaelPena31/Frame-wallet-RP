@@ -1,48 +1,49 @@
 @import '../../styles/_variable';
 
 .header {
+  width: 100%;
+  min-height: 59vh;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  background: $universal;
+  padding: {
+    top: 1rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: 0;
+  }
+  .logo {
+    display: flex;
+    padding: 0.5rem 0;
+    color: #fff;
+    font-size: 0.8rem;
+    :last-child {
+      margin-left: 1rem;
+    }
+  }
+  .container-logo {
     width: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
     flex-flow: column;
-    background: $universal;
-    padding: {
-        top: 1rem;
-        left: 1rem;
-        right: 1rem;
-        bottom: 0;
-    };
-    .logo {
-        display: flex;
-        padding: 0.5rem;
-        color: #fff;
-        font-size: 0.8rem;
-        :last-child {
-            margin-left: 1rem;
-        }
-    }
-    .container-logo {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column;
-    }
-    .button-currency {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
+  }
+  .button-currency {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 @media (min-width: 600px) {
-    .header {
-        align-items: flex-end;
-        .container-logo {
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-flow: row;
-        }
+  .header {
+    .container-logo {
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-flow: row;
+      max-width: 62%;
     }
+  }
 }

@@ -1,28 +1,25 @@
-import React, { ReactNode } from 'react';
-import './Header.scss';
-
-import { BsWallet } from 'react-icons/bs';
-import Menu from './Menu/Menu';
+import React, { ReactNode } from 'react'
+import { BsWallet } from 'react-icons/bs'
+import './Header.scss'
+import Menu from './Menu/Menu'
 
 interface Props {
-  props?: ReactNode;
+  children?: ReactNode
 }
 
-const Header: React.FC<Props> = (props) => {
+const Header: React.FC<Props> = props => {
   return (
-    <header className="header">
-      <section className="container-logo">
-        <div className="logo">
-          <BsWallet size={30} color="#fff" />
+    <header className='header'>
+      <section className='container-logo'>
+        <div className='logo'>
+          <BsWallet size={30} color='#fff' />
           <h1>Frame Wallet</h1>
         </div>
         <Menu />
       </section>
-      <section className="button-currency">
-       {props.children}
-      </section>
+      <section className='button-currency'>{props.children}</section>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header

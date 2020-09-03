@@ -1,39 +1,33 @@
-import React from 'react';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import './CurrencyTable.scss'
 
-import './CurrencyTable.scss';
-
-import { Link } from 'react-router-dom';
-
-interface Props {
-  currencyControler: Array<{
-    id: number;
-    name: string;
-    price: number;
-    icon: any;
-  }>
+interface currencyControler {
+  id: number
+  name: string
+  sigla: string
+  price: number
+  icon: string
+  onclick: (event: React.MouseEvent<HTMLAnchorElement>) => void
 }
 
-const CurrencyTable: React.FC<Props> = ({ currencyControler }) => {
+const CurrencyTable: React.FC<currencyControler> = ({ id, name, sigla, price, icon, onclick }) => {
   return (
-    <>
-
-          {currencyControler.map((currencyControl) => {
-            return (
-              <div className="currency-table" key={currencyControl.id}>
-                <div className="data-table">{currencyControl.id}</div>
-                <div className="data-table">
-                  <img src={currencyControl.icon} alt={currencyControl.name}/>
-                  {currencyControl.name}
-                </div>
-                <div className="data-table">{currencyControl.price}</div>
-                <div className="data-table">
-                  <Link to="/">Buy</Link>
-                </div>
-              </div>
-            )
-          })}
-    </>
+    <div className='currency-table' key={id}>
+      <div className='data-table'>{id}</div>
+      <div className='data-table'>
+        <img src={icon} alt={name} />
+        {name}
+        <span>{sigla}</span>
+      </div>
+      <div className='data-table'>{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+      <div className='data-table'>
+        <Link to='/' onClick={onclick}>
+          Buy
+        </Link>
+      </div>
+    </div>
   )
 }
 
-export default CurrencyTable;
+export default CurrencyTable

@@ -1,72 +1,57 @@
 @import '../../styles/variable';
 
 .homepage {
-    min-height: 100vh;
+  min-height: 150vh;
+  background: #f5f5f5;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  main {
+    width: 100%;
+    border-radius: 0.2rem;
     background: #f5f5f5;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    main {
-        margin-top: -4vh;
-        padding: {top: 2vh; left: 0; right: 0; bottom: 0;}
-        width: 100%;
-        border-radius: 0.2rem;
-        background: #f5f5f5;
-        border: {
-            top: 0.7px solid #ebebeb;
-            right: 0.7px solid #ebebeb;
-            left: 0.7px solid #ebebeb;
-            bottom: 0.7px solid #ebebeb;
-        };
+    border: {
+      top: 0.7px solid #ebebeb;
+      right: 0.7px solid #ebebeb;
+      left: 0.7px solid #ebebeb;
+      bottom: 0.7px solid #ebebeb;
     }
-}
-
-.table-currency {
-    padding-top: 1rem;
+    margin-top: -18vh;
+  }
 }
 
 .header {
-    .logo h1{
-        color: #fff;
-        font-size: 1.7em;
-        font-weight: bold;
-    }
-    .container-logo {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-flow: column;
-    }
-    section {
-        button {
-            width: 80%;
-            max-width: 190px;
-            height: 50px;
-            margin-top: 2rem;
-            background: $transaction-button;
-            border: none;
-            color: #ffffff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: opacity 0.3s;
-            z-index: 1;
-            &:hover {
-                background: $transaction-button-hover;
-            }
-        }
-    }
+  .logo h1 {
+    color: #fff;
+    font-size: 1.7em;
+    font-weight: bold;
+  }
+  .container-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+  }
 }
 
 .spin-modal {
-    text-align: center;
-    margin: 1rem;
-  }
+  text-align: center;
+  margin: 1rem;
+}
 
-@media (min-width:700px) {
-    .homepage {
-        main {
-            width: 85%;
-        }
+@media (min-width: 830px) {
+  .homepage {
+    main {
+      width: 60%;
     }
+  }
+  .header {
+    .container-logo {
+      max-width: 62%;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-flow: row;
+    }
+  }
 }
