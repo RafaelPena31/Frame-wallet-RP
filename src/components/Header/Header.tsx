@@ -1,13 +1,9 @@
-import React, { ReactNode } from 'react'
+import React from 'react'
 import { BsWallet } from 'react-icons/bs'
 import './Header.scss'
 import Menu from './Menu/Menu'
 
-interface Props {
-  children?: ReactNode
-}
-
-const Header: React.FC<Props> = props => {
+function Header() {
   return (
     <header className='header'>
       <section className='container-logo'>
@@ -17,7 +13,6 @@ const Header: React.FC<Props> = props => {
         </div>
         <Menu />
       </section>
-      <section className='button-currency'>{props.children}</section>
     </header>
   )
 }

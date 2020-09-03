@@ -1,13 +1,13 @@
-import React from 'react';
-import { Routes } from './routes';
-import './styles/set.scss';
+import React from 'react'
+import { Routes } from './routes'
+import './styles/set.scss'
 
 function App() {
   return (
-    <div className="App">
+    <div className='App'>
       <Routes />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

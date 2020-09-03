@@ -11,7 +11,7 @@ interface currencyControler {
   onclick: (event: React.MouseEvent<HTMLAnchorElement>) => void
 }
 
-const CurrencyTable: React.FC<currencyControler> = ({ id, name, sigla, price, icon, onclick }) => {
+const CurrencyTable = ({ id, name, price, icon, sigla, onclick }: currencyControler) => {
   return (
     <div className='currency-table' key={id}>
       <div className='data-table'>{id}</div>

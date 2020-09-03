@@ -159,7 +159,7 @@ function Homepage() {
             <SelectCurrency
               name='currencyOptionIcon'
               label='Select a cryptocurrency:'
-              onChange={e => {
+              onchange={e => {
                 setIcon(parseInt(e.target.value, 10))
               }}
               optionControler={[
@@ -221,11 +221,11 @@ function Homepage() {
                 type='number'
                 step='0.01'
                 label='Value to buy:'
-                onChange={e => {
+                onchange={e => {
                   setCurrencyValue(parseInt(e.target.value, 10))
                 }}
               />
-              <ButtonCurrencyTransaction label='Finish transaction' type='submit' onClick={handleOk} />
+              <ButtonCurrencyTransaction label='Finish transaction' type='submit' onclick={handleOk} />
               <div className='spin-modal'>
                 <Spin spinning={loading} />
               </div>
