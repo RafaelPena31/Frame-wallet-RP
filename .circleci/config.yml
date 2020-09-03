@@ -4,9 +4,25 @@ orbs:
 workflows:
   node-tests:
     jobs:
-      test:
-        docker:
-            image: cimg/node:<node-version>
-      steps:
-        checkout
-        node/install-packages
+      runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+        
+      - name: Install depencencies
+        run: yarn
+        
+      - name: Check lint
+        run: yarn lint
+        
+      - name: Check prettier
+        run: yarn prettier
+        
+      - name: Check build
+        run: yarn build
