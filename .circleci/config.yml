@@ -2,7 +2,7 @@ version: 2.1
 orbs:
     node: circleci/node@x.y 
 workflows:
-  build:
+  node-tests:
     jobs:
       test:
         docker:
