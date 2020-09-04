@@ -10,40 +10,16 @@ jobs:
     steps:
       - node/install:
           install-yarn: true
-  build:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
       - run: yarn install
-  checkLint:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
       - run: yarn lint
-  checkPrettier:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
       - run: yarn prettier
-  checkBuild:
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
       - run: yarn build
+ 
 
 workflows:
   node-tests:
     jobs:
       - install-yarn
-      - build:
-          requires:
-            - install-yarn
-      - checkLint:
-          requires:
-            - build
-      - checkPrettier:
-          requires:
-            - checkLint
-      - checkBuild:
-          requires:
-            - checkPrettier
+      
+
+
