@@ -11,6 +11,7 @@ jobs:
       - node/install:
           install-yarn: true
       - run: ls -la
+      - run: cd ../
       - run: yarn 
       - run: ls -la
       - run: yarn lint
