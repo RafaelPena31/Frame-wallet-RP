@@ -12,7 +12,7 @@ jobs:
   build:
     executor: docker-executor
     steps:
-        working_directory: ~/wallet
+      - working_directory: ~/wallet
       - run: ls
       - run: npm install yarn
       - run: yarn install
