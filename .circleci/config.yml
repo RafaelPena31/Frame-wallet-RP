@@ -10,9 +10,7 @@ jobs:
     steps:
       - node/install:
           install-yarn: true
-      - run: ls -la
-      - run: cd ../
-      - run: ls -la
+      - run: pwd
       - run: yarn 
       - run: ls -la
       - run: yarn lint
