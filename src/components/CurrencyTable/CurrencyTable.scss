@@ -9,7 +9,7 @@
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0.5px solid $border-color;
+    bottom: 0.5px solid $color-border;
   }
   .header-table {
     font-size: 0.6rem;
@@ -49,13 +49,13 @@
     }
     a {
       padding: 0.6rem 1.5rem;
-      background: $transaction-button;
+      background: $color-transaction-button;
       color: #fff;
       font-weight: bold;
       font-size: 0.6rem;
       border-radius: 5px;
       &:hover {
-        background: $transaction-button-hover;
+        background: $color-transaction-button-hover;
       }
     }
     span {
