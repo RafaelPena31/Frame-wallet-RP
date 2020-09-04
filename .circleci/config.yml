@@ -35,7 +35,15 @@ workflows:
   node-tests:
     jobs:
       - install-yarn
-      - build
-      - checkLint
-      - checkPrettier
-      - checkBuild
+      - build:
+          requires:
+            - install-yarn
+      - checkLint:
+          requires:
+            - build
+      - checkPrettier:
+          requires:
+            - checkLint
+      - checkBuild:
+          requires:
+            - checkPrettier
