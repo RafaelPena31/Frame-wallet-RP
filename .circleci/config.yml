@@ -12,7 +12,7 @@ jobs:
   build:
     executor: docker-executor
     steps:
-      - run: ~/project
+      - run: cd project
       - run: ls
       - run: npm install yarn
       - run: yarn install
