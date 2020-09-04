@@ -11,9 +11,7 @@ jobs:
       - checkout
       - node/install:
           install-yarn: true
-      - run: pwd
-      - run: yarn 
-      - run: ls
+      - run: yarn
       - run: yarn lint
       - run: yarn prettier
       - run: yarn build
