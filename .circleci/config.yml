@@ -11,7 +11,7 @@ jobs:
       - node/install:
           install-yarn: true
       - run: dir
-      - run: cd wallet
+      - run: cd ../
       - run: yarn 
       - run: yarn lint
       - run: yarn prettier
