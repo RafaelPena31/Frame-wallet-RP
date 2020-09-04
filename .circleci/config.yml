@@ -1,14 +1,10 @@
-name: test
-
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
+version: 2.1
+orbs:
+    node: circleci/node@x.y 
+workflows:
+  node-tests:
+    jobs:
+      runs-on: ubuntu-latest
     
     steps:
       - name: Checkout Repository
@@ -30,4 +26,3 @@ jobs:
         
       - name: Check build
         run: yarn build
-
