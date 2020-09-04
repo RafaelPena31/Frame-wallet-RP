@@ -12,7 +12,7 @@ jobs:
           install-yarn: true
       - run: pwd
       - run: ls
-      - working_directory: ~/frame-wallet
+        working_directory: ~/frame-wallet
       - run: ls
       - run: yarn 
       - run: ls
