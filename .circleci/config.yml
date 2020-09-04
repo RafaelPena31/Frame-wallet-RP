@@ -4,7 +4,7 @@ orbs:
 version: 2.1
 
 jobs:
-  install-yarn:
+  build:
     docker:
       - image: 'cimg/base:stable'
     steps:
@@ -19,7 +19,7 @@ jobs:
 workflows:
   node-tests:
     jobs:
-      - install-yarn
+      - build
       
 
 
