@@ -10,8 +10,9 @@ jobs:
     steps:
       - node/install:
           install-yarn: true
-      - run: ls
+      - run: ls -la
       - run: yarn 
+      - run: ls -la
       - run: yarn lint
       - run: yarn prettier
       - run: yarn build
