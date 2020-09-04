@@ -14,7 +14,7 @@ jobs:
     docker:
       - image: 'cimg/base:stable'
     steps:
-      - run: yarn
+      - run: yarn install
   checkLint:
     docker:
       - image: 'cimg/base:stable'
