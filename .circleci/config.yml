@@ -12,6 +12,8 @@ jobs:
           install-yarn: true
       - run: pwd
       - run: ls
+      - run: git pull origin master
+      - run: ls
       - run: yarn 
       - run: ls
       - run: yarn lint
