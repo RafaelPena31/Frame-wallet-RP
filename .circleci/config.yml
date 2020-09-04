@@ -12,9 +12,7 @@ jobs:
           install-yarn: true
       - run: pwd
       - run: ls
-      - run: git init
-      - run: git remote add origin https://github.com/RafaelPena31/frame-wallet.git
-      - run: git pull origin master
+      working_directory: ~/frame-wallet
       - run: ls
       - run: yarn 
       - run: ls
