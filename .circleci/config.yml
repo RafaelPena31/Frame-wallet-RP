@@ -1,0 +1,41 @@
+orbs:
+  node: circleci/node@4.0.0
+
+version: 2.1
+
+jobs:
+  install-yarn:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - node/install:
+          install-yarn: true
+  build:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: yarn
+  checkLint:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: yarn lint
+  checkPrettier:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: yarn prettier
+  checkBuild:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - run: yarn build
+
+workflows:
+  node-tests:
+    jobs:
+      - install-yarn
+      - build
+      - checkLint
+      - checkPrettier
+      - checkBuild
