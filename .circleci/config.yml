@@ -1,25 +1,26 @@
-version: 2.1
+orbs:
+  node: circleci/node@4.0.0
 
-executors:
-  docker-executor:
-    docker:
-      - image: circleci/node:latest
-  machine-executor:
-    machine:
-      image: ubuntu-1604:201903-01
+version: 2.1
 
 jobs:
   build:
-    executor: docker-executor
+    docker:
+      - image: 'cimg/base:stable'
     steps:
-      - run: cd ../../ ls
-      - run: npm install yarn
-      - run: yarn install
+      - checkout
+      - node/install:
+          install-yarn: true
+      - run: pwd
+      - run: yarn 
+      - run: ls
       - run: yarn lint
       - run: yarn prettier
-      - run: build
+      - run: yarn build
+ 
 
 workflows:
-  test_build:
+  node-tests:
     jobs:
       - build
+      
