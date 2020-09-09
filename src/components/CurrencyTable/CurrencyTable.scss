@@ -28,24 +28,31 @@
     padding: 0.7rem;
   }
   .data-table {
+    display: flex;
+    flex-flow: row wrap;
     font-size: 0.7rem;
     font-weight: 500;
     width: 100%;
+    padding: 0.7rem;
     color: $color-text;
     &:first-child {
       width: 100%;
       min-width: 0;
       max-width: 40px;
       color: $color-text-secondary;
+      padding: 0.7rem;
+    }
+    &:nth-child(2) {
+      width: 100%;
+      min-width: 0;
+      max-width: 40px;
     }
     &:last-child {
       width: 100%;
       max-width: 120px;
     }
-    padding: 0.7rem;
     img {
       width: 23px;
-      margin-right: 5px;
     }
     a {
       padding: 0.6rem 1.5rem;

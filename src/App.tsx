@@ -1,11 +1,14 @@
 import React from 'react'
+import WalletContextProvider from './context/WalletContext'
 import { Routes } from './routes'
-import './styles/set.scss'
+import './styles/_resets.scss'
 
 function App(): JSX.Element {
   return (
     <div className='App'>
-      <Routes />
+      <WalletContextProvider>
+        <Routes />
+      </WalletContextProvider>
     </div>
   )
 }

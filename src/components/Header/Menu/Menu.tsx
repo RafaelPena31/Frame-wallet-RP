@@ -6,7 +6,7 @@ function Menu(): JSX.Element {
   return (
     <nav className='menu'>
       <Link to='/'>Home</Link>
-      <Link to='/'>Wallet</Link>
+      <Link to='/wallet'>Wallet</Link>
     </nav>
   )
 }

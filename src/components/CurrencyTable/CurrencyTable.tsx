@@ -8,7 +8,7 @@ interface currencyControler {
   sigla: string
   price: number
   icon: string
-  onclick: (event: React.MouseEvent<HTMLAnchorElement>) => void
+  onclick?: (event: React.MouseEvent<HTMLAnchorElement>) => void
 }
 
 const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sigla, onclick }: currencyControler) => {
@@ -17,6 +17,8 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
       <div className='data-table'>{id}</div>
       <div className='data-table'>
         <img src={icon} alt={name} />
+      </div>
+      <div className='data-table'>
         {name}
         <span>{sigla}</span>
       </div>
@@ -28,6 +30,10 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
       </div>
     </div>
   )
+}
+
+CurrencyTable.defaultProps = {
+  onclick: undefined
 }
 
 export default CurrencyTable
