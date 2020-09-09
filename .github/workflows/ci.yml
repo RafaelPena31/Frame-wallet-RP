@@ -22,11 +22,11 @@ jobs:
       - name: Install depencencies
         run: yarn
         
-      - name: Check lint
-        run: yarn lint
-        
       - name: Check prettier
         run: yarn prettier
+
+      - name: Check lint
+        run: yarn lint
         
       - name: Check build
         run: yarn build

@@ -12,8 +12,8 @@ jobs:
       - node/install:
           install-yarn: true
       - run: yarn
-      - run: yarn lint
       - run: yarn prettier
+      - run: yarn lint
       - run: yarn build
  
 
