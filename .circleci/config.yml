@@ -6,19 +6,19 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'circleci/node:latest'
     steps:
       - checkout
       - node/install:
           install-yarn: true
-      - run: yarn
+      - run:
+        name: Install dependecys
+        command: yarn
       - run: yarn prettier
       - run: yarn lint
       - run: yarn build
- 
 
 workflows:
   node-tests:
     jobs:
       - build
-      
