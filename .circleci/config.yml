@@ -12,8 +12,8 @@ jobs:
       - node/install:
           install-yarn: true
       - run:
-        name: Install dependecys
-        command: yarn
+          name: Install dependecys
+          command: yarn
       - run: yarn prettier
       - run: yarn lint
       - run: yarn build
