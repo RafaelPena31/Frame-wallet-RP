@@ -14,9 +14,15 @@ jobs:
       - run:
           name: Install dependecys
           command: yarn
-      - run: yarn prettier
-      - run: yarn lint
+      - run: 
+          name: Prettier (Code Styling)
+          command: yarn prettier
+      - run: 
+          name: ESlint (Code lint)
+          command: yarn lint
       - run: yarn build
+          name: Application - Build 
+          command: yarn build
 
 workflows:
   node-tests:
