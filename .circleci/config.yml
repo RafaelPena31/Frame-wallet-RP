@@ -20,7 +20,7 @@ jobs:
       - run: 
           name: ESlint (Code lint)
           command: yarn lint
-      - run: yarn build
+      - run: 
           name: Application - Build 
           command: yarn build
 
