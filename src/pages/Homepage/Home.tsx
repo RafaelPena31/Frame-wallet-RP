@@ -1,14 +1,13 @@
 import { Modal } from 'antd'
 import 'antd/dist/antd.css'
 import React, { FormEvent, useContext, useState } from 'react'
-import { currencyIconArray } from '../../assets/IconArray/IconArray'
+import { currencyArray } from '../../assets/IconArray/IconArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
 import ButtonCurrencyTransaction from '../../components/StandartInputForm/ButtonCurrencyTransaction/ButtonCurrencyTransaction'
 import InputCurrency from '../../components/StandartInputForm/InputCurrency/InputCurrency'
 import SelectCurrency from '../../components/StandartInputForm/SelectCurrency/SelectCurrency'
 import { WalletContext } from '../../context/WalletContext'
-import { Coin } from '../../types/Types'
 import './Home.scss'
 
 function Homepage(): JSX.Element {
@@ -16,12 +15,11 @@ function Homepage(): JSX.Element {
   const [visible, setVisible] = useState(false)
   const [icon, setIcon] = useState(0)
   const [currencyValue, setCurrencyValue] = useState(0)
-  const [currencyList, setCurrencyList] = useState<Array<Coin>>([])
   const currencyStart = [
-    { name: 'Bitcoin', value: 64448.78, icon: 5 },
-    { name: 'Ethereum', value: 2576.43, icon: 17 },
-    { name: 'Bitcoin Cash', value: 1530.58, icon: 6 },
-    { name: 'Litecoin', value: 343.4, icon: 27 }
+    { name: 'Bitcoin', icon: 5 },
+    { name: 'Ethereum', icon: 17 },
+    { name: 'Bitcoin Cash', icon: 6 },
+    { name: 'Litecoin', icon: 27 }
   ]
 
   /*   const WalletRegisterContext = useContext(WalletContext) */
@@ -42,10 +40,11 @@ function Homepage(): JSX.Element {
   function handleCreateCurrencyBox(e: FormEvent) {
     e.preventDefault()
 
-    const { name } = currencyIconArray[icon]
+    const { name } = currencyArray[icon]
 
-    setCurrencyList([...currencyList, { name, value: currencyValue, icon }])
-    setWalletValue([...walletValue, { name, value: currencyValue, icon }])
+    const trueValueCurrency = currencyValue * currencyArray[icon].price
+
+    setWalletValue([...walletValue, { name, value: trueValueCurrency, icon }])
   }
 
   return (
@@ -117,10 +116,9 @@ function Homepage(): JSX.Element {
             <InputCurrency
               name='currency-name'
               type='number'
-              step='0.01'
-              label='Value to buy:'
+              label='Amount of coin to buy:'
               onchange={e => {
-                setCurrencyValue(parseInt(e.target.value, 10))
+                setCurrencyValue(parseFloat(e.target.value))
               }}
             />
             <ButtonCurrencyTransaction label='Finish transaction' onclick={handleClose} />
@@ -145,11 +143,12 @@ function Homepage(): JSX.Element {
               <CurrencyTable
                 key={currency.icon}
                 id={currency.icon + 1}
-                name={currencyIconArray[currency.icon].name}
-                price={currency.value}
-                icon={currencyIconArray[currency.icon].iconSet}
-                sigla={currencyIconArray[currency.icon].sigla}
+                name={currencyArray[currency.icon].name}
+                price={currencyArray[currency.icon].price}
+                icon={currencyArray[currency.icon].iconSet}
+                sigla={currencyArray[currency.icon].sigla}
                 onclick={showModal}
+                product={false}
               />
             )
           })}

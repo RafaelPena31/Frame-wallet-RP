@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import './CurrencyTable.scss'
 
 interface currencyControler {
@@ -8,10 +7,31 @@ interface currencyControler {
   sigla: string
   price: number
   icon: string
-  onclick?: (event: React.MouseEvent<HTMLAnchorElement>) => void
+  product: boolean
+  onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sigla, onclick }: currencyControler) => {
+const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sigla, product, onclick }: currencyControler) => {
+  if (product) {
+    return (
+      <div className='currency-table' key={id}>
+        <div className='data-table'>{id}</div>
+        <div className='data-table'>
+          <img src={icon} alt={name} />
+        </div>
+        <div className='data-table'>
+          {name}
+          <span>{sigla}</span>
+        </div>
+        <div className='data-table'>{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+        <div className='data-table'>
+          <button type='button' onClick={onclick}>
+            Sell
+          </button>
+        </div>
+      </div>
+    )
+  }
   return (
     <div className='currency-table' key={id}>
       <div className='data-table'>{id}</div>
@@ -24,9 +44,9 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
       </div>
       <div className='data-table'>{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
       <div className='data-table'>
-        <Link to='/' onClick={onclick}>
+        <button type='button' onClick={onclick}>
           Buy
-        </Link>
+        </button>
       </div>
     </div>
   )

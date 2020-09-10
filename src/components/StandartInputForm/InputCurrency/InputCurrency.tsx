@@ -12,7 +12,7 @@ const InputCurrency: React.FC<Props> = ({ name, label, type, onchange }: Props) 
   return (
     <div className='input-currency'>
       <label htmlFor={name}>{label}</label>
-      <input type={type} onChange={onchange} id={name} name={name} />
+      <input type={type} onChange={onchange} id={name} name={name} step='0.01' />
     </div>
   )
 }

@@ -54,13 +54,15 @@
     img {
       width: 23px;
     }
-    a {
+    button {
+      border: none;
       padding: 0.6rem 1.5rem;
       background: $color-transaction-button;
       color: #fff;
       font-weight: bold;
       font-size: 0.6rem;
       border-radius: 5px;
+      cursor: pointer;
       &:hover {
         background: $color-transaction-button-hover;
       }
@@ -79,7 +81,7 @@
     }
     .data-table {
       font-size: 1rem;
-      a {
+      button {
         font-size: 0.7rem;
       }
     }
@@ -107,7 +109,7 @@
         width: 38px;
         margin-right: 15px;
       }
-      a {
+      button {
         padding: 0.63rem 2rem;
         font-size: 1rem;
       }
