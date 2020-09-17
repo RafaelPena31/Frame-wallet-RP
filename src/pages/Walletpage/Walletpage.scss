@@ -1,20 +1,20 @@
 @import '../../styles/variable';
 
-.homepage {
+.walletpage {
   min-height: 150vh;
-  background: #f5f5f5;
+  background: $color-background;
   display: flex;
   flex-flow: column;
   align-items: center;
   main {
     width: 100%;
     border-radius: 0.2rem;
-    background: #f5f5f5;
+    background: $color-background;
     border: {
-      top: 0.7px solid #ebebeb;
-      right: 0.7px solid #ebebeb;
-      left: 0.7px solid #ebebeb;
-      bottom: 0.7px solid #ebebeb;
+      top: 0.7px solid $color-border;
+      right: 0.7px solid $color-border;
+      left: 0.7px solid $color-border;
+      bottom: 0.7px solid $color-border;
     }
     margin-top: -18vh;
   }
@@ -40,8 +40,8 @@
   margin: 1rem;
 }
 
-@media (min-width: 830px) {
-  .homepage {
+@media (min-width: 980px) {
+  .walletpage {
     main {
       width: 60%;
     }

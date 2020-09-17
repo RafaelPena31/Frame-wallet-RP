@@ -1,6 +1,6 @@
 @import '../../../styles/variable';
 
-.button-currency-transaction {
+.button-transaction {
   width: 100%;
   display: flex;
   flex-flow: column;
@@ -21,7 +21,7 @@
       background: $color-transaction-button-hover;
     }
     &:focus {
-      box-shadow: 0px 0px 2px 0px rgba(50, 50, 50, 0.562);
+      box-shadow: 0px 0px 2px 0px $color-shadow;
     }
   }
 }

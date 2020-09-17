@@ -1,0 +1,122 @@
+@import '../../styles/variable';
+
+.profilepage {
+  min-height: 100vh;
+  background: $color-background;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  main {
+    background: #1951dd;
+    width: 95%;
+    border-radius: 0.2rem;
+    margin-top: -34vh;
+    box-shadow: 0px 0px 5px 1px $color-shadow;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    .account-value {
+      margin-top: 1.5rem;
+    }
+  }
+  .nav-account {
+    background: #1951dd;
+    padding: 1rem;
+    h1 {
+      margin: 0;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    h2 {
+      color: #fff;
+    }
+  }
+  .account-line-icon {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .account-section {
+    min-height: 60vh;
+    background: #fdfdfd;
+    padding: 1rem;
+    border-radius: 2rem 2rem 0 0;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+  }
+  .info-account {
+    p {
+      font-size: 1.3rem;
+      margin: 1rem;
+      span {
+        font-weight: bold;
+      }
+      &:first-child {
+        text-align: center;
+        font-weight: bold;
+        font-size: 2rem;
+        margin-left: 0;
+        margin-top: 0;
+        margin-bottom: 3rem;
+      }
+    }
+  }
+  .btn-wallet-account {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    a:hover {
+      text-decoration: underline;
+    }
+    button {
+      color: #cf0000;
+      font-size: 0.7rem;
+      &:hover {
+        color: #aa0101;
+        text-decoration: underline;
+      }
+    }
+  }
+  button {
+    color: #ffffffa6;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    &:hover {
+      color: #ffffff73;
+    }
+  }
+}
+
+.ant-modal-body {
+  button {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  padding-bottom: 0;
+}
+
+@media (min-width: 980px) {
+  .profilepage {
+    main {
+      width: 60%;
+      margin-top: -36vh;
+    }
+    .account-section {
+      min-height: 50vh;
+    }
+  }
+  .header {
+    .container-logo {
+      max-width: 62%;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-flow: row;
+    }
+  }
+}

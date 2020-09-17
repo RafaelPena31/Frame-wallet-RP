@@ -1,14 +1,14 @@
 import React, { ButtonHTMLAttributes } from 'react'
-import './ButtonCurrencyTransaction.scss'
+import './ButtonTransaction.scss'
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   label: string
   onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const ButtonCurrencyTransaction: React.FC<Props> = ({ label, onclick }: Props) => {
+const ButtonTransaction: React.FC<Props> = ({ label, onclick }: Props) => {
   return (
-    <div className='button-currency-transaction'>
+    <div className='button-transaction'>
       <button type='submit' onClick={onclick}>
         {label}
       </button>
@@ -16,8 +16,8 @@ const ButtonCurrencyTransaction: React.FC<Props> = ({ label, onclick }: Props) =
   )
 }
 
-ButtonCurrencyTransaction.defaultProps = {
+ButtonTransaction.defaultProps = {
   onclick: undefined
 }
 
-export default ButtonCurrencyTransaction
+export default ButtonTransaction

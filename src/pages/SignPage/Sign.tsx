@@ -4,9 +4,9 @@ import 'antd/dist/antd.css'
 import React, { FormEvent, useState } from 'react'
 import { BsWallet } from 'react-icons/bs'
 import { useHistory } from 'react-router-dom'
-import ButtonCurrencyTransaction from '../../components/StandartInputForm/ButtonCurrencyTransaction/ButtonCurrencyTransaction'
+import ButtonTransaction from '../../components/StandartInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandartInputForm/InputCurrency/InputCurrency'
-import { AppFirebase } from '../../config/firebase'
+import { AppFirebase } from '../../config/AppFirebase'
 import './Sign.scss'
 
 function Signpage(): JSX.Element {
@@ -14,9 +14,14 @@ function Signpage(): JSX.Element {
   const [visibleIN, setVisibleIN] = useState(false)
 
   const [emailUP, setEmailUP] = useState('')
+  const [nameUP, setNameUP] = useState('')
   const [passUP, setPassUP] = useState('')
+
   const [emailIN, setEmailIN] = useState('')
   const [passIN, setPassIN] = useState('')
+
+  const [visibleReset, setvisibleReset] = useState(false)
+  const [emailRESET, setEmailRESET] = useState('')
 
   const history = useHistory()
 
@@ -28,9 +33,9 @@ function Signpage(): JSX.Element {
     setVisibleIN(true)
   }
 
-  /*   function handleOk() {
-    setLoading(true)
-  } */
+  function showModalRESET() {
+    setvisibleReset(true)
+  }
 
   function handleCloseUP() {
     setVisibleUP(false)
@@ -40,10 +45,21 @@ function Signpage(): JSX.Element {
     setVisibleIN(false)
   }
 
+  function handleCloseRESET() {
+    setvisibleReset(false)
+  }
+
   async function handleCreateAccount(e: FormEvent) {
     e.preventDefault()
     try {
       await AppFirebase.auth().createUserWithEmailAndPassword(emailUP, passUP)
+      const user = AppFirebase.auth().currentUser
+      if (user !== null) {
+        user.updateProfile({
+          displayName: nameUP
+        })
+      }
+      message.info('Sign UP success')
       history.push('/home')
     } catch (err) {
       message.error(err.toString())
@@ -60,17 +76,25 @@ function Signpage(): JSX.Element {
     }
   }
 
+  async function handleResetEmail(e: FormEvent) {
+    e.preventDefault()
+    try {
+      await AppFirebase.auth().sendPasswordResetEmail(emailRESET)
+      message.info('A message with instructions for resetting your password was sent to the email provided')
+    } catch (err) {
+      message.error(err.toString())
+    }
+  }
+
   return (
     <div className='signpage'>
       <Modal visible={visibleUP} title='Create an account' onCancel={handleCloseUP} footer={[]}>
         <form onSubmit={handleCreateAccount}>
           <div className='input-form-currency'>
+            <InputCurrency name='name' type='text' required label='Name:' onchange={e => setNameUP(e.target.value)} />
             <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailUP(e.target.value)} />
             <InputCurrency name='password' type='password' required label='Password:' onchange={e => setPassUP(e.target.value)} />
-            <ButtonCurrencyTransaction label='Sign up' onclick={handleCloseUP} />
-            {/*             <div className='spin-modal'>
-              <Spin spinning={loading} />
-            </div> */}
+            <ButtonTransaction label='Sign up' onclick={handleCloseUP} />
           </div>
         </form>
       </Modal>
@@ -80,10 +104,16 @@ function Signpage(): JSX.Element {
           <div className='input-form-currency'>
             <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailIN(e.target.value)} />
             <InputCurrency name='password' type='password' required label='Password:' onchange={e => setPassIN(e.target.value)} />
-            <ButtonCurrencyTransaction label='Sign in' onclick={handleCloseIN} />
-            {/*             <div className='spin-modal'>
-              <Spin spinning={loading} />
-            </div> */}
+            <ButtonTransaction label='Sign in' onclick={handleCloseIN} />
+          </div>
+        </form>
+      </Modal>
+
+      <Modal visible={visibleReset} title='Reset your password' onCancel={handleCloseRESET} footer={[]}>
+        <form onSubmit={handleResetEmail}>
+          <div className='input-form-currency'>
+            <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailRESET(e.target.value)} />
+            <ButtonTransaction label='Reset' onclick={handleCloseRESET} />
           </div>
         </form>
       </Modal>
@@ -101,6 +131,11 @@ function Signpage(): JSX.Element {
           <Button type='ghost' onClick={showModalIN}>
             Sign in
           </Button>
+          <section>
+            <button type='button' onClick={showModalRESET} className='reset-btn'>
+              Reset password
+            </button>
+          </section>
         </div>
       </main>
     </div>

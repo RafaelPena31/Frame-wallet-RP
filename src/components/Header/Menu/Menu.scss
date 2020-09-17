@@ -2,11 +2,11 @@
 
 .menu {
   width: 100%;
-  max-width: 350px;
+  max-width: 450px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  flex-flow: row;
+  flex-flow: row wrap;
   :last-child {
     border: 1px solid #fff;
   }
@@ -23,11 +23,11 @@
   :hover {
     background: #fff;
     border: 1px solid #fff;
-    color: $color-universal;
+    color: $color-theme-universal;
   }
 }
 
-@media (min-width: 950px) {
+@media (min-width: 980px) {
   .menu {
     justify-content: flex-end;
     a {

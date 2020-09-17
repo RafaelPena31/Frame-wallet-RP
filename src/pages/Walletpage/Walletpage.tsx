@@ -10,7 +10,7 @@ function Walletpage(): JSX.Element {
   const { walletValue, setWalletValue } = useContext(WalletContext)
   let i = 0
   return (
-    <div className='homepage'>
+    <div className='walletpage'>
       <Header />
       <main>
         {walletValue.length !== 0 ? (
