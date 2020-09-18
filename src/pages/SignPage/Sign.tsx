@@ -1,5 +1,5 @@
 import { PoweroffOutlined } from '@ant-design/icons'
-import { Button, message, Modal } from 'antd'
+import { Button, message, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
 import React, { FormEvent, useState } from 'react'
 import { BsWallet } from 'react-icons/bs'
@@ -7,6 +7,7 @@ import { useHistory } from 'react-router-dom'
 import ButtonTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import { AppFirebase } from '../../config/AppFirebase'
+import db from '../../functions/db'
 import './Sign.scss'
 
 function Signpage(): JSX.Element {
@@ -22,6 +23,8 @@ function Signpage(): JSX.Element {
 
   const [visibleReset, setvisibleReset] = useState(false)
   const [emailRESET, setEmailRESET] = useState('')
+
+  const [loading, setLoading] = useState(false)
 
   const history = useHistory()
 
@@ -47,32 +50,45 @@ function Signpage(): JSX.Element {
 
   function handleCloseRESET() {
     setvisibleReset(false)
+    setLoading(false)
   }
 
   async function handleCreateAccount(e: FormEvent) {
     e.preventDefault()
+    setLoading(true)
     try {
       await AppFirebase.auth().createUserWithEmailAndPassword(emailUP, passUP)
       const user = AppFirebase.auth().currentUser
       if (user !== null) {
-        user.updateProfile({
+        await user.updateProfile({
           displayName: nameUP
         })
       }
+
+      await db.collection('users').doc(user?.uid).set({
+        id: user?.uid,
+        name: user?.displayName
+      })
+
       message.info('Sign UP success')
+      handleCloseUP()
       history.push('/home')
     } catch (err) {
       message.error(err.toString())
+      handleCloseUP()
     }
   }
 
   async function handleLogAccount(e: FormEvent) {
     e.preventDefault()
+    setLoading(true)
     try {
       await AppFirebase.auth().signInWithEmailAndPassword(emailIN, passIN)
+      handleCloseIN()
       history.push('/home')
     } catch (err) {
       message.error(err.toString())
+      handleCloseUP()
     }
   }
 
@@ -81,6 +97,7 @@ function Signpage(): JSX.Element {
     try {
       await AppFirebase.auth().sendPasswordResetEmail(emailRESET)
       message.info('A message with instructions for resetting your password was sent to the email provided')
+      handleCloseRESET()
     } catch (err) {
       message.error(err.toString())
     }
@@ -94,7 +111,10 @@ function Signpage(): JSX.Element {
             <InputCurrency name='name' type='text' required label='Name:' onchange={e => setNameUP(e.target.value)} />
             <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailUP(e.target.value)} />
             <InputCurrency name='password' type='password' required label='Password:' onchange={e => setPassUP(e.target.value)} />
-            <ButtonTransaction label='Sign up' onclick={handleCloseUP} />
+            <ButtonTransaction label='Sign up' />
+            <div className='spin'>
+              <Spin spinning={loading} />
+            </div>
           </div>
         </form>
       </Modal>
@@ -104,7 +124,7 @@ function Signpage(): JSX.Element {
           <div className='input-form-currency'>
             <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailIN(e.target.value)} />
             <InputCurrency name='password' type='password' required label='Password:' onchange={e => setPassIN(e.target.value)} />
-            <ButtonTransaction label='Sign in' onclick={handleCloseIN} />
+            <ButtonTransaction label='Sign in' />
           </div>
         </form>
       </Modal>
@@ -113,7 +133,7 @@ function Signpage(): JSX.Element {
         <form onSubmit={handleResetEmail}>
           <div className='input-form-currency'>
             <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailRESET(e.target.value)} />
-            <ButtonTransaction label='Reset' onclick={handleCloseRESET} />
+            <ButtonTransaction label='Reset' />
           </div>
         </form>
       </Modal>

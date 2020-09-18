@@ -19,8 +19,8 @@ function Menu(): JSX.Element {
         <Link to='/' onClick={() => AppFirebase.auth().signOut()}>
           Sign out
         </Link>
-        <Link to='/account'>Account</Link>
         <Link to='/home'>Home</Link>
+        <Link to='/account'>Account</Link>
         <Link to='/wallet'>Wallet</Link>
       </nav>
     )
@@ -30,8 +30,8 @@ function Menu(): JSX.Element {
       <Link to='/' onClick={() => AppFirebase.auth().signOut()}>
         Sign out
       </Link>
-      <Link to='/account'>Account</Link>
       <Link to='/home'>Home</Link>
+      <Link to='/account'>Account</Link>
       <Link to='/home' onClick={warning}>
         Wallet
       </Link>

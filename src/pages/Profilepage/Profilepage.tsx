@@ -13,9 +13,9 @@ function Profilepage(): JSX.Element {
   const [visibleEMAIL, setVisibleEMAIL] = useState(false)
   const [visibleDELETE, setVisibleDELETE] = useState(false)
 
-  const history = useHistory()
-
   const [data, setData] = useState('')
+
+  const history = useHistory()
 
   function showModalUPLOAD() {
     setVisibleEMAIL(true)
@@ -114,18 +114,17 @@ function Profilepage(): JSX.Element {
               <AiOutlineLine size={35} color='$$color-text-monochrome' />
             </div>
             <div className='info-account'>
-              <p>FirstName LastName</p>
-
+              <p>{AppFirebase.auth().currentUser?.displayName}</p>
               <p>
                 {' '}
                 <span>E-mail: </span>
-                frame-wallet@wallet.com
+                {AppFirebase.auth().currentUser?.email}
               </p>
 
               <p>
                 {' '}
-                <span>Currency Type on wallet: </span>
-                00
+                <span>ID: </span>
+                {AppFirebase.auth().currentUser?.uid}
               </p>
             </div>
           </span>
