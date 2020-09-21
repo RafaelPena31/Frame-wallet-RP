@@ -7,6 +7,7 @@ import Header from '../../components/Header/Header'
 import ButtonTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import { AppFirebase } from '../../config/AppFirebase'
+import db from '../../functions/db'
 import './Profilepage.scss'
 
 function Profilepage(): JSX.Element {
@@ -16,6 +17,12 @@ function Profilepage(): JSX.Element {
   const [data, setData] = useState('')
 
   const history = useHistory()
+
+  const userID = AppFirebase.auth().currentUser?.uid
+
+  async function renderData() {
+    db.collection('wallets').where('id', '==', 'pr7DRqnZgjWnkfBodHXVwYcmRzU2')
+  }
 
   function showModalUPLOAD() {
     setVisibleEMAIL(true)
@@ -104,7 +111,10 @@ function Profilepage(): JSX.Element {
             </div>
           </div>
           <section className='account-value'>
-            <h2>Total: $00,00</h2>
+            <h2>
+              Total:
+              {renderData}
+            </h2>
           </section>
         </nav>
 
@@ -124,7 +134,7 @@ function Profilepage(): JSX.Element {
               <p>
                 {' '}
                 <span>ID: </span>
-                {AppFirebase.auth().currentUser?.uid}
+                {userID}
               </p>
             </div>
           </span>

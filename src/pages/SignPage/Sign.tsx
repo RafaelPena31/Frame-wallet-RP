@@ -70,6 +70,12 @@ function Signpage(): JSX.Element {
         name: user?.displayName
       })
 
+      await db.collection('wallets').add({
+        id: user?.uid,
+        coins: {},
+        totalValue: 0
+      })
+
       message.info('Sign UP success')
       handleCloseUP()
       history.push('/home')
