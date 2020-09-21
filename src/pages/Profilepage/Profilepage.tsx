@@ -1,6 +1,6 @@
 import { Button, Divider, message, Modal } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { AiOutlineLine } from 'react-icons/ai'
 import { Link, useHistory } from 'react-router-dom'
 import Header from '../../components/Header/Header'
@@ -14,15 +14,28 @@ function Profilepage(): JSX.Element {
   const [visibleEMAIL, setVisibleEMAIL] = useState(false)
   const [visibleDELETE, setVisibleDELETE] = useState(false)
 
-  const [data, setData] = useState('')
+  const [data, setData] = useState<string>('')
+
+  const [wallet, setWallet] = useState<number>(0)
+  const [idWallet, setIdWallet] = useState<string>('')
 
   const history = useHistory()
 
   const userID = AppFirebase.auth().currentUser?.uid
 
-  async function renderData() {
-    db.collection('wallets').where('id', '==', 'pr7DRqnZgjWnkfBodHXVwYcmRzU2')
-  }
+  useEffect(() => {
+    db.collection('wallets')
+      .where('id', '==', userID)
+      .get()
+      .then(response => {
+        response.forEach(res => {
+          const { totalValue } = res.data()
+          const { id } = res
+          setWallet(totalValue)
+          setIdWallet(id)
+        })
+      })
+  }, [wallet, userID])
 
   function showModalUPLOAD() {
     setVisibleEMAIL(true)
@@ -62,6 +75,8 @@ function Profilepage(): JSX.Element {
 
   async function handleAccountDelete() {
     try {
+      await db.collection('wallets').doc(idWallet).delete()
+      await db.collection('users').doc(userID).delete()
       await AppFirebase.auth().currentUser?.delete()
       message.info('Your account has been deleted')
       history.push('/')
@@ -112,8 +127,8 @@ function Profilepage(): JSX.Element {
           </div>
           <section className='account-value'>
             <h2>
-              Total:
-              {renderData}
+              Total:&nbsp;
+              {wallet.toLocaleString('en', { style: 'currency', currency: 'USD' })}
             </h2>
           </section>
         </nav>

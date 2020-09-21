@@ -42,10 +42,12 @@ function Signpage(): JSX.Element {
 
   function handleCloseUP() {
     setVisibleUP(false)
+    setLoading(false)
   }
 
   function handleCloseIN() {
     setVisibleIN(false)
+    setLoading(false)
   }
 
   function handleCloseRESET() {
@@ -67,7 +69,8 @@ function Signpage(): JSX.Element {
 
       await db.collection('users').doc(user?.uid).set({
         id: user?.uid,
-        name: user?.displayName
+        name: user?.displayName,
+        email: emailUP
       })
 
       await db.collection('wallets').add({
