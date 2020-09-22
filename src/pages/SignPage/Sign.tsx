@@ -75,7 +75,7 @@ function Signpage(): JSX.Element {
 
       await db.collection('wallets').add({
         id: user?.uid,
-        coins: {},
+        coins: [],
         totalValue: 0
       })
 
