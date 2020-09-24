@@ -1,13 +1,57 @@
 import { Alert } from 'antd'
 import 'antd/dist/antd.css'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import { currencyArray } from '../../assets/IconArray/IconArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
+import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
+import db from '../../functions/db'
+import { Coin } from '../../types/Types'
+import './Walletpage.scss'
 
 function Walletpage(): JSX.Element {
   const { walletValue, setWalletValue } = useContext(WalletContext)
+  const { currencyUserApp } = useContext(UserContext)
+
+  const history = useHistory()
+
+  let idWallet = ''
+
+  if (currencyUserApp.length !== 0) {
+    idWallet = currencyUserApp[0].walletId
+  } else {
+    history.push('/')
+  }
+
+  useEffect(() => {
+    if (idWallet !== '') {
+      db.collection('wallets')
+        .doc(idWallet)
+        .get()
+        .then(response => {
+          const arrayCollection = response.data()
+          if (arrayCollection !== undefined) {
+            const walletData: Array<Coin> = arrayCollection.coins
+            setWalletValue(walletData)
+          }
+        })
+    } else {
+      history.push('/')
+    }
+  }, [currencyUserApp, idWallet, setWalletValue, history])
+
+  useLayoutEffect(() => {
+    db.collection('wallets').doc(idWallet).update({
+      coins: walletValue
+    })
+  }, [walletValue, idWallet])
+
+  async function handleDeleteCurrency(index: number) {
+    setWalletValue(walletValue.filter(item => item !== walletValue[index]))
+  }
+
   let i = 0
   return (
     <div className='walletpage'>
@@ -20,13 +64,13 @@ function Walletpage(): JSX.Element {
               <CurrencyTable
                 key={i}
                 id={index + 1}
-                name={currencyArray[currency.icon].name}
+                name={currency.name}
                 price={currency.value}
-                icon={currencyArray[currency.icon].iconSet}
-                sigla={currencyArray[currency.icon].sigla}
+                icon={currencyArray[currency.id].iconSet}
+                sigla={currencyArray[currency.id].sigla}
                 product
                 onclick={() => {
-                  setWalletValue(walletValue.filter(item => item !== walletValue[index]))
+                  handleDeleteCurrency(index)
                 }}
               />
             )

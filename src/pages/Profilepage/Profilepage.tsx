@@ -1,6 +1,6 @@
 import { Button, Divider, message, Modal } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState, useContext } from 'react'
 import { AiOutlineLine } from 'react-icons/ai'
 import { Link, useHistory } from 'react-router-dom'
 import Header from '../../components/Header/Header'
@@ -9,6 +9,7 @@ import InputCurrency from '../../components/StandardInputForm/InputCurrency/Inpu
 import { AppFirebase } from '../../config/AppFirebase'
 import db from '../../functions/db'
 import './Profilepage.scss'
+import { UserContext } from '../../context/UserContext'
 
 function Profilepage(): JSX.Element {
   const [visibleEMAIL, setVisibleEMAIL] = useState(false)
@@ -17,25 +18,37 @@ function Profilepage(): JSX.Element {
   const [data, setData] = useState<string>('')
 
   const [wallet, setWallet] = useState<number>(0)
-  const [idWallet, setIdWallet] = useState<string>('')
 
   const history = useHistory()
 
   const userID = AppFirebase.auth().currentUser?.uid
 
+  const { currencyUserApp } = useContext(UserContext)
+
+  let idWallet = ''
+
+  if (currencyUserApp.length !== 0) {
+    idWallet = currencyUserApp[0].walletId
+  } else {
+    history.push('/')
+  }
+
   useEffect(() => {
-    db.collection('wallets')
-      .where('id', '==', userID)
-      .get()
-      .then(response => {
-        response.forEach(res => {
-          const { totalValue } = res.data()
-          const { id } = res
-          setWallet(totalValue)
-          setIdWallet(id)
+    if (idWallet !== '') {
+      db.collection('wallets')
+        .doc(idWallet)
+        .get()
+        .then(response => {
+          const arrayCollection = response.data()
+          if (arrayCollection !== undefined) {
+            const walletData = arrayCollection.totalValue
+            setWallet(walletData)
+          }
         })
-      })
-  }, [wallet, userID])
+    } else {
+      history.push('/')
+    }
+  }, [idWallet, history])
 
   function showModalUPLOAD() {
     setVisibleEMAIL(true)

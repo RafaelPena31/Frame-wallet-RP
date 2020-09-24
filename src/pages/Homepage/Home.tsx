@@ -1,19 +1,24 @@
 import { Modal } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useContext, useState } from 'react'
+import firebase from 'firebase'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { currencyArray } from '../../assets/IconArray/IconArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
 import ButtonCurrencyTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import SelectCurrency from '../../components/StandardInputForm/SelectCurrency/SelectCurrency'
+import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
+import db from '../../functions/db'
+import { Coin } from '../../types/Types'
 import './Home.scss'
 
 function Homepage(): JSX.Element {
   /*   const [loading, setLoading] = useState(false) */
   const [visible, setVisible] = useState(false)
-  const [icon, setIcon] = useState(0)
+  const [idLocal, setIdLocal] = useState(0)
   const [currencyValue, setCurrencyValue] = useState(0)
   const currencyStart = [
     { name: 'Bitcoin', icon: 5 },
@@ -22,8 +27,35 @@ function Homepage(): JSX.Element {
     { name: 'Litecoin', icon: 27 }
   ]
 
-  /*   const WalletRegisterContext = useContext(WalletContext) */
   const { walletValue, setWalletValue } = useContext(WalletContext)
+  const { currencyUserApp } = useContext(UserContext)
+
+  const history = useHistory()
+
+  let idWallet = ''
+
+  if (currencyUserApp.length !== 0) {
+    idWallet = currencyUserApp[0].walletId
+  } else {
+    history.push('/')
+  }
+
+  useEffect(() => {
+    if (idWallet !== '') {
+      db.collection('wallets')
+        .doc(idWallet)
+        .get()
+        .then(response => {
+          const arrayCollection = response.data()
+          if (arrayCollection !== undefined) {
+            const walletData: Array<Coin> = arrayCollection.coins
+            setWalletValue(walletData)
+          }
+        })
+    } else {
+      history.push('/')
+    }
+  }, [setWalletValue, idWallet, history])
 
   function showModal() {
     setVisible(true)
@@ -37,14 +69,19 @@ function Homepage(): JSX.Element {
     setVisible(false)
   }
 
-  function handleCreateCurrencyBox(e: FormEvent) {
+  async function handleCreateCurrencyBox(e: FormEvent) {
     e.preventDefault()
 
-    const { name } = currencyArray[icon]
+    const { name } = currencyArray[idLocal]
+    const trueValueCurrency = currencyValue * currencyArray[idLocal].price
+    await db
+      .collection('wallets')
+      .doc(idWallet)
+      .update({
+        coins: firebase.firestore.FieldValue.arrayUnion({ name, value: trueValueCurrency, id: idLocal })
+      })
 
-    const trueValueCurrency = currencyValue * currencyArray[icon].price
-
-    setWalletValue([...walletValue, { name, value: trueValueCurrency, icon }])
+    setWalletValue([...walletValue, { name, value: trueValueCurrency, id: idLocal }])
   }
 
   return (
@@ -57,7 +94,7 @@ function Homepage(): JSX.Element {
             name='currencyOptionIcon'
             label='Select a cryptocurrency:'
             onchange={e => {
-              setIcon(parseInt(e.target.value, 10))
+              setIdLocal(parseInt(e.target.value, 10))
             }}
             optionControler={[
               { option: 'Ardor', value: 0 },

@@ -1,16 +1,19 @@
 import { PoweroffOutlined } from '@ant-design/icons'
 import { Button, message, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useContext, useLayoutEffect, useState } from 'react'
 import { BsWallet } from 'react-icons/bs'
 import { useHistory } from 'react-router-dom'
 import ButtonTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import { AppFirebase } from '../../config/AppFirebase'
+import { UserContext } from '../../context/UserContext'
 import db from '../../functions/db'
 import './Sign.scss'
 
 function Signpage(): JSX.Element {
+  const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
+
   const [visibleUP, setVisibleUP] = useState(false)
   const [visibleIN, setVisibleIN] = useState(false)
 
@@ -55,6 +58,13 @@ function Signpage(): JSX.Element {
     setLoading(false)
   }
 
+  useLayoutEffect(() => {
+    if (currencyUserApp.length !== 0) {
+      handleCloseUP()
+      history.push('/home')
+    }
+  }, [currencyUserApp, history])
+
   async function handleCreateAccount(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
@@ -73,15 +83,20 @@ function Signpage(): JSX.Element {
         email: emailUP
       })
 
-      await db.collection('wallets').add({
-        id: user?.uid,
-        coins: [],
-        totalValue: 0
-      })
-
+      await db
+        .collection('wallets')
+        .add({
+          id: user?.uid,
+          coins: [],
+          totalValue: 0
+        })
+        .then(item => {
+          db.collection('users').doc(user?.uid).update({
+            walletId: item.id
+          })
+          setCurrencyUserApp([{ uid: user?.uid, walletId: item.id }])
+        })
       message.info('Sign UP success')
-      handleCloseUP()
-      history.push('/home')
     } catch (err) {
       message.error(err.toString())
       handleCloseUP()
@@ -93,8 +108,18 @@ function Signpage(): JSX.Element {
     setLoading(true)
     try {
       await AppFirebase.auth().signInWithEmailAndPassword(emailIN, passIN)
-      handleCloseIN()
-      history.push('/home')
+      const user = AppFirebase.auth().currentUser
+
+      await db
+        .collection('users')
+        .doc(user?.uid)
+        .get()
+        .then(response => {
+          const arrayCollection = response.data()
+          if (arrayCollection !== undefined) {
+            setCurrencyUserApp([{ uid: user?.uid, walletId: arrayCollection.walletId }])
+          }
+        })
     } catch (err) {
       message.error(err.toString())
       handleCloseUP()
@@ -143,6 +168,9 @@ function Signpage(): JSX.Element {
           <div className='input-form-currency'>
             <InputCurrency name='email' type='email' required label='E-mail:' onchange={e => setEmailRESET(e.target.value)} />
             <ButtonTransaction label='Reset' />
+            <div className='spin'>
+              <Spin spinning={loading} />
+            </div>
           </div>
         </form>
       </Modal>
