@@ -1,6 +1,7 @@
 import { Alert } from 'antd'
 import 'antd/dist/antd.css'
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import firebase from 'firebase'
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { currencyArray } from '../../assets/IconArray/IconArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
@@ -12,6 +13,8 @@ import { Coin } from '../../types/Types'
 import './Walletpage.scss'
 
 function Walletpage(): JSX.Element {
+  const [valueDelete, setValueDelete] = useState(0)
+
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { currencyUserApp } = useContext(UserContext)
 
@@ -43,12 +46,17 @@ function Walletpage(): JSX.Element {
   }, [currencyUserApp, idWallet, setWalletValue, history])
 
   useLayoutEffect(() => {
-    db.collection('wallets').doc(idWallet).update({
-      coins: walletValue
-    })
-  }, [walletValue, idWallet])
+    db.collection('wallets')
+      .doc(idWallet)
+      .update({
+        coins: walletValue,
+        totalValue: firebase.firestore.FieldValue.increment(-valueDelete)
+      })
+  }, [walletValue, idWallet, valueDelete])
 
   async function handleDeleteCurrency(index: number) {
+    const localValue = walletValue[index].value
+    setValueDelete(localValue)
     setWalletValue(walletValue.filter(item => item !== walletValue[index]))
   }
 

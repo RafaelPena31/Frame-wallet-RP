@@ -78,7 +78,8 @@ function Homepage(): JSX.Element {
       .collection('wallets')
       .doc(idWallet)
       .update({
-        coins: firebase.firestore.FieldValue.arrayUnion({ name, value: trueValueCurrency, id: idLocal })
+        coins: firebase.firestore.FieldValue.arrayUnion({ name, value: trueValueCurrency, id: idLocal }),
+        totalValue: firebase.firestore.FieldValue.increment(trueValueCurrency)
       })
 
     setWalletValue([...walletValue, { name, value: trueValueCurrency, id: idLocal }])
