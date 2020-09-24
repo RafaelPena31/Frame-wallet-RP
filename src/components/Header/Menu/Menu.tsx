@@ -27,7 +27,12 @@ function Menu(): JSX.Element {
   }
   return (
     <nav className='menu'>
-      <Link to='/' onClick={() => AppFirebase.auth().signOut()}>
+      <Link
+        to='/'
+        onClick={() => {
+          AppFirebase.auth().signOut()
+          window.location.reload()
+        }}>
         Sign out
       </Link>
       <Link to='/home'>Home</Link>

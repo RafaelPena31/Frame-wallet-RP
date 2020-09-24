@@ -59,9 +59,11 @@ function Signpage(): JSX.Element {
   }
 
   useLayoutEffect(() => {
-    if (currencyUserApp.length !== 0) {
-      handleCloseUP()
-      history.push('/home')
+    if (AppFirebase.auth().currentUser?.uid) {
+      if (currencyUserApp[0].uid === AppFirebase.auth().currentUser?.uid) {
+        handleCloseUP()
+        history.push('/home')
+      }
     }
   }, [currencyUserApp, history])
 
