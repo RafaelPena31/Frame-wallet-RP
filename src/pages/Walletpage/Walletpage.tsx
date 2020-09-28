@@ -13,10 +13,10 @@ import { Coin } from '../../types/Types'
 import './Walletpage.scss'
 
 function Walletpage(): JSX.Element {
-  const [valueDelete, setValueDelete] = useState(0)
-
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { currencyUserApp } = useContext(UserContext)
+
+  const [totalValue, setTotalValue] = useState(0)
 
   const history = useHistory()
 
@@ -50,13 +50,12 @@ function Walletpage(): JSX.Element {
       .doc(idWallet)
       .update({
         coins: walletValue,
-        totalValue: firebase.firestore.FieldValue.increment(-valueDelete)
+        totalValue: firebase.firestore.FieldValue.increment(-totalValue)
       })
-  }, [walletValue, idWallet, valueDelete])
+  }, [walletValue, idWallet, totalValue])
 
   async function handleDeleteCurrency(index: number) {
-    const localValue = walletValue[index].value
-    setValueDelete(localValue)
+    setTotalValue(walletValue[index].value)
     setWalletValue(walletValue.filter(item => item !== walletValue[index]))
   }
 

@@ -1,7 +1,7 @@
 import { Modal } from 'antd'
 import 'antd/dist/antd.css'
 import firebase from 'firebase'
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import React, { FormEvent, useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { currencyArray } from '../../assets/IconArray/IconArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
@@ -20,6 +20,8 @@ function Homepage(): JSX.Element {
   const [visible, setVisible] = useState(false)
   const [idLocal, setIdLocal] = useState(0)
   const [currencyValue, setCurrencyValue] = useState(0)
+  const [totalCurrencyValue, setTotalCurrencyValue] = useState(0)
+
   const currencyStart = [
     { name: 'Bitcoin', icon: 5 },
     { name: 'Ethereum', icon: 17 },
@@ -57,32 +59,46 @@ function Homepage(): JSX.Element {
     }
   }, [setWalletValue, idWallet, history])
 
+  useLayoutEffect(() => {
+    db.collection('wallets')
+      .doc(idWallet)
+      .update({
+        coins: walletValue,
+        totalValue: firebase.firestore.FieldValue.increment(totalCurrencyValue)
+      })
+  }, [walletValue, idWallet, totalCurrencyValue])
+
+  function handleCreateCurrencyBox(currencyValueToUpdate: number) {
+    const { name } = currencyArray[idLocal]
+    const walletIndex = walletValue.findIndex(item => item.name === name)
+    if (walletIndex === -1) {
+      setWalletValue([...walletValue, { name, value: currencyValueToUpdate, id: idLocal }])
+      setTotalCurrencyValue(currencyValueToUpdate)
+    } else {
+      setWalletValue([
+        {
+          name: walletValue[walletIndex].name,
+          value: walletValue[walletIndex].value + currencyValueToUpdate,
+          id: walletValue[walletIndex].id
+        },
+        ...walletValue.filter(item => item !== walletValue[walletIndex])
+      ])
+      setTotalCurrencyValue(currencyValueToUpdate)
+    }
+  }
+
+  function updateCurrencyValue(e: FormEvent) {
+    e.preventDefault()
+    const currencyValueToUpdate = currencyValue * currencyArray[idLocal].price
+    handleCreateCurrencyBox(currencyValueToUpdate)
+  }
+
   function showModal() {
     setVisible(true)
   }
 
-  /*   function handleOk() {
-    setLoading(true)
-  } */
-
   function handleClose() {
     setVisible(false)
-  }
-
-  async function handleCreateCurrencyBox(e: FormEvent) {
-    e.preventDefault()
-
-    const { name } = currencyArray[idLocal]
-    const trueValueCurrency = currencyValue * currencyArray[idLocal].price
-    await db
-      .collection('wallets')
-      .doc(idWallet)
-      .update({
-        coins: firebase.firestore.FieldValue.arrayUnion({ name, value: trueValueCurrency, id: idLocal }),
-        totalValue: firebase.firestore.FieldValue.increment(trueValueCurrency)
-      })
-
-    setWalletValue([...walletValue, { name, value: trueValueCurrency, id: idLocal }])
   }
 
   return (
@@ -90,7 +106,7 @@ function Homepage(): JSX.Element {
       <Header />
 
       <Modal visible={visible} title='New Cryptocurrency' onCancel={handleClose} footer={[]}>
-        <form onSubmit={handleCreateCurrencyBox}>
+        <form onSubmit={updateCurrencyValue}>
           <SelectCurrency
             name='currencyOptionIcon'
             label='Select a cryptocurrency:'

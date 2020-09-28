@@ -3,6 +3,7 @@ import 'antd/dist/antd.css'
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { AppFirebase } from '../../../config/AppFirebase'
+import { UserContext } from '../../../context/UserContext'
 import { WalletContext } from '../../../context/WalletContext'
 import './Menu.scss'
 
@@ -11,12 +12,19 @@ function Menu(): JSX.Element {
     message.warning('No cryptocurrencies have been purchased yet. Your wallet is empty.')
   }
 
-  const { walletValue } = useContext(WalletContext)
+  const { walletValue, setWalletValue } = useContext(WalletContext)
+  const { setCurrencyUserApp } = useContext(UserContext)
 
   if (walletValue.length !== 0) {
     return (
       <nav className='menu'>
-        <Link to='/' onClick={() => AppFirebase.auth().signOut()}>
+        <Link
+          to='/'
+          onClick={() => {
+            AppFirebase.auth().signOut()
+            setWalletValue([])
+            setCurrencyUserApp([])
+          }}>
           Sign out
         </Link>
         <Link to='/home'>Home</Link>
@@ -31,7 +39,8 @@ function Menu(): JSX.Element {
         to='/'
         onClick={() => {
           AppFirebase.auth().signOut()
-          window.location.reload()
+          setWalletValue([])
+          setCurrencyUserApp([])
         }}>
         Sign out
       </Link>

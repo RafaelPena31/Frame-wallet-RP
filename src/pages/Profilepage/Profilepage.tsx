@@ -1,15 +1,16 @@
 import { Button, Divider, message, Modal } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useEffect, useState, useContext } from 'react'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
 import { AiOutlineLine } from 'react-icons/ai'
 import { Link, useHistory } from 'react-router-dom'
 import Header from '../../components/Header/Header'
 import ButtonTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import { AppFirebase } from '../../config/AppFirebase'
+import { UserContext } from '../../context/UserContext'
 import db from '../../functions/db'
 import './Profilepage.scss'
-import { UserContext } from '../../context/UserContext'
+import { WalletContext } from '../../context/WalletContext'
 
 function Profilepage(): JSX.Element {
   const [visibleEMAIL, setVisibleEMAIL] = useState(false)
@@ -23,7 +24,8 @@ function Profilepage(): JSX.Element {
 
   const userID = AppFirebase.auth().currentUser?.uid
 
-  const { currencyUserApp } = useContext(UserContext)
+  const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
+  const { setWalletValue } = useContext(WalletContext)
 
   let idWallet = ''
 
@@ -91,6 +93,8 @@ function Profilepage(): JSX.Element {
       await db.collection('wallets').doc(idWallet).delete()
       await db.collection('users').doc(userID).delete()
       await AppFirebase.auth().currentUser?.delete()
+      setWalletValue([])
+      setCurrencyUserApp([])
       message.info('Your account has been deleted')
       history.push('/')
     } catch (err) {
