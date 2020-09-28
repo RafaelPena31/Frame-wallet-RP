@@ -13,9 +13,27 @@ function Menu(): JSX.Element {
   }
 
   const { walletValue, setWalletValue } = useContext(WalletContext)
-  const { setCurrencyUserApp } = useContext(UserContext)
+  const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
 
-  if (walletValue.length !== 0) {
+  if (currencyUserApp.length !== 0) {
+    if (walletValue.length !== 0) {
+      return (
+        <nav className='menu'>
+          <Link
+            to='/'
+            onClick={() => {
+              AppFirebase.auth().signOut()
+              setWalletValue([])
+              setCurrencyUserApp([])
+            }}>
+            Sign out
+          </Link>
+          <Link to='/home'>Home</Link>
+          <Link to='/account'>Account</Link>
+          <Link to='/wallet'>Wallet</Link>
+        </nav>
+      )
+    }
     return (
       <nav className='menu'>
         <Link
@@ -29,26 +47,17 @@ function Menu(): JSX.Element {
         </Link>
         <Link to='/home'>Home</Link>
         <Link to='/account'>Account</Link>
-        <Link to='/wallet'>Wallet</Link>
+        <Link to='/home' onClick={warning}>
+          Wallet
+        </Link>
       </nav>
     )
   }
   return (
     <nav className='menu'>
-      <Link
-        to='/'
-        onClick={() => {
-          AppFirebase.auth().signOut()
-          setWalletValue([])
-          setCurrencyUserApp([])
-        }}>
-        Sign out
-      </Link>
-      <Link to='/home'>Home</Link>
-      <Link to='/account'>Account</Link>
-      <Link to='/home' onClick={warning}>
-        Wallet
-      </Link>
+      <Link to='/'>Home</Link>
+      <Link to='/sign'>Sign IN</Link>
+      <Link to='/sign'>Sign UP</Link>
     </nav>
   )
 }
