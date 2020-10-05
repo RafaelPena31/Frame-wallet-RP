@@ -19,16 +19,16 @@ jobs:
           command: cd web && yarn prettier
       - run:
           name: WEB - ESlint (Code lint)
-          command: yarn lint
+          command: cd web && yarn lint
       - run:
           name: WEB - Application - Build
-          command: yarn build
+          command: cd web && yarn build
       - run:
           name: MOBILE - Install dependency's
-          command: cd ../mobile && yarn
+          command: cd mobile && yarn
       - run:
           name: MOBILE - ESlint (Code lint)
-          command: yarn lint
+          command: cd mobile && yarn lint
 
 workflows:
   node-tests:
