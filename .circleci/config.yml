@@ -12,22 +12,22 @@ jobs:
       - node/install:
           install-yarn: true
       - run:
-          name: WEB Install dependency's
+          name: WEB - Install dependency's
           command: cd web && yarn
       - run:
-          name: WEB Prettier (Code Styling)
+          name: WEB - Prettier (Code Styling)
           command: yarn prettier
       - run:
-          name: WEB ESlint (Code lint)
+          name: WEB - ESlint (Code lint)
           command: yarn lint
       - run:
-          name: WEB Application - Build
+          name: WEB - Application - Build
           command: yarn build
       - run:
-          name: MOBILE Install dependency's
+          name: MOBILE - Install dependency's
           command: cd ../mobile && yarn
       - run:
-          name: MOBILE ESlint (Code lint)
+          name: MOBILE - ESlint (Code lint)
           command: yarn lint
 
 workflows:

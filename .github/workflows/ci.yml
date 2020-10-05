@@ -19,17 +19,20 @@ jobs:
         with:
           node-version: 12
 
-      - name: WEB Install dependence's
+      - name: WEB - Install dependence's
         run: cd web && yarn
 
-      - name: WEB Check prettier
+      - name: WEB - Check prettier
         run: yarn prettier
 
-      - name: WEB Check lint
+      - name: WEB - Check lint
         run: yarn lint
 
-      - name: WEB Check build
+      - name: WEB - Check build
         run: yarn build
 
-      - name: MOBILE Install dependence's
+      - name: MOBILE - Install dependence's
         run: cd ../mobile && yarn
+
+      - name: MOBILE - Check lint
+        run: yarn lint
