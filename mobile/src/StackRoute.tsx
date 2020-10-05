@@ -6,7 +6,7 @@ import SignUpScreen from './screen/SignScreens/SignUpScreen'
 
 const Stack = createStackNavigator()
 
-function StackRoute() {
+function StackRoute(): JSX.Element {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name='Landing' component={LandingScreen} />

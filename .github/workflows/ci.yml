@@ -2,14 +2,14 @@ name: test
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -18,16 +18,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-        
-      - name: Install depencencies
-        run: yarn
-        
-      - name: Check prettier
+
+      - name: WEB Install dependence's
+        run: cd web && yarn
+
+      - name: WEB Check prettier
         run: yarn prettier
 
-      - name: Check lint
+      - name: WEB Check lint
         run: yarn lint
-        
-      - name: Check build
+
+      - name: WEB Check build
         run: yarn build
 
+      - name: MOBILE Install dependence's
+        run: cd ../mobile && yarn

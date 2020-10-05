@@ -3,9 +3,7 @@ import React from 'react'
 import 'react-native-gesture-handler'
 import StackRoute from './StackRoute'
 
-declare const global: { HermesInternal: null | {} }
-
-const App = () => {
+const App = (): JSX.Element => {
   return (
     <NavigationContainer>
       <StackRoute />

@@ -8,7 +8,7 @@ import headerStyle from '../../styles/componentStyle/HeaderStyle'
 import colors from '../../styles/_colors'
 import style from './SignStyle'
 
-const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>) => {
+const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
   return (
     <SafeAreaView style={style.signUpContainer}>
       <View style={headerStyle.headerContainer}>
@@ -21,9 +21,9 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>) => {
         <Text style={style.logoTitle}>Frame Wallet</Text>
       </View>
       <View style={style.formContainer}>
-        <TextInput placeholder='Name' autoCapitalize='words' blurOnSubmit={true} autoCompleteType='name' style={style.input} />
-        <TextInput placeholder='E-mail' blurOnSubmit={true} autoCompleteType='email' style={style.input} />
-        <TextInput placeholder='Password' blurOnSubmit={true} autoCompleteType='password' secureTextEntry={true} style={style.input} />
+        <TextInput placeholder='Name' autoCapitalize='words' blurOnSubmit autoCompleteType='name' style={style.input} />
+        <TextInput placeholder='E-mail' blurOnSubmit autoCompleteType='email' style={style.input} />
+        <TextInput placeholder='Password' blurOnSubmit autoCompleteType='password' secureTextEntry style={style.input} />
         <TouchableOpacity style={style.button}>
           <Text style={style.textButton}>Create account</Text>
         </TouchableOpacity>

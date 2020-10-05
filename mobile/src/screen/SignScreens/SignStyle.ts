@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import colors from '../../styles/_colors'
-
-const { width } = Dimensions.get('window')
 
 const style = StyleSheet.create({
   signUpContainer: {

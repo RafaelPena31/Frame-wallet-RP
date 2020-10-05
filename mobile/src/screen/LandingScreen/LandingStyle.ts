@@ -12,8 +12,8 @@ const style = StyleSheet.create({
   },
   container: {
     flex: 1,
-    width: width,
-    height: height,
+    width,
+    height,
     alignItems: 'center',
     justifyContent: 'space-between'
   },
@@ -62,15 +62,15 @@ const style = StyleSheet.create({
   },
   /* ===================================================================================== */
   iconContainer: {
-    width: width,
+    width,
     alignItems: 'flex-start',
     paddingLeft: 30
   },
   logContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    width: width,
-    height: height,
+    width,
+    height,
     alignItems: 'center',
     justifyContent: 'space-around',
     padding: 30
