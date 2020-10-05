@@ -16,7 +16,7 @@ jobs:
           command: cd web && yarn
       - run:
           name: WEB - Prettier (Code Styling)
-          command: yarn prettier
+          command: cd web && yarn prettier
       - run:
           name: WEB - ESlint (Code lint)
           command: yarn lint
