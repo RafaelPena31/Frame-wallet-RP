@@ -4,14 +4,18 @@ import React from 'react'
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
-import Header from '../../components/Header/Header'
+import headerStyle from '../../styles/componentStyle/HeaderStyle'
 import colors from '../../styles/_colors'
 import style from './SignStyle'
 
-const SignInScreen = ({ navigation, route }: StackScreenProps<ParamListBase>) => {
+const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>) => {
   return (
     <SafeAreaView style={style.signUpContainer}>
-      <Header navigation={navigation} />
+      <View style={headerStyle.headerContainer}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name='chevron-left' size={40} color={colors.secondaryDark} />
+        </TouchableOpacity>
+      </View>
       <View style={style.logoContainer}>
         <Icon name='wallet' size={70} color={colors.secondaryMiddle} />
         <Text style={style.logoTitle}>Frame Wallet</Text>
