@@ -1,6 +1,6 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
@@ -9,6 +9,11 @@ import colors from '../../styles/_colors'
 import style from './SignStyle'
 
 const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState<String>('')
+
+  function handleLogin() {}
+
   return (
     <SafeAreaView style={style.signUpContainer}>
       <View style={headerStyle.headerContainer}>
