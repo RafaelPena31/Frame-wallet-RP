@@ -11,7 +11,7 @@ const Stack = createStackNavigator()
 function StackRoute(): JSX.Element {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {currentUser !== null ? (
+      {currentUser === null ? (
         <>
           <Stack.Screen name='Landing' component={LandingScreen} />
           <Stack.Screen name='SignUp' component={SignUpScreen} />

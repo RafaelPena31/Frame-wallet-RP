@@ -4,16 +4,30 @@ import React, { useState } from 'react'
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
+import { AppFirebase } from '../../config/AppFirebase'
 import headerStyle from '../../styles/componentStyle/HeaderStyle'
 import colors from '../../styles/_colors'
 import style from './SignStyle'
 
 const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState<String>('')
+  const [password, setPassword] = useState('')
 
-  function handleLogin() {}
+  function handleLogin() {
+    if (email !== '' && password !== '') {
+      try {
+        AppFirebase.auth().signInWithEmailAndPassword(email, password)
+        const user = AppFirebase.auth().currentUser
+      } catch (error) {
+        /*         Alert(error) */
+      }
+    }
+  }
 
+  function metodo(e: any) {
+    console.log(e)
+  }
+  console.log(email)
   return (
     <SafeAreaView style={style.signUpContainer}>
       <View style={headerStyle.headerContainer}>
@@ -26,9 +40,23 @@ const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         <Text style={style.logoTitle}>Frame Wallet</Text>
       </View>
       <View style={style.formContainer}>
-        <TextInput placeholder='E-mail' blurOnSubmit autoCompleteType='email' style={style.input} />
-        <TextInput placeholder='Password' blurOnSubmit autoCompleteType='password' secureTextEntry style={style.input} />
-        <TouchableOpacity style={style.button}>
+        <TextInput
+          placeholder='E-mail'
+          blurOnSubmit
+          autoCompleteType='email'
+          style={style.input}
+          onChangeText={e => setEmail(e)}
+          value={email}
+        />
+        <TextInput
+          placeholder='Password'
+          blurOnSubmit
+          autoCompleteType='password'
+          secureTextEntry
+          style={style.input}
+          onChangeText={e => setPassword(e)}
+        />
+        <TouchableOpacity style={style.button} onPress={handleLogin}>
           <Text style={style.textButton}>Login</Text>
         </TouchableOpacity>
       </View>
