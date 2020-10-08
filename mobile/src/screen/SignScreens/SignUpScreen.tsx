@@ -1,14 +1,31 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
+import { AppFirebase } from '../../config/AppFirebase'
 import headerStyle from '../../styles/componentStyle/HeaderStyle'
 import colors from '../../styles/_colors'
 import style from './SignStyle'
 
 const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  async function handleCreate() {
+    if (name === '' || email === '' || password === '') {
+      AppFirebase.auth().createUserWithEmailAndPassword(email, password)
+      const user = AppFirebase.auth().currentUser
+      if (user !== null) {
+        await user.updateProfile({
+          displayName: name
+        })
+      }
+    }
+  }
+
   return (
     <SafeAreaView style={style.signUpContainer}>
       <View style={headerStyle.headerContainer}>
@@ -21,10 +38,33 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         <Text style={style.logoTitle}>Frame Wallet</Text>
       </View>
       <View style={style.formContainer}>
-        <TextInput placeholder='Name' autoCapitalize='words' blurOnSubmit autoCompleteType='name' style={style.input} />
-        <TextInput placeholder='E-mail' blurOnSubmit autoCompleteType='email' style={style.input} />
-        <TextInput placeholder='Password' blurOnSubmit autoCompleteType='password' secureTextEntry style={style.input} />
-        <TouchableOpacity style={style.button}>
+        <TextInput
+          placeholder='Name'
+          autoCapitalize='words'
+          blurOnSubmit
+          autoCompleteType='name'
+          style={style.input}
+          onChangeText={e => setName(e)}
+          value={name}
+        />
+        <TextInput
+          placeholder='E-mail'
+          blurOnSubmit
+          autoCompleteType='email'
+          style={style.input}
+          onChangeText={e => setEmail(e)}
+          value={email}
+        />
+        <TextInput
+          placeholder='Password'
+          blurOnSubmit
+          autoCompleteType='password'
+          secureTextEntry
+          style={style.input}
+          onChangeText={e => setPassword(e)}
+          value={password}
+        />
+        <TouchableOpacity style={style.button} onPress={() => handleCreate}>
           <Text style={style.textButton}>Create account</Text>
         </TouchableOpacity>
       </View>

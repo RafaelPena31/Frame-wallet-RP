@@ -10,11 +10,15 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-firebase/app": "^8.4.5",
     "@react-navigation/native": "^5.7.5",
     "@react-navigation/stack": "^5.9.2",
     "@types/react-native-vector-icons": "^6.4.6",
     "firebase": "^7.22.1",
+    "firebase-admin": "^9.2.0",
+    "firebase-functions": "^3.11.0",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-gesture-handler": "^1.8.0",

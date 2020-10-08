@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "508978321800",
+    "firebase_url": "https://framewallet-a7d2a.firebaseio.com",
+    "project_id": "framewallet-a7d2a",
+    "storage_bucket": "framewallet-a7d2a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508978321800:android:9d3b1824dbb0ac222a023d",
+        "android_client_info": {
+          "package_name": "com.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508978321800-a4aduspokk2f7sckv31fu4uf6bvim7ae.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6B6QJiMf4gUETEx8t1KTmvmULRsDVdro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508978321800-a4aduspokk2f7sckv31fu4uf6bvim7ae.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

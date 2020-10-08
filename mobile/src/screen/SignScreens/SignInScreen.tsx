@@ -1,7 +1,7 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
 import { AppFirebase } from '../../config/AppFirebase'
@@ -19,15 +19,13 @@ const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         AppFirebase.auth().signInWithEmailAndPassword(email, password)
         const user = AppFirebase.auth().currentUser
       } catch (error) {
-        /*         Alert(error) */
+        Alert.alert(error)
       }
+    } else {
+      Alert.alert('Invalid e-mail or password')
     }
   }
 
-  function metodo(e: any) {
-    console.log(e)
-  }
-  console.log(email)
   return (
     <SafeAreaView style={style.signUpContainer}>
       <View style={headerStyle.headerContainer}>
@@ -56,7 +54,7 @@ const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           style={style.input}
           onChangeText={e => setPassword(e)}
         />
-        <TouchableOpacity style={style.button} onPress={handleLogin}>
+        <TouchableOpacity style={style.button} onPress={() => handleLogin}>
           <Text style={style.textButton}>Login</Text>
         </TouchableOpacity>
       </View>
