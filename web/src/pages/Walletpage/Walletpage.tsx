@@ -9,7 +9,7 @@ import Header from '../../components/Header/Header'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
 import db from '../../functions/db'
-import { Coin } from '../../types/Types'
+import { Coin } from '../../../../types/Types'
 import './Walletpage.scss'
 
 function Walletpage(): JSX.Element {

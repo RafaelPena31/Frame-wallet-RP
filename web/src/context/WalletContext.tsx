@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Coin } from '../types/Types'
+import { Coin } from '../../../types/Types'
 
 export const WalletContext = React.createContext<{
   walletValue: Coin[]
