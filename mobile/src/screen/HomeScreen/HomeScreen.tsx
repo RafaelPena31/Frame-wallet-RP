@@ -5,6 +5,7 @@ import { SafeAreaView, Text } from 'react-native'
 import 'react-native-gesture-handler'
 
 const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
+  /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView /* style={style.homeContainer} */>
       <Text>HomeScreen</Text>

@@ -1,9 +1,10 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
+import api from '../../api/api'
 import { AppFirebase } from '../../config/AppFirebase'
 import headerStyle from '../../styles/componentStyle/HeaderStyle'
 import colors from '../../styles/_colors'
@@ -15,14 +16,35 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
   const [password, setPassword] = useState('')
 
   async function handleCreate() {
-    if (name === '' || email === '' || password === '') {
-      AppFirebase.auth().createUserWithEmailAndPassword(email, password)
-      const user = AppFirebase.auth().currentUser
-      if (user !== null) {
-        await user.updateProfile({
-          displayName: name
+    if (name !== '' && email !== '' && password !== '') {
+      AppFirebase.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          const user = AppFirebase.auth().currentUser
+
+          if (user !== null) {
+            user.updateProfile({
+              displayName: name
+            })
+          }
+
+          api.post('users', { email, uid: user?.uid, name }).catch(() => {
+            Alert.alert('Error', 'Account creation denied user')
+          })
+          api
+            .post('wallet', { uid: user?.uid, coins: [], totalValue: 0 })
+            .then(() => {
+              Alert.alert('Success', 'Your account was created successfully')
+            })
+            .catch(e => {
+              Alert.alert('Error', 'Account creation denied wallet')
+              console.log(e)
+            })
+          /*           api.put('users', { uid: user?.uid, walletId:  })
+           */
         })
-      }
+    } else {
+      Alert.alert('Invalid e-mail or password')
     }
   }
 
@@ -64,7 +86,7 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           onChangeText={e => setPassword(e)}
           value={password}
         />
-        <TouchableOpacity style={style.button} onPress={() => handleCreate}>
+        <TouchableOpacity style={style.button} onPress={handleCreate}>
           <Text style={style.textButton}>Create account</Text>
         </TouchableOpacity>
       </View>

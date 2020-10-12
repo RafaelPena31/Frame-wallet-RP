@@ -13,14 +13,16 @@ const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  function handleLogin() {
+  async function handleLogin() {
     if (email !== '' && password !== '') {
-      try {
-        AppFirebase.auth().signInWithEmailAndPassword(email, password)
-        const user = AppFirebase.auth().currentUser
-      } catch (error) {
-        Alert.alert(error)
-      }
+      await AppFirebase.auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          Alert.alert('Login ok')
+        })
+        .catch(() => {
+          Alert.alert('Invalid e-mail or password')
+        })
     } else {
       Alert.alert('Invalid e-mail or password')
     }
@@ -54,7 +56,7 @@ const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           style={style.input}
           onChangeText={e => setPassword(e)}
         />
-        <TouchableOpacity style={style.button} onPress={() => handleLogin}>
+        <TouchableOpacity style={style.button} onPress={handleLogin}>
           <Text style={style.textButton}>Login</Text>
         </TouchableOpacity>
       </View>

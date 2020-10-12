@@ -23,12 +23,14 @@ app.post("/users", (request, response) => {
     });
 });
 
-app.get("/users", (request, response) => {
-  db.collection("users")
+app.put("/users", (request, response) => {
+  db.collection("/users")
     .doc(request.body.uid)
-    .get()
-    .then((user) => {
-      response.status(200).json(user);
+    .update({
+      walletId: request.body.walletId,
+    })
+    .then((i) => {
+      response.status(200).json(i);
     })
     .catch((e) => {
       response.json(e);
@@ -37,7 +39,8 @@ app.get("/users", (request, response) => {
 /* Wallets */
 app.post("/wallet", (request, response) => {
   db.collection("wallets")
-    .add({
+    .doc(request.body.uid)
+    .set({
       id: request.body.uid,
       coins: request.body.coins,
       totalValue: request.body.totalValue,
@@ -51,7 +54,7 @@ app.post("/wallet", (request, response) => {
 });
 app.put("/walletAdd", (request, response) => {
   db.collection("/wallets")
-    .doc(request.body.walletId)
+    .doc(request.body.uid)
     .update({
       coins: request.body.coins,
       totalValue: request.body.totalValue,
@@ -67,7 +70,7 @@ app.put("/walletSell", (request, response) => {
   db.collection("wallet");
 
   db.collection("/wallets")
-    .doc(request.body.walletId)
+    .doc(request.body.uid)
     .update({
       coins: request.body.coins,
       totalValue: request.body.totalValue,
