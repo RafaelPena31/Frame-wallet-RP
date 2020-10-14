@@ -65,10 +65,20 @@ const style = StyleSheet.create({
     borderRadius: 20
   },
   progressLabel: {
-    marginBottom: 15,
+    marginBottom: 8,
     fontFamily: 'Montserrat-Light',
     fontSize: 12,
     color: colors.secondaryLight
+  },
+  dividerContainer: {
+    width: 330,
+    alignItems: 'flex-start',
+    justifyContent: 'center'
+  },
+  dividerText: {
+    color: colors.secondaryDark + '50',
+    fontFamily: 'Montserrat-Light',
+    marginBottom: 8
   }
 })
 

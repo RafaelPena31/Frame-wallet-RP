@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import CryptoBox from '../../components/CryptoBox/CryptoBox'
 import colors from '../../styles/_colors'
 import style from './WalletStyle'
 
@@ -24,7 +25,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           angleCenter={{ x: 0.3, y: 1 }}
           style={style.walletContainer}>
           <View style={style.walletHeader}>
-            <Text style={style.textHeader}>Your account</Text>
+            <Text style={style.textHeader}>Your wallet</Text>
           </View>
           <View style={style.valueContent}>
             <Swiper height={120} style={{ margin: 0 }}>
@@ -60,9 +61,13 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           </View>
 
           <View style={style.progressContainer}>
-            <Progress.Bar progress={0.73} width={320} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
+            <Progress.Bar progress={0.73} width={334} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
             <Text style={style.progressLabel}>70% - invested capital</Text>
           </View>
+          <View style={style.dividerContainer}>
+            <Text style={style.dividerText}> ─ Your currencies ────────</Text>
+          </View>
+          <CryptoBox />
         </LinearGradient>
       </ScrollView>
     </SafeAreaView>
