@@ -44,7 +44,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                   </TouchableOpacity>
                   <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Transaction')}>
                     <Text style={[style.valueButtonText]}>Buy currency</Text>
-                    <Icon name='card-outline' size={22} color={colors.secondaryDark} />
+                    <Icon name='contrast-outline' size={22} color={colors.secondaryDark} />
                   </TouchableOpacity>
                 </View>
               </>
@@ -63,7 +63,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                   </TouchableOpacity>
                   <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Transaction')}>
                     <Text style={[style.valueButtonText]}>Add capital</Text>
-                    <Icon name='cash-outline' size={22} color={colors.secondaryDark} />
+                    <Icon name='card-outline' size={22} color={colors.secondaryDark} />
                   </TouchableOpacity>
                 </View>
               </>

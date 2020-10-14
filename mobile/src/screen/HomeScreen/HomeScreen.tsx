@@ -164,7 +164,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
               </TouchableOpacity>
               <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Transaction')}>
                 <Text style={[style.valueButtonText]}>Buy currency</Text>
-                <Icon name='card-outline' size={22} color={colors.secondaryDark} />
+                <Icon name='contrast-outline' size={22} color={colors.secondaryDark} />
               </TouchableOpacity>
             </View>
           </View>
