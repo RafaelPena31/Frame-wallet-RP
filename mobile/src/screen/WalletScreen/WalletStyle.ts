@@ -4,11 +4,11 @@ import colors from '../../styles/_colors'
 const { width, height } = Dimensions.get('window')
 
 const style = StyleSheet.create({
-  homeContainer: {
-    minHeight: height - 30,
+  walletContainer: {
+    minHeight: height,
     paddingHorizontal: 30
   },
-  homeHeader: {
+  walletHeader: {
     flexDirection: 'row',
     justifyContent: 'center',
     paddingVertical: 25

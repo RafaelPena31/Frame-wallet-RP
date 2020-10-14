@@ -2,11 +2,11 @@ import { createStackNavigator } from '@react-navigation/stack'
 import { User } from 'firebase'
 import * as React from 'react'
 import { useState } from 'react'
-import { AppFirebase } from './config/AppFirebase'
-import HomeScreen from './screen/HomeScreen/HomeScreen'
-import LandingScreen from './screen/LandingScreen/LandingScreen'
-import SignInScreen from './screen/SignScreens/SignInScreen'
-import SignUpScreen from './screen/SignScreens/SignUpScreen'
+import { AppFirebase } from '../config/AppFirebase'
+import LandingScreen from '../screen/LandingScreen/LandingScreen'
+import SignInScreen from '../screen/SignScreens/SignInScreen'
+import SignUpScreen from '../screen/SignScreens/SignUpScreen'
+import TabRoute from './tabRoute'
 
 const Stack = createStackNavigator()
 
@@ -21,7 +21,7 @@ function StackRoute(): JSX.Element {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {currentUser !== undefined && currentUser !== null ? (
         <>
-          <Stack.Screen name='Home' component={HomeScreen} />
+          <Stack.Screen name='Home' component={TabRoute} />
         </>
       ) : (
         <>
