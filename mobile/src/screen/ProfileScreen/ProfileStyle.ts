@@ -9,32 +9,66 @@ const style = StyleSheet.create({
     paddingHorizontal: 30
   },
   profileHeader: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingVertical: 25
+    position: 'relative',
+    backgroundColor: colors.secondaryDark,
+    alignItems: 'center',
+    height: 250,
+    padding: 30
   },
   textHeader: {
     fontFamily: 'Montserrat-Bold',
     fontSize: 18,
-    color: colors.secondaryDark
+    color: '#ffffff'
   },
-  valueContent: {},
-  balance: {
+  titleContent: {
+    position: 'absolute',
+    left: 0,
+    marginTop: 135,
+    marginLeft: 30
+  },
+  textLabelHeader: {
+    color: '#ffffff70',
+    fontFamily: 'Montserrat-Regular',
+    fontSize: 20
+  },
+  textTitleHeader: {
+    color: '#ffffff',
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 16
+  },
+  valueContent: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    marginHorizontal: 30,
+    marginVertical: 20
+  },
+  textValueLabelHeader: {
+    color: '#ffffff',
+    fontFamily: 'Montserrat-SemiBold',
+    fontSize: 12,
+    textAlign: 'right'
+  },
+  textValueHeader: {
+    color: '#ffffff',
+    fontFamily: 'Roboto-Bold',
+    fontSize: 30,
+    textAlign: 'right'
+  },
+  logoContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    padding: 10,
+    borderRadius: 10
   },
-  valueButtonContainer: {
-    marginVertical: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  valueButton: {},
-  progressContainer: {},
-  progressBar: {
-    borderRadius: 20
-  },
-  progressLabel: {
-    marginBottom: 15
+  logoText: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 30,
+    color: '#ffffff',
+    marginLeft: 20
   }
 })
 
