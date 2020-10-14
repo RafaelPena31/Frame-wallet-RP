@@ -14,7 +14,7 @@ function CryptoBox() {
         <Text style={style.coinTextTitle}>Bitcoin</Text>
       </View>
       <View style={style.valueContainer}>
-        <Text>$00.00</Text>
+        <Text style={style.textValue}>$00.00</Text>
       </View>
     </View>
   )

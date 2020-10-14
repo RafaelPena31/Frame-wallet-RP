@@ -28,7 +28,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
             <Text style={style.textHeader}>Your wallet</Text>
           </View>
           <View style={style.valueContent}>
-            <Swiper height={120} style={{ margin: 0 }}>
+            <Swiper height={190} style={{ margin: 0 }}>
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Cryptocurrency Balance</Text>
@@ -37,27 +37,37 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                   </TouchableOpacity>
                 </View>
                 <Text style={[style.valueText]}>$00.00</Text>
+                <View style={style.valueButtonContainer}>
+                  <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Home')}>
+                    <Text style={[style.valueButtonText]}>Analytics</Text>
+                    <Icon name='analytics-outline' size={22} color={colors.secondaryDark} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Transaction')}>
+                    <Text style={[style.valueButtonText]}>Buy currency</Text>
+                    <Icon name='card-outline' size={22} color={colors.secondaryDark} />
+                  </TouchableOpacity>
+                </View>
               </>
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Invested Capital Balance</Text>
                   <TouchableOpacity>
-                    <Text style={style.buttonBalanceText}>Add +</Text>
+                    <Text style={style.buttonBalanceText}>Transfer +</Text>
                   </TouchableOpacity>
                 </View>
                 <Text style={[style.valueText]}>$00.00</Text>
+                <View style={style.valueButtonContainer}>
+                  <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Home')}>
+                    <Text style={[style.valueButtonText]}>Analytics</Text>
+                    <Icon name='analytics-outline' size={22} color={colors.secondaryDark} />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Transaction')}>
+                    <Text style={[style.valueButtonText]}>Add capital</Text>
+                    <Icon name='cash-outline' size={22} color={colors.secondaryDark} />
+                  </TouchableOpacity>
+                </View>
               </>
             </Swiper>
-            <View style={style.valueButtonContainer}>
-              <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Home')}>
-                <Text style={[style.valueButtonText]}>Analytics</Text>
-                <Icon name='analytics-outline' size={22} color={colors.secondaryDark} />
-              </TouchableOpacity>
-              <TouchableOpacity style={style.valueButton} onPress={() => navigation.navigate('Transaction')}>
-                <Text style={[style.valueButtonText]}>Buy currency</Text>
-                <Icon name='card-outline' size={22} color={colors.secondaryDark} />
-              </TouchableOpacity>
-            </View>
           </View>
 
           <View style={style.progressContainer}>
@@ -67,7 +77,34 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           <View style={style.dividerContainer}>
             <Text style={style.dividerText}> ─ Your currencies ────────</Text>
           </View>
-          <CryptoBox />
+
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <CryptoBox />
+          </TouchableOpacity>
         </LinearGradient>
       </ScrollView>
     </SafeAreaView>

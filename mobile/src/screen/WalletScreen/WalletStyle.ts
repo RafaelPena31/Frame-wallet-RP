@@ -33,6 +33,7 @@ const style = StyleSheet.create({
     color: colors.secondaryNeon
   },
   valueText: {
+    marginBottom: 10,
     fontSize: 47,
     fontFamily: 'Roboto-Regular',
     color: colors.secondaryDark
@@ -72,11 +73,12 @@ const style = StyleSheet.create({
   },
   dividerContainer: {
     width: 330,
+    marginTop: 20,
     alignItems: 'flex-start',
     justifyContent: 'center'
   },
   dividerText: {
-    color: colors.secondaryDark + '50',
+    color: colors.secondaryDark + '80',
     fontFamily: 'Montserrat-Light',
     marginBottom: 8
   }

@@ -10,8 +10,8 @@ const style = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 3,
     paddingVertical: 7,
-    borderColor: 'rgba(0,0,55,0.08)',
-    borderBottomWidth: 1,
+    paddingHorizontal: 4,
+    borderColor: '#D3D3D323',
     borderTopWidth: 1
   },
   iconContainer: {
@@ -20,7 +20,7 @@ const style = StyleSheet.create({
   },
   icon: {
     width: 30,
-    height: 30
+    height: 30.4
   },
   coinContainer: {
     marginLeft: 15,
@@ -43,6 +43,10 @@ const style = StyleSheet.create({
   valueContainer: {
     position: 'absolute',
     right: 0
+  },
+  textValue: {
+    fontFamily: 'Roboto-Regular',
+    color: colors.secondaryDark
   }
 })
 
