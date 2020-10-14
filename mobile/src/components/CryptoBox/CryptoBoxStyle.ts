@@ -1,7 +1,5 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import colors from '../../styles/_colors'
-
-const { width, height } = Dimensions.get('window')
 
 const style = StyleSheet.create({
   cryptoContainer: {
@@ -51,11 +49,11 @@ const style = StyleSheet.create({
   },
   textQuant: {
     fontFamily: 'Roboto-Regular',
-    color: colors.secondaryDark + '95'
+    color: `${colors.secondaryDark}90`
   },
   textDivider: {
     fontFamily: 'Roboto-Regular',
-    color: colors.secondaryLight + '80',
+    color: colors.secondaryLight,
     marginHorizontal: 15
   }
 })

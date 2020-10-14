@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native'
 import colors from '../../styles/_colors'
 
-const { width, height } = Dimensions.get('window')
+const { height } = Dimensions.get('window')
 
 const style = StyleSheet.create({
   walletContainer: {
@@ -78,7 +78,7 @@ const style = StyleSheet.create({
     justifyContent: 'center'
   },
   dividerText: {
-    color: colors.secondaryDark + '80',
+    color: `${colors.secondaryDark}80`,
     fontFamily: 'Montserrat-Light',
     marginBottom: 8
   }

@@ -2,7 +2,6 @@ import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React from 'react'
 import { SafeAreaView, StatusBar, Text, View } from 'react-native'
-import 'react-native-gesture-handler'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
@@ -16,14 +15,9 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar hidden={true} />
+      <StatusBar hidden />
       <ScrollView>
-        <LinearGradient
-          colors={['#fff', '#d1dce2']}
-          useAngle={true}
-          angle={250}
-          angleCenter={{ x: 0.3, y: 1 }}
-          style={style.walletContainer}>
+        <LinearGradient colors={['#fff', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.walletContainer}>
           <View style={style.walletHeader}>
             <Text style={style.textHeader}>Your wallet</Text>
           </View>

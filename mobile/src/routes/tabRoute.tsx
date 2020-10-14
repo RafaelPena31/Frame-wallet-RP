@@ -7,7 +7,7 @@ import TransactionScreen from '../screen/TransactionScreen/TransactionScreen'
 import WalletScreen from '../screen/WalletScreen/WalletScreen'
 import colors from '../styles/_colors'
 
-function TabRoute() {
+function TabRoute(): JSX.Element {
   const { Navigator, Screen } = createBottomTabNavigator()
   return (
     <Navigator

@@ -1,7 +1,7 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React from 'react'
-import { Dimensions, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import { SafeAreaView, StatusBar, Text, View } from 'react-native'
 import { BarChart } from 'react-native-chart-kit'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
@@ -125,14 +125,12 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
     strokeWidth: 5, // optional, default 3
     barPercentage: 1
   }
-  const screenWidth = Dimensions.get('window').width
-
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar hidden={true} />
+      <StatusBar hidden />
       <ScrollView>
-        <LinearGradient colors={['#fff', '#d1dce2']} useAngle={true} angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
+        <LinearGradient colors={['#fff', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
           <View style={style.homeHeader}>
             <Text style={style.textHeader}>Your account</Text>
           </View>
@@ -172,7 +170,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
           <View style={style.progressContainer}>
             <Progress.Bar progress={0.73} width={320} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
             <Text style={style.progressLabel}>70% - invested capital</Text>
-            <ScrollView horizontal={true} style={{ marginVertical: 40 }}>
+            <ScrollView horizontal style={{ marginVertical: 40 }}>
               <BarChart
                 data={data}
                 width={data.labels.length * 45}
@@ -181,7 +179,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
                 yAxisSuffix=''
                 yLabelsOffset={20}
                 xLabelsOffset={0}
-                showValuesOnTopOfBars={true}
+                showValuesOnTopOfBars
                 chartConfig={chartConfig}
                 verticalLabelRotation={90}
                 horizontalLabelRotation={0}

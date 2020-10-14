@@ -2,7 +2,6 @@ import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React from 'react'
 import { SafeAreaView, StatusBar, Text, View } from 'react-native'
-import 'react-native-gesture-handler'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
@@ -16,14 +15,9 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar hidden={true} />
+      <StatusBar hidden />
       <ScrollView>
-        <LinearGradient
-          colors={['#fff', '#d1dce2']}
-          useAngle={true}
-          angle={250}
-          angleCenter={{ x: 0.3, y: 1 }}
-          style={style.transactionContainer}>
+        <LinearGradient colors={['#fff', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.transactionContainer}>
           <View style={style.transactionHeader}>
             <Text style={style.textHeader}>Transactions</Text>
           </View>
@@ -81,7 +75,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           </View>
           {currencyArray.map((currency, index) => {
             return (
-              <TouchableOpacity key={index}>
+              <TouchableOpacity key={currency.sigla}>
                 <CryptoBox id={index} value={currency.price} />
               </TouchableOpacity>
             )

@@ -9,7 +9,7 @@ interface CurrencyControler {
   quant?: number
 }
 
-function CryptoBox({ id, value, quant }: CurrencyControler) {
+function CryptoBox({ id, value, quant }: CurrencyControler): JSX.Element {
   return (
     <View style={style.cryptoContainer}>
       <View style={style.iconContainer}>
@@ -32,6 +32,10 @@ function CryptoBox({ id, value, quant }: CurrencyControler) {
       </View>
     </View>
   )
+}
+
+CryptoBox.defaultProps = {
+  quant: 0
 }
 
 export default CryptoBox

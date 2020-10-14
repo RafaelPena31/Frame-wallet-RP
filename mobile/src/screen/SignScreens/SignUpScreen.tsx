@@ -38,7 +38,7 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
             })
             .catch(e => {
               Alert.alert('Error', 'Account creation denied wallet')
-              console.log(e)
+              Alert.alert(e)
             })
           /*           api.put('users', { uid: user?.uid, walletId:  })
            */

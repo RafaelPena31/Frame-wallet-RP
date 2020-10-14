@@ -1,7 +1,7 @@
 import { Dimensions, StyleSheet } from 'react-native'
 import colors from '../../styles/_colors'
 
-const { width, height } = Dimensions.get('window')
+const { height } = Dimensions.get('window')
 
 const style = StyleSheet.create({
   profileContainer: {
