@@ -1,21 +1,36 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
-import { SafeAreaView, StatusBar, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Modal, SafeAreaView, StatusBar, Text, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
+import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './TransactionStyle'
 
 const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
+  const [modalVisible, setModalVisible] = useState(false)
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden />
+
+      {/* Modais */}
+
+      <Modal animationType='fade' transparent={true} visible={modalVisible} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text>Modal</Text>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Modais */}
+
       <ScrollView>
         <LinearGradient
           colors={['#fcfcfc', '#d1dce2']}
@@ -32,7 +47,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Cryptocurrency Balance</Text>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
