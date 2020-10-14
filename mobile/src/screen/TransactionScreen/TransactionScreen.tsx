@@ -7,6 +7,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
 import colors from '../../styles/_colors'
 import style from './TransactionStyle'
@@ -78,30 +79,13 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           <View style={style.dividerContainer}>
             <Text style={style.dividerText}> ─ All currencies ────────</Text>
           </View>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox />
-          </TouchableOpacity>
+          {currencyArray.map((currency, index) => {
+            return (
+              <TouchableOpacity key={index}>
+                <CryptoBox id={index} value={currency.price} />
+              </TouchableOpacity>
+            )
+          })}
         </LinearGradient>
       </ScrollView>
     </SafeAreaView>

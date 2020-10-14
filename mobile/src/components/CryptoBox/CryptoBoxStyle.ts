@@ -41,12 +41,22 @@ const style = StyleSheet.create({
     color: colors.secondaryDark
   },
   valueContainer: {
+    flexDirection: 'row',
     position: 'absolute',
     right: 0
   },
   textValue: {
     fontFamily: 'Roboto-Regular',
     color: colors.secondaryDark
+  },
+  textQuant: {
+    fontFamily: 'Roboto-Regular',
+    color: colors.secondaryDark + '95'
+  },
+  textDivider: {
+    fontFamily: 'Roboto-Regular',
+    color: colors.secondaryLight + '80',
+    marginHorizontal: 15
   }
 })
 

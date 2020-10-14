@@ -79,31 +79,31 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           </View>
 
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
           <TouchableOpacity>
-            <CryptoBox />
+            <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
         </LinearGradient>
       </ScrollView>
