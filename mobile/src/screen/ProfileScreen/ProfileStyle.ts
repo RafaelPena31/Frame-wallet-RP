@@ -5,7 +5,6 @@ const { height } = Dimensions.get('window')
 
 const style = StyleSheet.create({
   profileContainer: {
-    minHeight: height,
     paddingHorizontal: 30
   },
   profileHeader: {
@@ -69,6 +68,68 @@ const style = StyleSheet.create({
     fontSize: 30,
     color: '#ffffff',
     marginLeft: 20
+  },
+  buttonContentTransaction: {
+    marginTop: 40,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  buttonTransaction: {
+    backgroundColor: colors.secondaryDark,
+    width: 157,
+    height: 180,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20
+  },
+  buttonTransaction2: {
+    backgroundColor: colors.secondaryDark,
+    width: 334,
+    height: 115,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    marginBottom: 40
+  },
+  buttonTransactionText: {
+    color: '#ffffff',
+    fontFamily: 'Roboto-Bold',
+    fontSize: 18,
+    textAlign: 'center',
+    maxWidth: 155
+  },
+  infoContent: {
+    marginTop: 30
+  },
+  infoUnit: {
+    marginVertical: 10,
+    flexDirection: 'row',
+
+    alignItems: 'center'
+  },
+  infoLabel: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 18,
+    color: colors.secondaryDark,
+    marginRight: 10
+  },
+  infoText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 17,
+    maxWidth: 255
+  },
+  dividerContainer: {
+    width: 330,
+    marginTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  dividerText: {
+    color: `${colors.secondaryDark}80`,
+    fontFamily: 'Montserrat-Light'
   }
 })
 

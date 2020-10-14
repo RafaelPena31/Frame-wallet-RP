@@ -17,7 +17,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden />
       <ScrollView>
-        <LinearGradient colors={['#fff', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.walletContainer}>
+        <LinearGradient colors={['#fcfcfc', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.walletContainer}>
           <View style={style.walletHeader}>
             <Text style={style.textHeader}>Your wallet</Text>
           </View>
@@ -70,6 +70,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           </View>
           <View style={style.dividerContainer}>
             <Text style={style.dividerText}> ─ Your currencies ────────</Text>
+            <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />
           </View>
 
           <TouchableOpacity>

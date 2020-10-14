@@ -6,7 +6,7 @@ import style from './CryptoBoxStyle'
 interface CurrencyControler {
   id: number
   value: number
-  quant?: number
+  quant?: number | undefined
 }
 
 function CryptoBox({ id, value, quant }: CurrencyControler): JSX.Element {
@@ -35,7 +35,7 @@ function CryptoBox({ id, value, quant }: CurrencyControler): JSX.Element {
 }
 
 CryptoBox.defaultProps = {
-  quant: 0
+  quant: undefined
 }
 
 export default CryptoBox

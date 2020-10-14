@@ -74,8 +74,9 @@ const style = StyleSheet.create({
   dividerContainer: {
     width: 330,
     marginTop: 20,
-    alignItems: 'flex-start',
-    justifyContent: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   dividerText: {
     color: `${colors.secondaryDark}80`,

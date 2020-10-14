@@ -17,7 +17,12 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden />
       <ScrollView>
-        <LinearGradient colors={['#fff', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.transactionContainer}>
+        <LinearGradient
+          colors={['#fcfcfc', '#d1dce2']}
+          useAngle
+          angle={250}
+          angleCenter={{ x: 0.3, y: 1 }}
+          style={style.transactionContainer}>
           <View style={style.transactionHeader}>
             <Text style={style.textHeader}>Transactions</Text>
           </View>
@@ -72,6 +77,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           </View>
           <View style={style.dividerContainer}>
             <Text style={style.dividerText}> ─ All currencies ────────</Text>
+            <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />
           </View>
           {currencyArray.map((currency, index) => {
             return (

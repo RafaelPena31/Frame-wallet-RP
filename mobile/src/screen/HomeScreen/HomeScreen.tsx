@@ -130,7 +130,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden />
       <ScrollView>
-        <LinearGradient colors={['#fff', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
+        <LinearGradient colors={['#fcfcfc', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
           <View style={style.homeHeader}>
             <Text style={style.textHeader}>Your account</Text>
           </View>
