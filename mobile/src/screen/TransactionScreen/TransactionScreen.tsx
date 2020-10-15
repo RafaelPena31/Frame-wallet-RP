@@ -1,7 +1,7 @@
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { Modal, SafeAreaView, StatusBar, Text, View } from 'react-native'
+import { Modal, SafeAreaView, StatusBar, Text, TextInput, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
@@ -24,7 +24,8 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
       <Modal animationType='fade' transparent={true} visible={modalVisible} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
-            <Text>Modal</Text>
+            <Text>Buy Cryptocurrencies</Text>
+            <TextInput placeholder='Value to buy' />
           </View>
         </SafeAreaView>
       </Modal>
