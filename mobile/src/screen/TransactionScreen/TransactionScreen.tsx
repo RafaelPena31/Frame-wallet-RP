@@ -1,3 +1,4 @@
+import { Picker } from '@react-native-community/picker'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
@@ -13,7 +14,10 @@ import colors from '../../styles/_colors'
 import style from './TransactionStyle'
 
 const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
-  const [modalVisible, setModalVisible] = useState(false)
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [currencyValue, setCurrencyValue] = useState<number>(0)
+  const [currencyId, setCurrencyId] = useState<number>(0)
+  const [pickerValue, setPickerValue] = useState<number>(0)
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -25,7 +29,23 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text>Buy Cryptocurrencies</Text>
-            <TextInput placeholder='Value to buy' />
+            <View style={BuyModalStyle.formModal}>
+              <Picker
+                selectedValue={pickerValue}
+                onValueChange={e => setCurrencyValue(parseInt(e.toString()))}
+                style={BuyModalStyle.picker}>
+                <Picker.Item label='Bitcoin' value={0} />
+              </Picker>
+              <TextInput placeholder='Value to buy' />
+              <View style={BuyModalStyle.buttonModalContainer}>
+                <TouchableOpacity style={BuyModalStyle.buttonModal}>
+                  <Text>Buy</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={BuyModalStyle.buttonModal} onPress={() => setModalVisible(!modalVisible)}>
+                  <Text>Cancel Transaction</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </SafeAreaView>
       </Modal>
