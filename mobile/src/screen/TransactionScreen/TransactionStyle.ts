@@ -9,9 +9,15 @@ const style = StyleSheet.create({
     paddingHorizontal: 30
   },
   transactionHeader: {
+    position: 'relative',
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 25
+  },
+  iconOut: {
+    position: 'absolute',
+    left: 0
   },
   textHeader: {
     fontFamily: 'Montserrat-Bold',

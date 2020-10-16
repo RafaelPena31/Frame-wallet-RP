@@ -17,9 +17,6 @@ const SignInScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
     if (email !== '' && password !== '') {
       await AppFirebase.auth()
         .signInWithEmailAndPassword(email, password)
-        .then(() => {
-          Alert.alert('Login ok')
-        })
         .catch(() => {
           Alert.alert('Invalid e-mail or password')
         })

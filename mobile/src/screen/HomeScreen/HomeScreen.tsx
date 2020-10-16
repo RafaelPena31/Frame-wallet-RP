@@ -2,14 +2,15 @@ import { Picker } from '@react-native-community/picker'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
+import { Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import { BarChart } from 'react-native-chart-kit'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
+import { AppFirebase } from '../../config/AppFirebase'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './HomeStyle'
@@ -208,6 +209,9 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
         <LinearGradient colors={['#fcfcfc', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
           <View style={style.homeHeader}>
             <Text style={style.textHeader}>Your account</Text>
+            <TouchableHighlight onPress={() => AppFirebase.auth().signOut()} style={style.iconOut}>
+              <Icon name='exit-outline' size={30} color={colors.secondaryDark} />
+            </TouchableHighlight>
           </View>
           <View style={style.valueContent}>
             <Swiper height={120} style={{ margin: 0 }}>

@@ -8,6 +8,7 @@ import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
+import { AppFirebase } from '../../config/AppFirebase'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './TransactionStyle'
@@ -100,6 +101,9 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           style={style.transactionContainer}>
           <View style={style.transactionHeader}>
             <Text style={style.textHeader}>Transactions</Text>
+            <TouchableHighlight onPress={() => AppFirebase.auth().signOut()} style={style.iconOut}>
+              <Icon name='exit-outline' size={30} color={colors.secondaryDark} />
+            </TouchableHighlight>
           </View>
 
           <View style={style.valueContent}>

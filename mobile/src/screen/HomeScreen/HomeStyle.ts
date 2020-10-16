@@ -9,14 +9,20 @@ const style = StyleSheet.create({
     paddingHorizontal: 30
   },
   homeHeader: {
+    position: 'relative',
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 25
   },
   textHeader: {
     fontFamily: 'Montserrat-Bold',
     fontSize: 18,
     color: colors.secondaryDark
+  },
+  iconOut: {
+    position: 'absolute',
+    left: 0
   },
   valueContent: {},
   balance: {

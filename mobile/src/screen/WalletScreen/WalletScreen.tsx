@@ -10,6 +10,7 @@ import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
+import { AppFirebase } from '../../config/AppFirebase'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './WalletStyle'
@@ -132,6 +133,9 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         <LinearGradient colors={['#fcfcfc', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.walletContainer}>
           <View style={style.walletHeader}>
             <Text style={style.textHeader}>Your wallet</Text>
+            <TouchableHighlight onPress={() => AppFirebase.auth().signOut()} style={style.iconOut}>
+              <Icon name='exit-outline' size={30} color={colors.secondaryDark} />
+            </TouchableHighlight>
           </View>
           <View style={style.valueContent}>
             <Swiper height={190} style={{ margin: 0 }}>
