@@ -1,8 +1,8 @@
+import { Picker } from '@react-native-community/picker'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
-import { Modal, Picker, SafeAreaView, StatusBar, Text, View } from 'react-native'
-import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { Modal, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -13,10 +13,11 @@ import colors from '../../styles/_colors'
 import style from './TransactionStyle'
 
 const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
-  const [modalVisible, setModalVisible] = useState<boolean>(false)
-  const [currencyValue, setCurrencyValue] = useState<number>(0)
+  const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
+  const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
+  const [currencyValue, setCurrencyValue] = useState<string>('')
   const [currencyId, setCurrencyId] = useState<number>(0)
-  const [pickerValue, setPickerValue] = useState<number>(0)
+  const [pickerValue, setPickerValue] = useState<number | undefined>(undefined)
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -24,30 +25,69 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
 
       {/* Modais */}
 
-      <Modal animationType='fade' transparent={true} visible={modalVisible} statusBarTranslucent style={BuyModalStyle.config}>
+      {/* Crypto */}
+
+      <Modal animationType='fade' transparent={true} visible={modalVisibleCrypto} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
-            <Text>Buy Cryptocurrencies</Text>
+            <Text style={BuyModalStyle.titleModal}>Buy Cryptocurrencies</Text>
             <View style={BuyModalStyle.formModal}>
-              <Picker
-                selectedValue={pickerValue}
-                onValueChange={e => setCurrencyValue(parseInt(e.toString()))}
-                style={BuyModalStyle.picker}>
-                <Picker.Item label='Bitcoin' value={0} />
-              </Picker>
-              <TextInput placeholder='Value to buy' />
-              <View style={BuyModalStyle.buttonModalContainer}>
-                <TouchableOpacity style={BuyModalStyle.buttonModal}>
-                  <Text>Buy</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={BuyModalStyle.buttonModal} onPress={() => setModalVisible(!modalVisible)}>
-                  <Text>Cancel Transaction</Text>
-                </TouchableOpacity>
+              <View style={BuyModalStyle.pickerContainer}>
+                <Picker selectedValue={currencyId} onValueChange={e => setCurrencyId(parseInt(e.toString()))} style={BuyModalStyle.picker}>
+                  {currencyArray.map((item, index) => {
+                    return <Picker.Item label={item.name} key={item.sigla} value={index} />
+                  })}
+                </Picker>
               </View>
+
+              <TextInput
+                placeholder='Value to buy'
+                style={BuyModalStyle.txtModal}
+                keyboardType='numeric'
+                onChangeText={e => setCurrencyValue(e)}
+                value={currencyValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
+                <Text style={BuyModalStyle.buttonModalText}>Buy</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel</Text>
+              </TouchableHighlight>
             </View>
           </View>
         </SafeAreaView>
       </Modal>
+
+      {/* Crypto */}
+
+      {/* Capital */}
+
+      <Modal animationType='fade' transparent={true} visible={modalVisibleCapital} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Add new capital to investe</Text>
+            <View style={BuyModalStyle.formModal}>
+              <TextInput
+                placeholder='Capital value'
+                style={BuyModalStyle.txtModal}
+                keyboardType='numeric'
+                onChangeText={e => setCurrencyValue(e)}
+                value={currencyValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
+                <Text style={BuyModalStyle.buttonModalText}>Add capital</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Capital */}
 
       {/* Modais */}
 
@@ -67,7 +107,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Cryptocurrency Balance</Text>
-                  <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                  <TouchableOpacity onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
@@ -76,7 +116,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Invested Capital Balance</Text>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
@@ -96,11 +136,11 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           </View>
           <View>
             <View style={style.buttonContentTransaction}>
-              <TouchableOpacity style={style.buttonTransaction}>
+              <TouchableOpacity style={style.buttonTransaction} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
                 <Icon name='contrast-outline' size={75} color='#ffffff' />
                 <Text style={[style.buttonTransactionText]}>Buy cryptocurrencies</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={style.buttonTransaction}>
+              <TouchableOpacity style={style.buttonTransaction} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
                 <Icon name='card' size={75} color='#ffffff' />
                 <Text style={[style.buttonTransactionText]}>Add capital to invest</Text>
               </TouchableOpacity>
@@ -116,7 +156,12 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           </View>
           {currencyArray.map((currency, index) => {
             return (
-              <TouchableOpacity key={currency.sigla}>
+              <TouchableOpacity
+                key={currency.sigla}
+                onPress={() => {
+                  setModalVisibleCrypto(!modalVisibleCrypto)
+                  setCurrencyId(index)
+                }}>
                 <CryptoBox id={index} value={currency.price} />
               </TouchableOpacity>
             )

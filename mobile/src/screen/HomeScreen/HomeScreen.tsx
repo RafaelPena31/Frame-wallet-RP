@@ -1,13 +1,16 @@
+import { Picker } from '@react-native-community/picker'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React from 'react'
-import { SafeAreaView, StatusBar, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { BarChart } from 'react-native-chart-kit'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { currencyArray } from '../../assets/currencyArray/currencyArray'
+import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './HomeStyle'
 
@@ -125,9 +128,81 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
     strokeWidth: 5, // optional, default 3
     barPercentage: 1
   }
+  const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
+  const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
+  const [currencyValue, setCurrencyValue] = useState<string>('')
+  const [currencyId, setCurrencyId] = useState<number>(0)
   /* AppFirebase.auth().signOut() */
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {/* Modais */}
+
+      {/* Crypto */}
+
+      <Modal animationType='fade' transparent={true} visible={modalVisibleCrypto} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Buy Cryptocurrencies</Text>
+            <View style={BuyModalStyle.formModal}>
+              <View style={BuyModalStyle.pickerContainer}>
+                <Picker selectedValue={currencyId} onValueChange={e => setCurrencyId(parseInt(e.toString()))} style={BuyModalStyle.picker}>
+                  {currencyArray.map((item, index) => {
+                    return <Picker.Item label={item.name} key={item.sigla} value={index} />
+                  })}
+                </Picker>
+              </View>
+
+              <TextInput
+                placeholder='Value to buy'
+                style={BuyModalStyle.txtModal}
+                keyboardType='numeric'
+                onChangeText={e => setCurrencyValue(e)}
+                value={currencyValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
+                <Text style={BuyModalStyle.buttonModalText}>Buy</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Crypto */}
+
+      {/* Capital */}
+
+      <Modal animationType='fade' transparent={true} visible={modalVisibleCapital} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Add new capital to investe</Text>
+            <View style={BuyModalStyle.formModal}>
+              <TextInput
+                placeholder='Capital value'
+                style={BuyModalStyle.txtModal}
+                keyboardType='numeric'
+                onChangeText={e => setCurrencyValue(e)}
+                value={currencyValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
+                <Text style={BuyModalStyle.buttonModalText}>Add capital</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Capital */}
+
+      {/* Modais */}
+
       <StatusBar hidden />
       <ScrollView>
         <LinearGradient colors={['#fcfcfc', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
@@ -139,7 +214,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Cryptocurrency Balance</Text>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
@@ -148,7 +223,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
               <>
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Invested Capital Balance</Text>
-                  <TouchableOpacity>
+                  <TouchableOpacity onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
