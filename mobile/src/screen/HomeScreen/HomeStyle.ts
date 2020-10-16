@@ -69,6 +69,18 @@ const style = StyleSheet.create({
     fontFamily: 'Montserrat-Light',
     fontSize: 12,
     color: colors.secondaryLight
+  },
+  dividerContainer: {
+    width: 330,
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  dividerText: {
+    color: `${colors.secondaryDark}80`,
+    fontFamily: 'Montserrat-Light',
+    marginBottom: 8
   }
 })
 

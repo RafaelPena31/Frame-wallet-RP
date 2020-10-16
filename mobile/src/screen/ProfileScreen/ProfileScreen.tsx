@@ -1,17 +1,117 @@
-import React from 'react'
-import { SafeAreaView, StatusBar, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Icon from 'react-native-vector-icons/Ionicons'
+import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './ProfileStyle'
 
 const ProfileScreen = (/* { navigation }: StackScreenProps<ParamListBase> */): JSX.Element => {
   /* AppFirebase.auth().signOut() */
   const { Bar } = Progress
+  const [emailVisible, setEmailVisible] = useState<boolean>(false)
+  const [emailValue, setEmailValue] = useState<string>('')
+  const [passVisible, setPassVisible] = useState<boolean>(false)
+  const [passValue, setPassValue] = useState<string>('')
+  const [nameVisible, setNameVisible] = useState<boolean>(false)
+  const [nameValue, setNameValue] = useState<string>('')
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      {/* Modais */}
+
+      {/* Email */}
+
+      <Modal animationType='fade' transparent={true} visible={emailVisible} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Update your e-mail</Text>
+            <View style={BuyModalStyle.formModal}>
+              <TextInput
+                placeholder='New e-mail'
+                style={BuyModalStyle.txtModal}
+                textContentType='emailAddress'
+                onChangeText={e => setEmailValue(e)}
+                value={emailValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setEmailVisible(!emailVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Update</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setEmailVisible(!emailVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel Update</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Email */}
+
+      {/* Password */}
+
+      <Modal animationType='fade' transparent={true} visible={passVisible} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Update your password</Text>
+            <View style={BuyModalStyle.formModal}>
+              <TextInput
+                placeholder='New password'
+                style={BuyModalStyle.txtModal}
+                textContentType='password'
+                blurOnSubmit
+                autoCompleteType='password'
+                secureTextEntry
+                onChangeText={e => setPassValue(e)}
+                value={passValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setPassVisible(!passVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Update</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setPassVisible(!passVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel Update</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Password */}
+
+      {/* DisplayName */}
+
+      <Modal animationType='fade' transparent={true} visible={nameVisible} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Update your name</Text>
+            <View style={BuyModalStyle.formModal}>
+              <TextInput
+                placeholder='New display name'
+                style={BuyModalStyle.txtModal}
+                textContentType='name'
+                blurOnSubmit
+                autoCompleteType='username'
+                onChangeText={e => setNameValue(e)}
+                value={nameValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setNameVisible(!nameVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Update</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setNameVisible(!nameVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel Update</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* DisplayName */}
+
+      {/* Modais */}
+
       <StatusBar hidden />
       <ScrollView>
         <LinearGradient
@@ -52,16 +152,16 @@ const ProfileScreen = (/* { navigation }: StackScreenProps<ParamListBase> */): J
 
           <View>
             <View style={style.buttonContentTransaction}>
-              <TouchableOpacity style={style.buttonTransaction}>
+              <TouchableOpacity style={style.buttonTransaction} onPress={() => setEmailVisible(!emailVisible)}>
                 <Icon name='mail-unread' size={75} color='#ffffff' />
                 <Text style={[style.buttonTransactionText]}>Change your e-mail</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={style.buttonTransaction}>
+              <TouchableOpacity style={style.buttonTransaction} onPress={() => setPassVisible(!passVisible)}>
                 <Icon name='keypad' size={75} color='#ffffff' />
                 <Text style={[style.buttonTransactionText]}>Change your password</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={style.buttonTransaction2}>
+            <TouchableOpacity style={style.buttonTransaction2} onPress={() => setNameVisible(!nameVisible)}>
               <Icon name='people' size={75} color='#ffffff' style={{ margin: 15 }} />
               <Text style={[style.buttonTransactionText]}>Change your full name</Text>
             </TouchableOpacity>

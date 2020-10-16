@@ -245,7 +245,11 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
           <View style={style.progressContainer}>
             <Progress.Bar progress={0.73} width={320} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
             <Text style={style.progressLabel}>70% - invested capital</Text>
-            <ScrollView horizontal style={{ marginVertical: 40 }}>
+            <View style={style.dividerContainer}>
+              <Text style={style.dividerText}> ─ Analytics ────────</Text>
+              <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />
+            </View>
+            <ScrollView horizontal style={{ marginVertical: 20 }}>
               <BarChart
                 data={data}
                 width={data.labels.length * 45}

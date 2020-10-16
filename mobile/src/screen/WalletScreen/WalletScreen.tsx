@@ -16,6 +16,7 @@ import style from './WalletStyle'
 
 const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
   const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
+  const [modalVisibleSell, setModalVisibleSell] = useState<boolean>(false)
   const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
   const [currencyValue, setCurrencyValue] = useState<string>('')
   const [currencyId, setCurrencyId] = useState<number>(0)
@@ -24,7 +25,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
     <SafeAreaView style={{ flex: 1 }}>
       {/* Modais */}
 
-      {/* Crypto */}
+      {/* CryptoBuy */}
 
       <Modal animationType='fade' transparent={true} visible={modalVisibleCrypto} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
@@ -51,14 +52,50 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                 <Text style={BuyModalStyle.buttonModalText}>Buy</Text>
               </TouchableHighlight>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
-                <Text style={BuyModalStyle.buttonModalText}>Cancel</Text>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel Transaction</Text>
               </TouchableHighlight>
             </View>
           </View>
         </SafeAreaView>
       </Modal>
 
-      {/* Crypto */}
+      {/* CryptoBuy */}
+
+      {/* CryptoSell */}
+
+      <Modal animationType='fade' transparent={true} visible={modalVisibleSell} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Sell your Cryptocurrencies</Text>
+            <View style={BuyModalStyle.formModal}>
+              <View style={BuyModalStyle.pickerContainer}>
+                <Picker selectedValue={currencyId} onValueChange={e => setCurrencyId(parseInt(e.toString()))} style={BuyModalStyle.picker}>
+                  {currencyArray.map((item, index) => {
+                    return <Picker.Item label={item.name} key={item.sigla} value={index} />
+                  })}
+                </Picker>
+              </View>
+
+              <TextInput
+                placeholder='Value to sell'
+                style={BuyModalStyle.txtModal}
+                keyboardType='numeric'
+                onChangeText={e => setCurrencyValue(e)}
+                value={currencyValue}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleSell(!modalVisibleSell)}>
+                <Text style={BuyModalStyle.buttonModalText}>Sell</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleSell(!modalVisibleSell)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel Transaction</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* CryptoSell */}
 
       {/* Capital */}
 
@@ -79,7 +116,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                 <Text style={BuyModalStyle.buttonModalText}>Add capital</Text>
               </TouchableHighlight>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
-                <Text style={BuyModalStyle.buttonModalText}>Cancel</Text>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel Transaction</Text>
               </TouchableHighlight>
             </View>
           </View>
@@ -148,31 +185,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
             <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />
           </View>
 
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setModalVisibleSell(!modalVisibleSell)}>
             <CryptoBox id={5} value={0} quant={1.3} />
           </TouchableOpacity>
         </LinearGradient>
