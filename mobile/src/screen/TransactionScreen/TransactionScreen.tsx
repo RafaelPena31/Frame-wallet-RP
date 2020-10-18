@@ -1,10 +1,10 @@
 import { Picker } from '@react-native-community/picker'
 import auth from '@react-native-firebase/auth'
-import firestore from '@react-native-firebase/firestore'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
+  Alert,
   LogBox,
   Modal,
   SafeAreaView,
@@ -19,10 +19,12 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { Coin } from '../../../../types/Types'
+import api from '../../api/api'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
+import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
+import { WalletContext } from '../../context/WalletContext'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './TransactionStyle'
@@ -34,42 +36,41 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
   const [currencyValue, setCurrencyValue] = useState<string>('')
   const [currencyId, setCurrencyId] = useState<number>(0)
-  const [pickerValue, setPickerValue] = useState<number | undefined>(undefined)
 
-  const [walletValue, setWalletValue] = useState<Coin[]>([])
+  const { walletValue, setWalletValue } = useContext(WalletContext)
+  const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp } = useContext(UserContext)
 
-  useEffect(() => {
-    if (currencyUserApp !== null && currencyUserApp !== undefined) {
-      firestore()
-        .collection('wallets')
-        .doc(currencyUserApp)
-        .get()
-        .then(response => {
-          const arrayCollection = response.data()
-          if (arrayCollection !== undefined) {
-            const walletData: Array<Coin> = arrayCollection.coins
-            setWalletValue(walletData)
-            console.log(walletValue)
-          }
-        })
-        .catch(error => console.log(error))
-    }
-  }, [])
-
-  /*   async function BuyCurrency() {
+  async function BuyCurrency() {
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
+      const { name } = currencyArray[currencyId]
+      const walletIndex = walletValue.findIndex(item => item.name === name)
+      console.log(walletIndex)
+      if (walletIndex === -1) {
+        setWalletValue([...walletValue, { id: currencyId, name: currencyArray[currencyId].name, value: parseFloat(currencyValue) }])
+      } else {
+        console.log('ue')
+        setWalletValue([
+          ...walletValue.filter(item => item !== walletValue[currencyId]),
+          {
+            id: walletValue[currencyId].id,
+            name: walletValue[currencyId].name,
+            value: walletValue[currencyId].value + parseFloat(currencyValue)
+          }
+        ])
+      }
+      setTotalValueContext(totalValueContext + parseFloat(currencyValue))
       api.put('walletAdd', {
         uid: currencyUserApp,
-        coins: {id: currencyId, name: currencyArray[currencyId].name, value: },
-        totalValue: 0
+        coins: walletValue,
+        totalValue: totalValueContext
       })
     } else {
       Alert.alert('Invalid value')
       setCurrencyId(0)
       setCurrencyValue('')
     }
-  } */
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -100,7 +101,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 value={currencyValue}
               />
               <View style={BuyModalStyle.buttonModalContainer}></View>
-              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={BuyCurrency}>
                 <Text style={BuyModalStyle.buttonModalText}>Buy</Text>
               </TouchableHighlight>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCrypto(!modalVisibleCrypto)}>

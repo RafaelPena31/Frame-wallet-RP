@@ -1,21 +1,17 @@
 import React, { useState } from 'react'
 
-interface UserControl {
-  uid: string | undefined
-}
-
 export const UserContext = React.createContext<{
   currencyUserApp: string | undefined
   setCurrencyUserApp: (currencyUserApp: string | undefined) => void
 }>({
-  currencyUserApp: undefined,
+  currencyUserApp: '',
   setCurrencyUserApp: () => null
 })
 
 export default function UserContextProvider(props: React.PropsWithChildren<unknown>): JSX.Element {
   const { children } = props
 
-  const [currencyUserApp, setCurrencyUserApp] = useState<string | undefined>(undefined)
+  const [currencyUserApp, setCurrencyUserApp] = useState<string | undefined>('')
 
   return (
     <UserContext.Provider
