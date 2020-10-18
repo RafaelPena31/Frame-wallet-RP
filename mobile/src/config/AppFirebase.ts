@@ -1,4 +1,4 @@
-import firebase from 'firebase/app'
+/* import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 
@@ -12,3 +12,4 @@ export const AppFirebase = firebase.initializeApp({
   appId: '1:508978321800:web:d72422ac9b0179c52a023d',
   measurementId: 'G-MHH23ZZB14'
 })
+ */

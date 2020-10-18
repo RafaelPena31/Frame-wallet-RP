@@ -1,17 +1,33 @@
 import { Picker } from '@react-native-community/picker'
+import auth from '@react-native-firebase/auth'
+import firestore from '@react-native-firebase/firestore'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useState } from 'react'
-import { Modal, SafeAreaView, ScrollView, StatusBar, Text, TextInput, TouchableHighlight, TouchableOpacity, View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  LogBox,
+  Modal,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+  View
+} from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Coin } from '../../../../types/Types'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
-import { AppFirebase } from '../../config/AppFirebase'
+import { UserContext } from '../../context/UserContext'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './TransactionStyle'
+
+LogBox.ignoreLogs(['Setting a timer'])
 
 const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
   const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
@@ -19,7 +35,42 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   const [currencyValue, setCurrencyValue] = useState<string>('')
   const [currencyId, setCurrencyId] = useState<number>(0)
   const [pickerValue, setPickerValue] = useState<number | undefined>(undefined)
-  /* AppFirebase.auth().signOut() */
+
+  const [walletValue, setWalletValue] = useState<Coin[]>([])
+  const { currencyUserApp } = useContext(UserContext)
+
+  useEffect(() => {
+    if (currencyUserApp !== null && currencyUserApp !== undefined) {
+      firestore()
+        .collection('wallets')
+        .doc(currencyUserApp)
+        .get()
+        .then(response => {
+          const arrayCollection = response.data()
+          if (arrayCollection !== undefined) {
+            const walletData: Array<Coin> = arrayCollection.coins
+            setWalletValue(walletData)
+            console.log(walletValue)
+          }
+        })
+        .catch(error => console.log(error))
+    }
+  }, [])
+
+  /*   async function BuyCurrency() {
+    if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
+      api.put('walletAdd', {
+        uid: currencyUserApp,
+        coins: {id: currencyId, name: currencyArray[currencyId].name, value: },
+        totalValue: 0
+      })
+    } else {
+      Alert.alert('Invalid value')
+      setCurrencyId(0)
+      setCurrencyValue('')
+    }
+  } */
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden />
@@ -101,7 +152,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
           style={style.transactionContainer}>
           <View style={style.transactionHeader}>
             <Text style={style.textHeader}>Transactions</Text>
-            <TouchableHighlight onPress={() => AppFirebase.auth().signOut()} style={style.iconOut}>
+            <TouchableHighlight onPress={() => auth().signOut()} style={style.iconOut}>
               <Icon name='exit-outline' size={30} color={colors.secondaryDark} />
             </TouchableHighlight>
           </View>

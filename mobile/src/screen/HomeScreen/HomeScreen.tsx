@@ -1,4 +1,5 @@
 import { Picker } from '@react-native-community/picker'
+import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
@@ -10,7 +11,6 @@ import * as Progress from 'react-native-progress'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
-import { AppFirebase } from '../../config/AppFirebase'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './HomeStyle'
@@ -209,7 +209,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
         <LinearGradient colors={['#fcfcfc', '#d1dce2']} useAngle angle={250} angleCenter={{ x: 0.3, y: 1 }} style={style.homeContainer}>
           <View style={style.homeHeader}>
             <Text style={style.textHeader}>Your account</Text>
-            <TouchableHighlight onPress={() => AppFirebase.auth().signOut()} style={style.iconOut}>
+            <TouchableHighlight onPress={() => auth().signOut()} style={style.iconOut}>
               <Icon name='exit-outline' size={30} color={colors.secondaryDark} />
             </TouchableHighlight>
           </View>

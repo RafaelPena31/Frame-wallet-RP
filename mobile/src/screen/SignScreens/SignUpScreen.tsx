@@ -1,3 +1,4 @@
+import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
 import React, { useState } from 'react'
@@ -5,7 +6,6 @@ import { Alert, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 're
 import 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/Entypo'
 import api from '../../api/api'
-import { AppFirebase } from '../../config/AppFirebase'
 import headerStyle from '../../styles/componentStyle/HeaderStyle'
 import colors from '../../styles/_colors'
 import style from './SignStyle'
@@ -17,10 +17,10 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
 
   async function handleCreate() {
     if (name !== '' && email !== '' && password !== '') {
-      AppFirebase.auth()
+      auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          const user = AppFirebase.auth().currentUser
+          const user = auth().currentUser
 
           if (user !== null) {
             user.updateProfile({
