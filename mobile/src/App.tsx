@@ -10,11 +10,11 @@ const App = (): JSX.Element => {
   return (
     <NavigationContainer>
       <UserContextProvider>
-        <TotalValueContextProvider>
-          <WalletContextProvider>
+        <WalletContextProvider>
+          <TotalValueContextProvider>
             <StackRoute />
-          </WalletContextProvider>
-        </TotalValueContextProvider>
+          </TotalValueContextProvider>
+        </WalletContextProvider>
       </UserContextProvider>
     </NavigationContainer>
   )

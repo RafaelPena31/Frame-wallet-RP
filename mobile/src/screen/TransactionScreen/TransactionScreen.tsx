@@ -2,7 +2,7 @@ import { Picker } from '@react-native-community/picker'
 import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Alert,
   LogBox,
@@ -34,12 +34,14 @@ LogBox.ignoreLogs(['Setting a timer'])
 const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
   const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
   const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
-  const [currencyValue, setCurrencyValue] = useState<string>('')
+  const [currencyValue, setCurrencyValue] = useState<string>('0')
   const [currencyId, setCurrencyId] = useState<number>(0)
 
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp } = useContext(UserContext)
+
+  console.log(walletValue, totalValueContext)
 
   async function BuyCurrency() {
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
@@ -47,30 +49,44 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
       const walletIndex = walletValue.findIndex(item => item.name === name)
       console.log(walletIndex)
       if (walletIndex === -1) {
-        setWalletValue([...walletValue, { id: currencyId, name: currencyArray[currencyId].name, value: parseFloat(currencyValue) }])
+        setWalletValue([
+          ...walletValue,
+          {
+            id: currencyId,
+            name: currencyArray[currencyId].name,
+            value: parseFloat(currencyValue),
+            realValue: parseFloat(currencyValue) * currencyArray[currencyId].price
+          }
+        ])
       } else {
         console.log('ue')
         setWalletValue([
-          ...walletValue.filter(item => item !== walletValue[currencyId]),
           {
-            id: walletValue[currencyId].id,
-            name: walletValue[currencyId].name,
-            value: walletValue[currencyId].value + parseFloat(currencyValue)
-          }
+            name: walletValue[walletIndex].name,
+            value: walletValue[walletIndex].value + parseFloat(currencyValue),
+            realValue: walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price,
+            id: walletValue[walletIndex].id
+          },
+          ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
         ])
       }
-      setTotalValueContext(totalValueContext + parseFloat(currencyValue))
-      api.put('walletAdd', {
-        uid: currencyUserApp,
-        coins: walletValue,
-        totalValue: totalValueContext
-      })
     } else {
       Alert.alert('Invalid value')
       setCurrencyId(0)
       setCurrencyValue('')
     }
   }
+
+  useEffect(() => {
+    setTotalValueContext(totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price)
+    api.put('walletAdd', {
+      uid: currencyUserApp,
+      coins: walletValue,
+      totalValue: totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price
+    })
+    console.log(parseFloat(currencyValue) + totalValueContext)
+    console.log(walletValue, totalValueContext)
+  }, [walletValue, setTotalValueContext])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
