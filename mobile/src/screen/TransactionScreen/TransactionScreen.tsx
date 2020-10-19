@@ -41,8 +41,6 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp } = useContext(UserContext)
 
-  console.log(walletValue, totalValueContext)
-
   async function BuyCurrency() {
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
       const { name } = currencyArray[currencyId]
@@ -183,7 +181,9 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
-                <Text style={[style.valueText]}>$00.00</Text>
+                <Text style={[style.valueText]}>
+                  {totalValueContext.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}
+                </Text>
               </>
               <>
                 <View style={style.balance}>
