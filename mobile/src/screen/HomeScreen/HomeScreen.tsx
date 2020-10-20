@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
   const { walletValue } = useContext(WalletContext)
   const { totalValueContext } = useContext(TotalValue)
   const { capitalValueContext } = useContext(CapitalValue)
-  const { investPorcContext, setInvestPorcContext } = useContext(InvestPorc)
+  const { investPorcContext } = useContext(InvestPorc)
 
   const chartConfig = {
     backgroundGradientFrom: '#fff',
@@ -120,6 +120,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
                 yAxisSuffix=''
                 yLabelsOffset={10}
                 xLabelsOffset={-5}
+                fromZero
                 showValuesOnTopOfBars
                 chartConfig={chartConfig}
                 verticalLabelRotation={30}

@@ -147,8 +147,13 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   }
 
   useEffect(() => {
-    const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
-    setInvestPorcContext(progressDataTotalPorc)
+    if (capitalValueContext !== 0) {
+      const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
+      setInvestPorcContext(progressDataTotalPorc)
+      console.log('f')
+    } else {
+      setInvestPorcContext(0)
+    }
   }, [capitalValueContext])
 
   return (
@@ -254,7 +259,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 <View style={style.balance}>
                   <Text style={style.textBalance}>Invested Capital Balance</Text>
                   <TouchableOpacity onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
-                    <Text style={style.buttonBalanceText}>Add +</Text>
+                    <Text style={style.buttonBalanceText}>Transfer +</Text>
                   </TouchableOpacity>
                 </View>
                 <Text style={[style.valueText]}>

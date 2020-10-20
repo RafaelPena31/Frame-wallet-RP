@@ -21,7 +21,7 @@ function StackRoute(): JSX.Element {
   const { setWalletValue } = useContext(WalletContext)
   const { setTotalValueContext } = useContext(TotalValue)
   const { setCapitalValueContext } = useContext(CapitalValue)
-  const { setInvestPorcContext } = useContext(InvestPorc)
+  const { investPorcContext, setInvestPorcContext } = useContext(InvestPorc)
 
   auth().onAuthStateChanged(user => {
     setCurrentUser(user)
@@ -42,11 +42,20 @@ function StackRoute(): JSX.Element {
             const walletDataCoins: Array<Coin> = arrayCollection.coins
             const walletDataTotal: number = arrayCollection.totalValue
             const walletDataCapital: number = arrayCollection.capitalValue
-            setWalletValue(walletDataCoins)
-            setTotalValueContext(walletDataTotal)
-            setCapitalValueContext(walletDataCapital)
-            const progressDataTotalPorc = (walletDataTotal * 100) / (walletDataTotal + walletDataCapital)
-            setInvestPorcContext(progressDataTotalPorc)
+            if (walletDataCapital !== 0) {
+              const progressDataTotalPorc = (walletDataTotal * 100) / (walletDataTotal + walletDataCapital)
+              setInvestPorcContext(progressDataTotalPorc)
+              setWalletValue(walletDataCoins)
+              setTotalValueContext(walletDataTotal)
+              setCapitalValueContext(walletDataCapital)
+              console.log(investPorcContext)
+            } else {
+              setInvestPorcContext(0)
+              setWalletValue(walletDataCoins)
+              setTotalValueContext(walletDataTotal)
+              setCapitalValueContext(walletDataCapital)
+            }
+
             console.log('stack')
           }
         })

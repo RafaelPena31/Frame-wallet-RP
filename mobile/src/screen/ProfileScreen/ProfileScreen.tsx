@@ -8,6 +8,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/Ionicons'
 import api from '../../api/api'
+import { CapitalValue } from '../../context/CapitalValueContext'
 import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
@@ -27,9 +28,10 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
   const [deleteVisible, setDeleteVisible] = useState<boolean>(false)
   const [deleteConfirm, setDeleteConfirm] = useState<string>('')
 
-  const { setWalletValue } = useContext(WalletContext)
+  const { walletValue, setWalletValue } = useContext(WalletContext)
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
+  const { setCapitalValueContext } = useContext(CapitalValue)
 
   firestore()
     .collection('users')
@@ -75,7 +77,7 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
   }
 
   async function handleUploadPass() {
-    if (passValue !== '' && passValue.length > 6) {
+    if (passValue !== '' && passValue.length > 5) {
       try {
         await auth().currentUser?.updatePassword(passValue)
         Alert.alert('Password update success')
@@ -108,20 +110,27 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
   }
 
   async function handleAccountDelete() {
-    if (deleteConfirm.toUpperCase() === 'YES') {
-      try {
-        await firestore().collection('wallets').doc(currencyUserApp).delete()
-        await firestore().collection('users').doc(currencyUserApp).delete()
-        await auth().currentUser?.delete()
-        setWalletValue([])
-        setCurrencyUserApp('')
-        setTotalValueContext(0)
-        Alert.alert('Your account has been deleted')
-      } catch (e) {
-        Alert.alert("We can't delete your account now. Try later.")
+    if (walletValue.length === 0) {
+      if (deleteConfirm.toUpperCase() === 'YES') {
+        try {
+          await firestore().collection('wallets').doc(currencyUserApp).delete()
+          await firestore().collection('users').doc(currencyUserApp).delete()
+          await auth().currentUser?.delete()
+          setWalletValue([])
+          setCurrencyUserApp('')
+          setTotalValueContext(0)
+          Alert.alert('Your account has been deleted')
+        } catch (e) {
+          Alert.alert('Error', "We can't delete your account now. Try later.")
+        }
+      } else {
+        Alert.alert('Invalid confirm')
       }
     } else {
-      Alert.alert('Invalid confirm')
+      Alert.alert(
+        'Error',
+        'We cannot delete your account now because you still have cryptocurrencies in your wallet. Sell to be able to exclude.'
+      )
     }
   }
 

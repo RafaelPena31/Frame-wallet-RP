@@ -35,6 +35,8 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
   const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
   const { investPorcContext, setInvestPorcContext } = useContext(InvestPorc)
 
+  console.log(investPorcContext)
+
   function ResetModals() {
     setModalVisibleCrypto(false)
     setModalVisibleCapital(false)
@@ -195,9 +197,13 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
   }
 
   useEffect(() => {
-    const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
-    setInvestPorcContext(progressDataTotalPorc)
-    console.log('f')
+    if (capitalValueContext !== 0) {
+      const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
+      setInvestPorcContext(progressDataTotalPorc)
+      console.log('f')
+    } else {
+      setInvestPorcContext(0)
+    }
   }, [capitalValueContext])
 
   return (
