@@ -2,7 +2,7 @@ import { Picker } from '@react-native-community/picker'
 import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Alert,
   LogBox,
@@ -22,7 +22,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import api from '../../api/api'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
-import { CapitalValue } from '../../context/CapitalValue'
+import { CapitalValue } from '../../context/CapitalValueContext'
+import { InvestPorc } from '../../context/InvestPorcContext'
 import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
@@ -43,6 +44,12 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp } = useContext(UserContext)
   const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
+  const { setInvestPorcContext } = useContext(InvestPorc)
+
+  function ResetModals() {
+    setModalVisibleCrypto(false)
+    setModalVisibleCapital(false)
+  }
 
   async function BuyCurrency() {
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
@@ -139,10 +146,10 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
     }
   }
 
-  function ResetModals() {
-    setModalVisibleCrypto(false)
-    setModalVisibleCapital(false)
-  }
+  useEffect(() => {
+    const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
+    setInvestPorcContext(progressDataTotalPorc)
+  }, [capitalValueContext])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

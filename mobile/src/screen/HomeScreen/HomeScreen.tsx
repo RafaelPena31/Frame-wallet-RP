@@ -9,16 +9,18 @@ import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { CapitalValue } from '../../context/CapitalValue'
+import { CapitalValue } from '../../context/CapitalValueContext'
+import { InvestPorc } from '../../context/InvestPorcContext'
 import { TotalValue } from '../../context/TotalValueContext'
 import { WalletContext } from '../../context/WalletContext'
 import colors from '../../styles/_colors'
 import style from './HomeStyle'
 
 const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
-  const { walletValue, setWalletValue } = useContext(WalletContext)
+  const { walletValue } = useContext(WalletContext)
   const { totalValueContext } = useContext(TotalValue)
   const { capitalValueContext } = useContext(CapitalValue)
+  const { investPorcContext, setInvestPorcContext } = useContext(InvestPorc)
 
   const chartConfig = {
     backgroundGradientFrom: '#fff',
@@ -34,11 +36,12 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
 
   const [labelData, setLabelData] = useState<Array<string>>([])
   const [numberData, setNumberData] = useState<Array<number>>([])
+
   useEffect(() => {
-    const test = walletValue
+    const graphData = walletValue
     let labelTest: Array<string> = []
     let numberTest: Array<number> = []
-    test.forEach(item => {
+    graphData.forEach(item => {
       labelTest.push(item.name)
       numberTest.push(item.realValue)
     })
@@ -96,8 +99,14 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
           </View>
 
           <View style={style.progressContainer}>
-            <Progress.Bar progress={1} width={320} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
-            <Text style={style.progressLabel}>{1}% - invested capital</Text>
+            <Progress.Bar
+              progress={investPorcContext / 100}
+              width={320}
+              color={colors.secondaryMiddle}
+              height={13}
+              style={style.progressBar}
+            />
+            <Text style={style.progressLabel}>{investPorcContext.toFixed(2)}% - invested capital</Text>
             <View style={style.dividerContainer}>
               <Text style={style.dividerText}> ─ Analytics ────────</Text>
               <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />

@@ -2,7 +2,7 @@ import { Picker } from '@react-native-community/picker'
 import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Alert, Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
@@ -12,7 +12,8 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import api from '../../api/api'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
-import { CapitalValue } from '../../context/CapitalValue'
+import { CapitalValue } from '../../context/CapitalValueContext'
+import { InvestPorc } from '../../context/InvestPorcContext'
 import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
@@ -32,6 +33,13 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp } = useContext(UserContext)
   const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
+  const { investPorcContext, setInvestPorcContext } = useContext(InvestPorc)
+
+  function ResetModals() {
+    setModalVisibleCrypto(false)
+    setModalVisibleCapital(false)
+    setModalVisibleSell(false)
+  }
 
   async function BuyCurrency() {
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
@@ -103,35 +111,13 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         setCurrencyId(0)
         setCurrencyValue('0')
       }
+
       ResetModals()
     } else {
       Alert.alert('Invalid value')
       setCurrencyId(0)
       setCurrencyValue('0')
     }
-  }
-
-  async function CapitalAdd() {
-    if (parseFloat(capitalValue) !== 0 && capitalValue !== '') {
-      api.put('walletAdd', {
-        uid: currencyUserApp,
-        coins: walletValue,
-        totalValue: totalValueContext,
-        capitalValue: capitalValueContext + parseFloat(capitalValue)
-      })
-      setCapitalValueContext(capitalValueContext + parseFloat(capitalValue))
-      ResetModals()
-    } else {
-      Alert.alert('Invalid value')
-      setCurrencyId(0)
-      setCurrencyValue('0')
-    }
-  }
-
-  function ResetModals() {
-    setModalVisibleCrypto(false)
-    setModalVisibleCapital(false)
-    setModalVisibleSell(false)
   }
 
   async function SellCurrency() {
@@ -182,7 +168,6 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         ])
         setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
         setCapitalValueContext(capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
-        ResetModals()
       }
       ResetModals()
     } else {
@@ -191,6 +176,29 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
       setCurrencyValue('0')
     }
   }
+
+  async function CapitalAdd() {
+    if (parseFloat(capitalValue) !== 0 && capitalValue !== '') {
+      api.put('walletAdd', {
+        uid: currencyUserApp,
+        coins: walletValue,
+        totalValue: totalValueContext,
+        capitalValue: capitalValueContext + parseFloat(capitalValue)
+      })
+      setCapitalValueContext(capitalValueContext + parseFloat(capitalValue))
+      ResetModals()
+    } else {
+      Alert.alert('Invalid value')
+      setCurrencyId(0)
+      setCurrencyValue('0')
+    }
+  }
+
+  useEffect(() => {
+    const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
+    setInvestPorcContext(progressDataTotalPorc)
+    console.log('f')
+  }, [capitalValueContext])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -355,8 +363,14 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
           </View>
 
           <View style={style.progressContainer}>
-            <Progress.Bar progress={0.73} width={334} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
-            <Text style={style.progressLabel}>70% - invested capital</Text>
+            <Progress.Bar
+              progress={investPorcContext / 100}
+              width={320}
+              color={colors.secondaryMiddle}
+              height={13}
+              style={style.progressBar}
+            />
+            <Text style={style.progressLabel}>{investPorcContext.toFixed(2)}% - invested capital</Text>
           </View>
           <View style={style.dividerContainer}>
             <Text style={style.dividerText}> ─ Your currencies ────────</Text>

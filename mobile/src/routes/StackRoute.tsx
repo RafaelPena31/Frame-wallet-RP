@@ -3,7 +3,8 @@ import firestore from '@react-native-firebase/firestore'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { useContext, useEffect, useState } from 'react'
 import { Coin } from '../../../types/Types'
-import { CapitalValue } from '../context/CapitalValue'
+import { CapitalValue } from '../context/CapitalValueContext'
+import { InvestPorc } from '../context/InvestPorcContext'
 import { TotalValue } from '../context/TotalValueContext'
 import { UserContext } from '../context/UserContext'
 import { WalletContext } from '../context/WalletContext'
@@ -18,8 +19,9 @@ function StackRoute(): JSX.Element {
   const [currentUser, setCurrentUser] = useState<FirebaseAuthTypes.User | null>()
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
   const { setWalletValue } = useContext(WalletContext)
-  const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
-  const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
+  const { setTotalValueContext } = useContext(TotalValue)
+  const { setCapitalValueContext } = useContext(CapitalValue)
+  const { setInvestPorcContext } = useContext(InvestPorc)
 
   auth().onAuthStateChanged(user => {
     setCurrentUser(user)
@@ -43,11 +45,19 @@ function StackRoute(): JSX.Element {
             setWalletValue(walletDataCoins)
             setTotalValueContext(walletDataTotal)
             setCapitalValueContext(walletDataCapital)
+            const progressDataTotalPorc = (walletDataTotal * 100) / (walletDataTotal + walletDataCapital)
+            setInvestPorcContext(progressDataTotalPorc)
             console.log('stack')
           }
         })
     }
   }, [currencyUserApp])
+
+  /*   useEffect(() => {
+    const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
+    setInvestPorcContext(progressDataTotalPorc)
+    console.log('f')
+  }, [capitalValueContext]) */
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
