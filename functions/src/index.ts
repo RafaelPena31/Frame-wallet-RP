@@ -36,6 +36,21 @@ app.put("/users", (request, response) => {
       response.json(e);
     });
 });
+
+app.put("/usersData", (request, response) => {
+  db.collection("/users")
+    .doc(request.body.uid)
+    .update({
+      name: request.body.name,
+      email: request.body.email,
+    })
+    .then((i) => {
+      response.status(200).json(i);
+    })
+    .catch((e) => {
+      response.json(e);
+    });
+});
 /* Wallets */
 app.post("/wallet", (request, response) => {
   db.collection("wallets")
