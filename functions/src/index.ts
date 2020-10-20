@@ -67,8 +67,6 @@ app.put("/walletAdd", (request, response) => {
     });
 });
 app.put("/walletSell", (request, response) => {
-  db.collection("wallet");
-
   db.collection("/wallets")
     .doc(request.body.uid)
     .update({

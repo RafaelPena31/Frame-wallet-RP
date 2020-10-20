@@ -28,7 +28,8 @@ function StackRoute(): JSX.Element {
 
   useEffect(() => {
     if (currencyUserApp !== null && currencyUserApp !== undefined) {
-      firestore()
+      console.log('stack')
+      /*       firestore()
         .collection('wallets')
         .doc(currencyUserApp)
         .get()
@@ -43,9 +44,39 @@ function StackRoute(): JSX.Element {
             console.log(totalValueContext)
           }
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error)) */
+      firestore()
+        .collection('wallets')
+        .doc(currencyUserApp)
+        .get()
+        .then(doc => {
+          const arrayCollection = doc.data()
+          if (arrayCollection !== undefined) {
+            const walletDataCoins: Array<Coin> = arrayCollection.coins
+            const walletDataTotal: number = arrayCollection.totalValue
+            setWalletValue(walletDataCoins)
+            setTotalValueContext(walletDataTotal)
+            console.log('stack')
+          }
+        })
     }
-  }, [setWalletValue, currencyUserApp, firestore])
+  }, [currencyUserApp, totalValueContext])
+  /*   firestore()
+    .collection('wallets')
+    .doc(currencyUserApp)
+    .get()
+    .then(response => {
+      const arrayCollection = response.data()
+      if (arrayCollection !== undefined) {
+        const walletDataCoins: Array<Coin> = arrayCollection.coins
+        const walletDataTotal: number = arrayCollection.totalValue
+        setWalletValue(walletDataCoins)
+        setTotalValueContext(walletDataTotal)
+        console.log(walletValue)
+        console.log(totalValueContext)
+      }
+    })
+    .catch(error => console.log(error)) */
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

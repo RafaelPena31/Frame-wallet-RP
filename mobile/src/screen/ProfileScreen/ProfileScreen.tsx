@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import firestore from '@react-native-firebase/firestore'
+import React, { useContext, useState } from 'react'
 import { Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { TotalValue } from '../../context/TotalValueContext'
+import { UserContext } from '../../context/UserContext'
 import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './ProfileStyle'
@@ -17,6 +20,21 @@ const ProfileScreen = (/* { navigation }: StackScreenProps<ParamListBase> */): J
   const [passValue, setPassValue] = useState<string>('')
   const [nameVisible, setNameVisible] = useState<boolean>(false)
   const [nameValue, setNameValue] = useState<string>('')
+  const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
+  const { currencyUserApp } = useContext(UserContext)
+
+  firestore()
+    .collection('wallets')
+    .doc(currencyUserApp)
+    .onSnapshot(doc => {
+      const arrayCollection = doc.data()
+      if (arrayCollection !== undefined) {
+        const walletDataTotal: number = arrayCollection.totalValue
+        setTotalValueContext(walletDataTotal)
+        console.log(totalValueContext)
+      }
+    })
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/* Modais */}
@@ -130,7 +148,9 @@ const ProfileScreen = (/* { navigation }: StackScreenProps<ParamListBase> */): J
           </View>
           <View style={style.valueContent}>
             <Text style={style.textValueLabelHeader}>Your balance</Text>
-            <Text style={style.textValueHeader}>$00.00</Text>
+            <Text style={style.textValueHeader}>
+              {totalValueContext.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}
+            </Text>
           </View>
         </LinearGradient>
 

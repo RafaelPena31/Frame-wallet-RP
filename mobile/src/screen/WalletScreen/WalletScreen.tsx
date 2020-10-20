@@ -2,7 +2,7 @@ import { Picker } from '@react-native-community/picker'
 import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Alert, Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
@@ -34,46 +34,118 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
       const { name } = currencyArray[currencyId]
       const walletIndex = walletValue.findIndex(item => item.name === name)
-      console.log(walletIndex)
       if (walletIndex === -1) {
+        api.put('walletAdd', {
+          uid: currencyUserApp,
+          coins: [
+            ...walletValue,
+            {
+              id: currencyId,
+              name: currencyArray[currencyId].name,
+              value: parseFloat(currencyValue),
+              realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+            }
+          ],
+          totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+        })
         setWalletValue([
           ...walletValue,
           {
             id: currencyId,
             name: currencyArray[currencyId].name,
             value: parseFloat(currencyValue),
-            realValue: parseFloat(currencyValue) * currencyArray[currencyId].price
+            realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
           }
         ])
+        setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
       } else {
-        console.log('ue')
+        api.put('walletAdd', {
+          uid: currencyUserApp,
+          coins: [
+            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+            {
+              name: walletValue[walletIndex].name,
+              value: walletValue[walletIndex].value + parseFloat(currencyValue),
+              realValue: parseFloat(
+                (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+              ),
+              id: walletValue[walletIndex].id
+            }
+          ],
+          totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+        })
         setWalletValue([
           {
             name: walletValue[walletIndex].name,
             value: walletValue[walletIndex].value + parseFloat(currencyValue),
-            realValue: walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price,
+            realValue: parseFloat(
+              (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+            ),
             id: walletValue[walletIndex].id
           },
           ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
         ])
       }
+      setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
     } else {
       Alert.alert('Invalid value')
       setCurrencyId(0)
-      setCurrencyValue('')
+      setCurrencyValue('0')
     }
   }
 
-  useEffect(() => {
-    setTotalValueContext(totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price)
-    api.put('walletAdd', {
-      uid: currencyUserApp,
-      coins: walletValue,
-      totalValue: totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price
-    })
-    console.log(parseFloat(currencyValue) + totalValueContext)
-    console.log(walletValue, totalValueContext)
-  }, [walletValue, setTotalValueContext])
+  async function SellCurrency() {
+    if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
+      const { name } = currencyArray[currencyId]
+      const walletIndex = walletValue.findIndex(item => item.name === name)
+      if (walletValue[walletIndex].value - parseFloat(currencyValue) === 0) {
+        api.put('walletSell', {
+          uid: currencyUserApp,
+          coins: [...walletValue.filter(item => item.name !== walletValue[walletIndex].name)],
+          totalValue: parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+        })
+        setWalletValue([...walletValue.filter(item => item.name !== walletValue[walletIndex].name)])
+        setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+      } else if (walletValue[walletIndex].value - parseFloat(currencyValue) < 0) {
+        Alert.alert('Invalid value')
+        setCurrencyId(0)
+        setCurrencyValue('0')
+      } else {
+        api.put('walletSell', {
+          uid: currencyUserApp,
+          coins: [
+            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+            {
+              name: walletValue[walletIndex].name,
+              value: walletValue[walletIndex].value - parseFloat(currencyValue),
+              realValue: parseFloat(
+                (walletValue[walletIndex].realValue - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+              ),
+              id: walletValue[walletIndex].id
+            }
+          ],
+          totalValue: parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+        })
+        setWalletValue([
+          {
+            name: walletValue[walletIndex].name,
+            value: walletValue[walletIndex].value - parseFloat(currencyValue),
+            realValue: parseFloat(
+              (walletValue[walletIndex].realValue - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+            ),
+            id: walletValue[walletIndex].id
+          },
+          ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
+        ])
+
+        setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+      }
+    } else {
+      Alert.alert('Invalid value')
+      setCurrencyId(0)
+      setCurrencyValue('0')
+    }
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -138,7 +210,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                 value={currencyValue}
               />
               <View style={BuyModalStyle.buttonModalContainer}></View>
-              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleSell(!modalVisibleSell)}>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={SellCurrency}>
                 <Text style={BuyModalStyle.buttonModalText}>Sell</Text>
               </TouchableHighlight>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleSell(!modalVisibleSell)}>
@@ -244,9 +316,20 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
             <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />
           </View>
 
-          <TouchableOpacity onPress={() => setModalVisibleSell(!modalVisibleSell)}>
-            <CryptoBox id={5} value={0} quant={1.3} />
-          </TouchableOpacity>
+          {walletValue !== undefined
+            ? walletValue.map(item => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setModalVisibleSell(!modalVisibleSell)
+                      setCurrencyId(item.id)
+                    }}
+                    key={item.id}>
+                    <CryptoBox id={item.id} value={item.realValue} quant={item.value} />
+                  </TouchableOpacity>
+                )
+              })
+            : null}
         </LinearGradient>
       </ScrollView>
     </SafeAreaView>

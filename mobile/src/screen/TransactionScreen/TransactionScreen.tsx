@@ -2,7 +2,7 @@ import { Picker } from '@react-native-community/picker'
 import auth from '@react-native-firebase/auth'
 import { ParamListBase } from '@react-navigation/native'
 import { StackScreenProps } from '@react-navigation/stack'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   Alert,
   LogBox,
@@ -45,46 +45,65 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
       const { name } = currencyArray[currencyId]
       const walletIndex = walletValue.findIndex(item => item.name === name)
-      console.log(walletIndex)
       if (walletIndex === -1) {
+        api.put('walletAdd', {
+          uid: currencyUserApp,
+          coins: [
+            ...walletValue,
+            {
+              id: currencyId,
+              name: currencyArray[currencyId].name,
+              value: parseFloat(currencyValue),
+              realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+            }
+          ],
+          totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+        })
         setWalletValue([
           ...walletValue,
           {
             id: currencyId,
             name: currencyArray[currencyId].name,
             value: parseFloat(currencyValue),
-            realValue: parseFloat(currencyValue) * currencyArray[currencyId].price
+            realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
           }
         ])
+        setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
       } else {
-        console.log('ue')
+        api.put('walletAdd', {
+          uid: currencyUserApp,
+          coins: [
+            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+            {
+              name: walletValue[walletIndex].name,
+              value: walletValue[walletIndex].value + parseFloat(currencyValue),
+              realValue: parseFloat(
+                (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+              ),
+              id: walletValue[walletIndex].id
+            }
+          ],
+          totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+        })
         setWalletValue([
           {
             name: walletValue[walletIndex].name,
             value: walletValue[walletIndex].value + parseFloat(currencyValue),
-            realValue: walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price,
+            realValue: parseFloat(
+              (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+            ),
             id: walletValue[walletIndex].id
           },
           ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
         ])
       }
+      setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
     } else {
       Alert.alert('Invalid value')
       setCurrencyId(0)
-      setCurrencyValue('')
+      setCurrencyValue('0')
     }
   }
-
-  useEffect(() => {
-    setTotalValueContext(totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price)
-    api.put('walletAdd', {
-      uid: currencyUserApp,
-      coins: walletValue,
-      totalValue: totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price
-    })
-    console.log(parseFloat(currencyValue) + totalValueContext)
-    console.log(walletValue, totalValueContext)
-  }, [walletValue, setTotalValueContext])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -217,7 +236,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 <Text style={[style.buttonTransactionText]}>Add capital to invest</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={style.buttonTransaction2}>
+            <TouchableOpacity style={style.buttonTransaction2} onPress={() => navigation.navigate('Wallet')}>
               <Icon name='card' size={75} color='#ffffff' style={{ margin: 15 }} />
               <Text style={[style.buttonTransactionText]}>View details of your investments</Text>
             </TouchableOpacity>
