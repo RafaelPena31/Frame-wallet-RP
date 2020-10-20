@@ -150,10 +150,10 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
     if (capitalValueContext !== 0) {
       const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
       setInvestPorcContext(progressDataTotalPorc)
-      console.log('f')
     } else {
       setInvestPorcContext(0)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [capitalValueContext])
 
   return (
@@ -164,13 +164,16 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
 
       {/* Crypto */}
 
-      <Modal animationType='fade' transparent={true} visible={modalVisibleCrypto} statusBarTranslucent style={BuyModalStyle.config}>
+      <Modal animationType='fade' transparent visible={modalVisibleCrypto} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text style={BuyModalStyle.titleModal}>Buy Cryptocurrencies</Text>
             <View style={BuyModalStyle.formModal}>
               <View style={BuyModalStyle.pickerContainer}>
-                <Picker selectedValue={currencyId} onValueChange={e => setCurrencyId(parseInt(e.toString()))} style={BuyModalStyle.picker}>
+                <Picker
+                  selectedValue={currencyId}
+                  onValueChange={e => setCurrencyId(parseInt(e.toString(), 10))}
+                  style={BuyModalStyle.picker}>
                   {currencyArray.map((item, index) => {
                     return <Picker.Item label={item.name} key={item.sigla} value={index} />
                   })}
@@ -184,7 +187,6 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 onChangeText={e => setCurrencyValue(e)}
                 value={currencyValue}
               />
-              <View style={BuyModalStyle.buttonModalContainer}></View>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={BuyCurrency}>
                 <Text style={BuyModalStyle.buttonModalText}>Buy</Text>
               </TouchableHighlight>
@@ -200,7 +202,7 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
 
       {/* Capital */}
 
-      <Modal animationType='fade' transparent={true} visible={modalVisibleCapital} statusBarTranslucent style={BuyModalStyle.config}>
+      <Modal animationType='fade' transparent visible={modalVisibleCapital} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text style={BuyModalStyle.titleModal}>Add new capital to investe</Text>
@@ -212,7 +214,6 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 onChangeText={e => setCapitalValue(e)}
                 value={capitalValue}
               />
-              <View style={BuyModalStyle.buttonModalContainer}></View>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={CapitalAdd}>
                 <Text style={BuyModalStyle.buttonModalText}>Add capital</Text>
               </TouchableHighlight>

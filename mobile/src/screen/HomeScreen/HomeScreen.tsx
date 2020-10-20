@@ -39,15 +39,15 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
 
   useEffect(() => {
     const graphData = walletValue
-    let labelTest: Array<string> = []
-    let numberTest: Array<number> = []
+    const labelTest: Array<string> = []
+    const numberTest: Array<number> = []
     graphData.forEach(item => {
       labelTest.push(item.name)
       numberTest.push(item.realValue)
     })
     setLabelData(labelTest)
     setNumberData(numberTest)
-    console.log(labelData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletValue])
 
   return (
@@ -106,6 +106,7 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
               height={13}
               style={style.progressBar}
             />
+            {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
             <Text style={style.progressLabel}>{investPorcContext.toFixed(2)}% - invested capital</Text>
             <View style={style.dividerContainer}>
               <Text style={style.dividerText}> ─ Analytics ────────</Text>

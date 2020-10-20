@@ -21,7 +21,7 @@ function StackRoute(): JSX.Element {
   const { setWalletValue } = useContext(WalletContext)
   const { setTotalValueContext } = useContext(TotalValue)
   const { setCapitalValueContext } = useContext(CapitalValue)
-  const { investPorcContext, setInvestPorcContext } = useContext(InvestPorc)
+  const { setInvestPorcContext } = useContext(InvestPorc)
 
   auth().onAuthStateChanged(user => {
     setCurrentUser(user)
@@ -29,7 +29,6 @@ function StackRoute(): JSX.Element {
       setCurrencyUserApp(user?.uid)
     }
   })
-
   useEffect(() => {
     if (currencyUserApp !== null && currencyUserApp !== undefined) {
       firestore()
@@ -48,25 +47,17 @@ function StackRoute(): JSX.Element {
               setWalletValue(walletDataCoins)
               setTotalValueContext(walletDataTotal)
               setCapitalValueContext(walletDataCapital)
-              console.log(investPorcContext)
             } else {
               setInvestPorcContext(0)
               setWalletValue(walletDataCoins)
               setTotalValueContext(walletDataTotal)
               setCapitalValueContext(walletDataCapital)
             }
-
-            console.log('stack')
           }
         })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currencyUserApp])
-
-  /*   useEffect(() => {
-    const progressDataTotalPorc = (totalValueContext * 100) / (totalValueContext + capitalValueContext)
-    setInvestPorcContext(progressDataTotalPorc)
-    console.log('f')
-  }, [capitalValueContext]) */
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

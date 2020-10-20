@@ -1,7 +1,5 @@
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { ParamListBase } from '@react-navigation/native'
-import { StackScreenProps } from '@react-navigation/stack'
 import React, { useContext, useState } from 'react'
 import { Alert, Modal, SafeAreaView, StatusBar, Text, TextInput, TouchableHighlight, View } from 'react-native'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
@@ -16,7 +14,7 @@ import BuyModalStyle from '../../styles/componentStyle/Modals/BuyModalStyle'
 import colors from '../../styles/_colors'
 import style from './ProfileStyle'
 
-const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
+const ProfileScreen = (): JSX.Element => {
   const [emailVisible, setEmailVisible] = useState<boolean>(false)
   const [emailValue, setEmailValue] = useState<string>('')
   const [emailReal, setEmailReal] = useState<string>('')
@@ -44,21 +42,18 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
         setNameReal(userDataName)
         setEmailReal(userDataEmail)
       }
-      console.log('w')
     })
 
   async function handleUploadEmail() {
-    console.log(emailValue.length)
     if (emailValue.length > 8) {
       await auth()
         .currentUser?.updateEmail(emailValue)
         .then(() => {
           Alert.alert('E-mail update success')
         })
-        .catch(e => {
+        .catch(() => {
           Alert.alert("We can't update your e-mail now. Try later.")
           setEmailVisible(!emailVisible)
-          console.log(e)
         })
       api
         .put('usersData', { uid: currencyUserApp, name: nameReal, email: emailValue })
@@ -66,10 +61,9 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
           Alert.alert('E-mail update success')
           setEmailVisible(!emailVisible)
         })
-        .catch(e => {
+        .catch(() => {
           Alert.alert("We can't update your e-mail now. Try later.")
           setEmailVisible(!emailVisible)
-          console.log(e)
         })
     } else {
       Alert.alert('Invalid value')
@@ -99,10 +93,9 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
           Alert.alert('Username update success')
           setNameVisible(!nameVisible)
         })
-        .catch(e => {
+        .catch(() => {
           Alert.alert("We can't update your username now. Try later.")
           setNameVisible(!nameVisible)
-          console.log(e)
         })
     } else {
       Alert.alert('Invalid value')
@@ -119,6 +112,7 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
           setWalletValue([])
           setCurrencyUserApp('')
           setTotalValueContext(0)
+          setCapitalValueContext(0)
           Alert.alert('Your account has been deleted')
         } catch (e) {
           Alert.alert('Error', "We can't delete your account now. Try later.")
@@ -140,7 +134,7 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
 
       {/* Email */}
 
-      <Modal animationType='fade' transparent={true} visible={emailVisible} statusBarTranslucent style={BuyModalStyle.config}>
+      <Modal animationType='fade' transparent visible={emailVisible} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text style={BuyModalStyle.titleModal}>Update your e-mail</Text>
@@ -152,7 +146,6 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
                 onChangeText={e => setEmailValue(e)}
                 value={emailValue}
               />
-              <View style={BuyModalStyle.buttonModalContainer}></View>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={handleUploadEmail}>
                 <Text style={BuyModalStyle.buttonModalText}>Update</Text>
               </TouchableHighlight>
@@ -168,7 +161,7 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
 
       {/* Password */}
 
-      <Modal animationType='fade' transparent={true} visible={passVisible} statusBarTranslucent style={BuyModalStyle.config}>
+      <Modal animationType='fade' transparent visible={passVisible} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text style={BuyModalStyle.titleModal}>Update your password</Text>
@@ -183,7 +176,6 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
                 onChangeText={e => setPassValue(e)}
                 value={passValue}
               />
-              <View style={BuyModalStyle.buttonModalContainer}></View>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={handleUploadPass}>
                 <Text style={BuyModalStyle.buttonModalText}>Update</Text>
               </TouchableHighlight>
@@ -199,7 +191,7 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
 
       {/* DisplayName */}
 
-      <Modal animationType='fade' transparent={true} visible={nameVisible} statusBarTranslucent style={BuyModalStyle.config}>
+      <Modal animationType='fade' transparent visible={nameVisible} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text style={BuyModalStyle.titleModal}>Update your name</Text>
@@ -213,7 +205,6 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
                 onChangeText={e => setNameValue(e.toString())}
                 value={nameValue}
               />
-              <View style={BuyModalStyle.buttonModalContainer}></View>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={handleUploadName}>
                 <Text style={BuyModalStyle.buttonModalText}>Update</Text>
               </TouchableHighlight>
@@ -229,7 +220,7 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
 
       {/* Delete */}
 
-      <Modal animationType='fade' transparent={true} visible={deleteVisible} statusBarTranslucent style={BuyModalStyle.config}>
+      <Modal animationType='fade' transparent visible={deleteVisible} statusBarTranslucent style={BuyModalStyle.config}>
         <SafeAreaView style={BuyModalStyle.centeredView}>
           <View style={BuyModalStyle.container}>
             <Text style={BuyModalStyle.titleModal}>Are you sure you would like to delete your account? The action is irreversible</Text>
@@ -241,7 +232,6 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
                 onChangeText={e => setDeleteConfirm(e.toString())}
                 value={deleteConfirm}
               />
-              <View style={BuyModalStyle.buttonModalContainer}></View>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={handleAccountDelete}>
                 <Text style={BuyModalStyle.buttonModalText}>Delete</Text>
               </TouchableHighlight>
