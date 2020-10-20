@@ -32,7 +32,7 @@ const SignUpScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
             Alert.alert('Error', 'Account creation denied user')
           })
           api
-            .post('wallet', { uid: user?.uid, coins: [], totalValue: 0 })
+            .post('wallet', { uid: user?.uid, coins: [], totalValue: 0, capitalValue: 0 })
             .then(() => {
               Alert.alert('Success', 'Your account was created successfully')
             })

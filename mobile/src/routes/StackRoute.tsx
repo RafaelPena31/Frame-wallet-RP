@@ -3,6 +3,7 @@ import firestore from '@react-native-firebase/firestore'
 import { createStackNavigator } from '@react-navigation/stack'
 import React, { useContext, useEffect, useState } from 'react'
 import { Coin } from '../../../types/Types'
+import { CapitalValue } from '../context/CapitalValue'
 import { TotalValue } from '../context/TotalValueContext'
 import { UserContext } from '../context/UserContext'
 import { WalletContext } from '../context/WalletContext'
@@ -16,8 +17,9 @@ const Stack = createStackNavigator()
 function StackRoute(): JSX.Element {
   const [currentUser, setCurrentUser] = useState<FirebaseAuthTypes.User | null>()
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
-  const { walletValue, setWalletValue } = useContext(WalletContext)
+  const { setWalletValue } = useContext(WalletContext)
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
+  const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
 
   auth().onAuthStateChanged(user => {
     setCurrentUser(user)
@@ -28,23 +30,6 @@ function StackRoute(): JSX.Element {
 
   useEffect(() => {
     if (currencyUserApp !== null && currencyUserApp !== undefined) {
-      console.log('stack')
-      /*       firestore()
-        .collection('wallets')
-        .doc(currencyUserApp)
-        .get()
-        .then(response => {
-          const arrayCollection = response.data()
-          if (arrayCollection !== undefined) {
-            const walletDataCoins: Array<Coin> = arrayCollection.coins
-            const walletDataTotal: number = arrayCollection.totalValue
-            setWalletValue(walletDataCoins)
-            setTotalValueContext(walletDataTotal)
-            console.log(walletValue)
-            console.log(totalValueContext)
-          }
-        })
-        .catch(error => console.log(error)) */
       firestore()
         .collection('wallets')
         .doc(currencyUserApp)
@@ -54,29 +39,15 @@ function StackRoute(): JSX.Element {
           if (arrayCollection !== undefined) {
             const walletDataCoins: Array<Coin> = arrayCollection.coins
             const walletDataTotal: number = arrayCollection.totalValue
+            const walletDataCapital: number = arrayCollection.capitalValue
             setWalletValue(walletDataCoins)
             setTotalValueContext(walletDataTotal)
+            setCapitalValueContext(walletDataCapital)
             console.log('stack')
           }
         })
     }
-  }, [currencyUserApp, totalValueContext])
-  /*   firestore()
-    .collection('wallets')
-    .doc(currencyUserApp)
-    .get()
-    .then(response => {
-      const arrayCollection = response.data()
-      if (arrayCollection !== undefined) {
-        const walletDataCoins: Array<Coin> = arrayCollection.coins
-        const walletDataTotal: number = arrayCollection.totalValue
-        setWalletValue(walletDataCoins)
-        setTotalValueContext(walletDataTotal)
-        console.log(walletValue)
-        console.log(totalValueContext)
-      }
-    })
-    .catch(error => console.log(error)) */
+  }, [currencyUserApp, totalValueContext, capitalValueContext])
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

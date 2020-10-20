@@ -59,6 +59,7 @@ app.post("/wallet", (request, response) => {
       id: request.body.uid,
       coins: request.body.coins,
       totalValue: request.body.totalValue,
+      capitalValue: request.body.capitalValue,
     })
     .then((i) => {
       response.status(200).json(i);
@@ -73,6 +74,7 @@ app.put("/walletAdd", (request, response) => {
     .update({
       coins: request.body.coins,
       totalValue: request.body.totalValue,
+      capitalValue: request.body.capitalValue,
     })
     .then((i) => {
       response.status(200).json(i);
@@ -87,6 +89,7 @@ app.put("/walletSell", (request, response) => {
     .update({
       coins: request.body.coins,
       totalValue: request.body.totalValue,
+      capitalValue: request.body.capitalValue,
     })
     .then((i) => {
       response.status(200).json(i);

@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import 'react-native-gesture-handler'
+import CapitalValueContextProvider from './context/CapitalValue'
 import TotalValueContextProvider from './context/TotalValueContext'
 import UserContextProvider from './context/UserContext'
 import WalletContextProvider from './context/WalletContext'
@@ -12,7 +13,9 @@ const App = (): JSX.Element => {
       <UserContextProvider>
         <WalletContextProvider>
           <TotalValueContextProvider>
-            <StackRoute />
+            <CapitalValueContextProvider>
+              <StackRoute />
+            </CapitalValueContextProvider>
           </TotalValueContextProvider>
         </WalletContextProvider>
       </UserContextProvider>

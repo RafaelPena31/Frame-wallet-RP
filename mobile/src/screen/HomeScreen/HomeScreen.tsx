@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import * as Progress from 'react-native-progress'
 import Swiper from 'react-native-swiper'
 import Icon from 'react-native-vector-icons/Ionicons'
+import { CapitalValue } from '../../context/CapitalValue'
 import { TotalValue } from '../../context/TotalValueContext'
 import { WalletContext } from '../../context/WalletContext'
 import colors from '../../styles/_colors'
@@ -17,6 +18,7 @@ import style from './HomeStyle'
 const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Element => {
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { totalValueContext } = useContext(TotalValue)
+  const { capitalValueContext } = useContext(CapitalValue)
 
   const chartConfig = {
     backgroundGradientFrom: '#fff',
@@ -76,7 +78,9 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
-                <Text style={[style.valueText]}>$00.00</Text>
+                <Text style={[style.valueText]}>
+                  {capitalValueContext.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}
+                </Text>
               </>
             </Swiper>
             <View style={style.valueButtonContainer}>
@@ -92,8 +96,16 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
           </View>
 
           <View style={style.progressContainer}>
-            <Progress.Bar progress={0.73} width={320} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
-            <Text style={style.progressLabel}>70% - invested capital</Text>
+            <Progress.Bar
+              progress={(totalValueContext * 100) / (totalValueContext + capitalValueContext) / 100}
+              width={320}
+              color={colors.secondaryMiddle}
+              height={13}
+              style={style.progressBar}
+            />
+            <Text style={style.progressLabel}>
+              {((totalValueContext * 100) / (totalValueContext + capitalValueContext)).toFixed(2)}% - invested capital
+            </Text>
             <View style={style.dividerContainer}>
               <Text style={style.dividerText}> ─ Analytics ────────</Text>
               <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />
