@@ -24,6 +24,8 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
   const [nameVisible, setNameVisible] = useState<boolean>(false)
   const [nameValue, setNameValue] = useState<string>('')
   const [nameReal, setNameReal] = useState<string>('')
+  const [deleteVisible, setDeleteVisible] = useState<boolean>(false)
+  const [deleteConfirm, setDeleteConfirm] = useState<string>('')
 
   const { setWalletValue } = useContext(WalletContext)
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
@@ -106,16 +108,20 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
   }
 
   async function handleAccountDelete() {
-    try {
-      await firestore().collection('wallets').doc(currencyUserApp).delete()
-      await firestore().collection('users').doc(currencyUserApp).delete()
-      await auth().currentUser?.delete()
-      setWalletValue([])
-      setCurrencyUserApp('')
-      setTotalValueContext(0)
-      Alert.alert('Your account has been deleted')
-    } catch (e) {
-      Alert.alert("We can't delete your account now. Try later.")
+    if (deleteConfirm.toUpperCase() === 'YES') {
+      try {
+        await firestore().collection('wallets').doc(currencyUserApp).delete()
+        await firestore().collection('users').doc(currencyUserApp).delete()
+        await auth().currentUser?.delete()
+        setWalletValue([])
+        setCurrencyUserApp('')
+        setTotalValueContext(0)
+        Alert.alert('Your account has been deleted')
+      } catch (e) {
+        Alert.alert("We can't delete your account now. Try later.")
+      }
+    } else {
+      Alert.alert('Invalid confirm')
     }
   }
 
@@ -212,6 +218,34 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
 
       {/* DisplayName */}
 
+      {/* Delete */}
+
+      <Modal animationType='fade' transparent={true} visible={deleteVisible} statusBarTranslucent style={BuyModalStyle.config}>
+        <SafeAreaView style={BuyModalStyle.centeredView}>
+          <View style={BuyModalStyle.container}>
+            <Text style={BuyModalStyle.titleModal}>Are you sure you would like to delete your account? The action is irreversible</Text>
+            <View style={BuyModalStyle.formModal}>
+              <TextInput
+                placeholder='type "YES" to continue'
+                style={BuyModalStyle.txtModal}
+                blurOnSubmit
+                onChangeText={e => setDeleteConfirm(e.toString())}
+                value={deleteConfirm}
+              />
+              <View style={BuyModalStyle.buttonModalContainer}></View>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={handleAccountDelete}>
+                <Text style={BuyModalStyle.buttonModalText}>Delete</Text>
+              </TouchableHighlight>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setDeleteVisible(!deleteVisible)}>
+                <Text style={BuyModalStyle.buttonModalText}>Cancel delete</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </SafeAreaView>
+      </Modal>
+
+      {/* Delete */}
+
       {/* Modais */}
 
       <StatusBar hidden />
@@ -268,6 +302,10 @@ const ProfileScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
             <TouchableOpacity style={style.buttonTransaction2} onPress={() => setNameVisible(!nameVisible)}>
               <Icon name='people' size={75} color='#ffffff' style={{ margin: 15 }} />
               <Text style={[style.buttonTransactionText]}>Change your full name</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={style.buttonTransaction3} onPress={() => setDeleteVisible(!deleteVisible)}>
+              <Icon name='close-sharp' size={75} color={colors.secondaryDark} style={{ margin: 15 }} />
+              <Text style={[style.buttonTransactionText2]}>Delete your account</Text>
             </TouchableOpacity>
           </View>
         </LinearGradient>

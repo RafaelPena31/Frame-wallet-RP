@@ -91,10 +91,28 @@ const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
-    marginBottom: 40
+    marginBottom: 20
+  },
+  buttonTransaction3: {
+    borderColor: colors.secondaryDark,
+    borderWidth: 4,
+    width: 334,
+    height: 115,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    marginBottom: 20
   },
   buttonTransactionText: {
     color: '#ffffff',
+    fontFamily: 'Roboto-Bold',
+    fontSize: 18,
+    textAlign: 'center',
+    maxWidth: 155
+  },
+  buttonTransactionText2: {
+    color: colors.secondaryDark,
     fontFamily: 'Roboto-Bold',
     fontSize: 18,
     textAlign: 'center',
