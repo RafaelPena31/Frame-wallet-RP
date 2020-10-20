@@ -98,7 +98,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
       const { name } = currencyArray[currencyId]
       const walletIndex = walletValue.findIndex(item => item.name === name)
-      if (walletValue[walletIndex].value - parseFloat(currencyValue) === 0) {
+      if (parseFloat(walletValue[walletIndex].value.toFixed(5)) - parseFloat(currencyValue) === 0) {
         api.put('walletSell', {
           uid: currencyUserApp,
           coins: [...walletValue.filter(item => item.name !== walletValue[walletIndex].name)],
@@ -106,7 +106,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
         })
         setWalletValue([...walletValue.filter(item => item.name !== walletValue[walletIndex].name)])
         setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
-      } else if (walletValue[walletIndex].value - parseFloat(currencyValue) < 0) {
+      } else if (parseFloat(walletValue[walletIndex].value.toFixed(5)) - parseFloat(currencyValue) < 0) {
         Alert.alert('Invalid value')
         setCurrencyId(0)
         setCurrencyValue('0')
@@ -325,7 +325,7 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                       setCurrencyId(item.id)
                     }}
                     key={item.id}>
-                    <CryptoBox id={item.id} value={item.realValue} quant={item.value} />
+                    <CryptoBox id={item.id} value={item.realValue} quant={parseFloat(item.value.toFixed(5))} />
                   </TouchableOpacity>
                 )
               })

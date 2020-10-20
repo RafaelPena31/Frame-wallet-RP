@@ -30,14 +30,19 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
     barPercentage: 1
   }
 
-  const [labelData, setLabelData] = useState([''])
-  const [numberData, setNumberData] = useState([0])
+  const [labelData, setLabelData] = useState<Array<string>>([])
+  const [numberData, setNumberData] = useState<Array<number>>([])
   useEffect(() => {
-    /*     walletValue.forEach(item => {
-      setLabelData([...labelData, item.name])
-      setNumberData([...numberData, item.realValue])
+    const test = walletValue
+    let labelTest: Array<string> = []
+    let numberTest: Array<number> = []
+    test.forEach(item => {
+      labelTest.push(item.name)
+      numberTest.push(item.realValue)
     })
-    console.log(labelData) */
+    setLabelData(labelTest)
+    setNumberData(numberTest)
+    console.log(labelData)
   }, [walletValue])
 
   return (
@@ -96,16 +101,15 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
             <ScrollView horizontal style={{ marginVertical: 20 }}>
               <BarChart
                 data={{ labels: labelData, datasets: [{ data: numberData }] }}
-                width={300}
-                height={350}
+                width={labelData.length * 45 < 330 ? 330 : labelData.length * 90}
+                height={labelData.length * 45 < 330 ? 330 : labelData.length * 45}
                 yAxisLabel='$'
                 yAxisSuffix=''
-                yLabelsOffset={20}
-                xLabelsOffset={0}
-                fromZero
+                yLabelsOffset={10}
+                xLabelsOffset={-5}
                 showValuesOnTopOfBars
                 chartConfig={chartConfig}
-                verticalLabelRotation={90}
+                verticalLabelRotation={30}
                 horizontalLabelRotation={0}
               />
             </ScrollView>
