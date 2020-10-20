@@ -47,7 +47,7 @@ function StackRoute(): JSX.Element {
           }
         })
     }
-  }, [currencyUserApp, totalValueContext, capitalValueContext])
+  }, [currencyUserApp])
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

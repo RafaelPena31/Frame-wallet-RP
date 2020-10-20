@@ -96,16 +96,8 @@ const HomeScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elemen
           </View>
 
           <View style={style.progressContainer}>
-            <Progress.Bar
-              progress={(totalValueContext * 100) / (totalValueContext + capitalValueContext) / 100}
-              width={320}
-              color={colors.secondaryMiddle}
-              height={13}
-              style={style.progressBar}
-            />
-            <Text style={style.progressLabel}>
-              {((totalValueContext * 100) / (totalValueContext + capitalValueContext)).toFixed(2)}% - invested capital
-            </Text>
+            <Progress.Bar progress={1} width={320} color={colors.secondaryMiddle} height={13} style={style.progressBar} />
+            <Text style={style.progressLabel}>{1}% - invested capital</Text>
             <View style={style.dividerContainer}>
               <Text style={style.dividerText}> ─ Analytics ────────</Text>
               <Icon name='arrow-down-outline' size={25} color={colors.secondaryDark} />

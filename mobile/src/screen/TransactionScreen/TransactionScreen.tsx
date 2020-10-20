@@ -22,6 +22,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import api from '../../api/api'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CryptoBox from '../../components/CryptoBox/CryptoBox'
+import { CapitalValue } from '../../context/CapitalValue'
 import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
@@ -36,19 +37,34 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
   const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
   const [currencyValue, setCurrencyValue] = useState<string>('0')
   const [currencyId, setCurrencyId] = useState<number>(0)
+  const [capitalValue, setCapitalValue] = useState<string>('0')
 
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
   const { currencyUserApp } = useContext(UserContext)
+  const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
 
   async function BuyCurrency() {
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
       const { name } = currencyArray[currencyId]
       const walletIndex = walletValue.findIndex(item => item.name === name)
-      if (walletIndex === -1) {
-        api.put('walletAdd', {
-          uid: currencyUserApp,
-          coins: [
+      if (capitalValueContext > parseFloat(currencyValue) * currencyArray[currencyId].price) {
+        if (walletIndex === -1) {
+          api.put('walletAdd', {
+            uid: currencyUserApp,
+            coins: [
+              ...walletValue,
+              {
+                id: currencyId,
+                name: currencyArray[currencyId].name,
+                value: parseFloat(currencyValue),
+                realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+              }
+            ],
+            totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)),
+            capitalValue: capitalValueContext - parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+          })
+          setWalletValue([
             ...walletValue,
             {
               id: currencyId,
@@ -56,24 +72,27 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
               value: parseFloat(currencyValue),
               realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
             }
-          ],
-          totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
-        })
-        setWalletValue([
-          ...walletValue,
-          {
-            id: currencyId,
-            name: currencyArray[currencyId].name,
-            value: parseFloat(currencyValue),
-            realValue: parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
-          }
-        ])
-        setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
-      } else {
-        api.put('walletAdd', {
-          uid: currencyUserApp,
-          coins: [
-            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+          ])
+          setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+          setCapitalValueContext(capitalValueContext - parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+        } else {
+          api.put('walletAdd', {
+            uid: currencyUserApp,
+            coins: [
+              ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+              {
+                name: walletValue[walletIndex].name,
+                value: walletValue[walletIndex].value + parseFloat(currencyValue),
+                realValue: parseFloat(
+                  (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+                ),
+                id: walletValue[walletIndex].id
+              }
+            ],
+            totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)),
+            capitalValue: capitalValueContext - parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+          })
+          setWalletValue([
             {
               name: walletValue[walletIndex].name,
               value: walletValue[walletIndex].value + parseFloat(currencyValue),
@@ -81,28 +100,48 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
               ),
               id: walletValue[walletIndex].id
-            }
-          ],
-          totalValue: parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
-        })
-        setWalletValue([
-          {
-            name: walletValue[walletIndex].name,
-            value: walletValue[walletIndex].value + parseFloat(currencyValue),
-            realValue: parseFloat(
-              (walletValue[walletIndex].realValue + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
-            ),
-            id: walletValue[walletIndex].id
-          },
-          ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
-        ])
+            },
+            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
+          ])
+        }
+        setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+        setCapitalValueContext(capitalValueContext - parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+      } else {
+        Alert.alert(
+          'Transaction declined',
+          'You do not have enough investment capital to complete this transaction, increase your investment capital first.'
+        )
+        setCurrencyId(0)
+        setCurrencyValue('0')
       }
-      setTotalValueContext(parseFloat((totalValueContext + parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+      ResetModals()
     } else {
       Alert.alert('Invalid value')
       setCurrencyId(0)
       setCurrencyValue('0')
     }
+  }
+
+  async function CapitalAdd() {
+    if (parseFloat(capitalValue) !== 0 && capitalValue !== '') {
+      api.put('walletAdd', {
+        uid: currencyUserApp,
+        coins: walletValue,
+        totalValue: totalValueContext,
+        capitalValue: capitalValueContext + parseFloat(capitalValue)
+      })
+      setCapitalValueContext(capitalValueContext + parseFloat(capitalValue))
+      ResetModals()
+    } else {
+      Alert.alert('Invalid value')
+      setCurrencyId(0)
+      setCurrencyValue('0')
+    }
+  }
+
+  function ResetModals() {
+    setModalVisibleCrypto(false)
+    setModalVisibleCapital(false)
   }
 
   return (
@@ -158,11 +197,11 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                 placeholder='Capital value'
                 style={BuyModalStyle.txtModal}
                 keyboardType='numeric'
-                onChangeText={e => setCurrencyValue(e)}
-                value={currencyValue}
+                onChangeText={e => setCapitalValue(e)}
+                value={capitalValue}
               />
               <View style={BuyModalStyle.buttonModalContainer}></View>
-              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
+              <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={CapitalAdd}>
                 <Text style={BuyModalStyle.buttonModalText}>Add capital</Text>
               </TouchableHighlight>
               <TouchableHighlight style={BuyModalStyle.buttonModal} onPress={() => setModalVisibleCapital(!modalVisibleCapital)}>
@@ -211,7 +250,9 @@ const TransactionScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX
                     <Text style={style.buttonBalanceText}>Add +</Text>
                   </TouchableOpacity>
                 </View>
-                <Text style={[style.valueText]}>$00.00</Text>
+                <Text style={[style.valueText]}>
+                  {capitalValueContext.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}
+                </Text>
               </>
             </Swiper>
             <View style={style.valueButtonContainer}>
