@@ -19,6 +19,7 @@
     margin-top: 0.5rem;
     margin-bottom: 0.1rem;
   }
+
   .balance {
     width: 100%;
     display: flex;
@@ -34,7 +35,31 @@
       text-align: right;
       display: inline;
     }
+    .balance-btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
     .balance-btn {
+      background-color: $color-transaction-button;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2px;
+      font-size: 0.9rem;
+      transition: background 0.5s;
+      border: 1px solid$color-transaction-button-hover;
+      margin-bottom: 1rem;
+      margin-right: 0;
+      cursor: pointer;
+      &:hover {
+        background: #fff;
+        color: $color-transaction-button-hover;
+      }
+    }
+    .buy-btn {
       background-color: transparent;
       color: #fff;
       text-decoration: none;
@@ -92,6 +117,12 @@
       max-width: 62%;
       h1 {
         display: block;
+      }
+      .balance-btn-container {
+        flex-direction: row;
+      }
+      .balance-btn {
+        margin-right: 2rem;
       }
     }
     .divider {

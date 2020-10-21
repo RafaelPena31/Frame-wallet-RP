@@ -16,7 +16,7 @@
       left: 0.7px solid $color-border;
       bottom: 0.7px solid $color-border;
     }
-    margin-top: -10vh;
+    margin-top: 0;
   }
 }
 
@@ -44,6 +44,7 @@
   .coinpage {
     main {
       width: 60%;
+      margin-top: -10vh;
     }
   }
   .header {

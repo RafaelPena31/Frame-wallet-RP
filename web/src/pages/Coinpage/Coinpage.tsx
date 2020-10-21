@@ -1,90 +1,140 @@
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useContext, useEffect, useState } from 'react'
-import { Coin } from '../../../../types/Types'
+import React, { FormEvent, useContext, useState } from 'react'
+import api from '../../api/api'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
 import ButtonCurrencyTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import SelectCurrency from '../../components/StandardInputForm/SelectCurrency/SelectCurrency'
+import { CapitalValue } from '../../context/CapitalValueContext'
+import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
-import db from '../../functions/db'
 import './Coinpage.scss'
 
 function Coinpage(): JSX.Element {
   /*   const [loading, setLoading] = useState(false) */
-  const [visible, setVisible] = useState(false)
-  const [idLocal, setIdLocal] = useState(0)
+  const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
+  const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
+  const [currencyId, setCurrencyId] = useState<number>(0)
   const [currencyValue, setCurrencyValue] = useState(0)
   const [totalCurrencyValue, setTotalCurrencyValue] = useState(0)
+  const [capitalValue, setCapitalValue] = useState<number>(0)
 
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { currencyUserApp } = useContext(UserContext)
+  const { capitalValueContext, setCapitalValueContext } = useContext(CapitalValue)
+  const { totalValueContext, setTotalValueContext } = useContext(TotalValue)
 
-  function showModal() {
-    setVisible(true)
+  function ResetModals() {
+    setModalVisibleCrypto(false)
+    setModalVisibleCapital(false)
   }
 
-  function handleClose() {
-    setVisible(false)
-  }
-
-  function handleCreateCurrencyBox(currencyValueToUpdate: number) {
-    const { name } = currencyArray[idLocal]
-    const walletIndex = walletValue.findIndex(item => item.name === name)
-    if (walletIndex === -1) {
-      setWalletValue([...walletValue, { name, value: currencyValueToUpdate, id: idLocal, realValue: 0 }])
-      setTotalCurrencyValue(currencyValueToUpdate)
-    } else {
-      setWalletValue([
-        {
-          name: walletValue[walletIndex].name,
-          value: walletValue[walletIndex].value + currencyValueToUpdate,
-          id: walletValue[walletIndex].id,
-          realValue: 0
-        },
-        ...walletValue.filter(item => item !== walletValue[walletIndex])
-      ])
-      setTotalCurrencyValue(currencyValueToUpdate)
-    }
-  }
-
-  function updateCurrencyValue(e: FormEvent) {
+  async function BuyCurrency(e: FormEvent) {
     e.preventDefault()
-    const currencyValueToUpdate = currencyValue * currencyArray[idLocal].price
-    handleCreateCurrencyBox(currencyValueToUpdate)
+    if (currencyValue !== 0) {
+      const { name } = currencyArray[currencyId]
+      const walletIndex = walletValue.findIndex(item => item.name === name)
+      if (capitalValueContext > currencyValue * currencyArray[currencyId].price) {
+        if (walletIndex === -1) {
+          api.put('walletAdd', {
+            uid: currencyUserApp,
+            coins: [
+              ...walletValue,
+              {
+                id: currencyId,
+                name: currencyArray[currencyId].name,
+                value: currencyValue,
+                realValue: parseFloat((currencyValue * currencyArray[currencyId].price).toFixed(2))
+              }
+            ],
+            totalValue: parseFloat((totalValueContext + currencyValue * currencyArray[currencyId].price).toFixed(2)),
+            capitalValue: capitalValueContext - parseFloat((currencyValue * currencyArray[currencyId].price).toFixed(2))
+          })
+          setWalletValue([
+            ...walletValue,
+            {
+              id: currencyId,
+              name: currencyArray[currencyId].name,
+              value: currencyValue,
+              realValue: parseFloat((currencyValue * currencyArray[currencyId].price).toFixed(2))
+            }
+          ])
+          setTotalValueContext(parseFloat((totalValueContext + currencyValue * currencyArray[currencyId].price).toFixed(2)))
+          setCapitalValueContext(capitalValueContext - parseFloat((currencyValue * currencyArray[currencyId].price).toFixed(2)))
+        } else {
+          api.put('walletAdd', {
+            uid: currencyUserApp,
+            coins: [
+              ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+              {
+                name: walletValue[walletIndex].name,
+                value: walletValue[walletIndex].value + currencyValue,
+                realValue: parseFloat((walletValue[walletIndex].realValue + currencyValue * currencyArray[currencyId].price).toFixed(2)),
+                id: walletValue[walletIndex].id
+              }
+            ],
+            totalValue: parseFloat((totalValueContext + currencyValue * currencyArray[currencyId].price).toFixed(2)),
+            capitalValue: capitalValueContext - parseFloat((currencyValue * currencyArray[currencyId].price).toFixed(2))
+          })
+          setWalletValue([
+            {
+              name: walletValue[walletIndex].name,
+              value: walletValue[walletIndex].value + currencyValue,
+              realValue: parseFloat((walletValue[walletIndex].realValue + currencyValue * currencyArray[currencyId].price).toFixed(2)),
+              id: walletValue[walletIndex].id
+            },
+            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
+          ])
+        }
+        setTotalValueContext(parseFloat((totalValueContext + currencyValue * currencyArray[currencyId].price).toFixed(2)))
+        setCapitalValueContext(capitalValueContext - parseFloat((currencyValue * currencyArray[currencyId].price).toFixed(2)))
+      } else {
+        message.error(
+          'Transaction declined - You do not have enough investment capital to complete this transaction, increase your investment capital first.'
+        )
+        setCurrencyId(0)
+        setCurrencyValue(0)
+      }
+      ResetModals()
+    } else {
+      message.error('Invalid value')
+      setCurrencyId(0)
+      setCurrencyValue(0)
+    }
   }
 
-  useEffect(() => {
-    if (currencyUserApp !== undefined) {
-      db.collection('wallets')
-        .doc(currencyUserApp)
-        .get()
-        .then(response => {
-          const arrayCollection = response.data()
-          if (arrayCollection !== undefined) {
-            const walletData: Array<Coin> = arrayCollection.coins
-            setWalletValue(walletData)
-          }
-        })
+  async function CapitalAdd() {
+    if (capitalValue !== 0) {
+      api.put('walletAdd', {
+        uid: currencyUserApp,
+        coins: walletValue,
+        totalValue: totalValueContext,
+        capitalValue: capitalValueContext + capitalValue
+      })
+      setCapitalValueContext(capitalValueContext + capitalValue)
+      ResetModals()
     } else {
-      console.log('n')
+      message.error('Invalid value')
+      setCurrencyId(0)
+      setCurrencyValue(0)
     }
-  }, [currencyUserApp])
+  }
 
   return (
     <div className='coinpage'>
       <Header />
 
-      <Modal visible={visible} title='New Cryptocurrency' onCancel={handleClose} footer={[]}>
-        <form onSubmit={updateCurrencyValue}>
+      <Modal visible={modalVisibleCrypto} title='New Cryptocurrency' onCancel={ResetModals} footer={[]}>
+        <form onSubmit={BuyCurrency}>
           <SelectCurrency
             name='currencyOptionIcon'
             label='Select a cryptocurrency:'
             onchange={e => {
-              setIdLocal(parseInt(e.target.value, 10))
+              setCurrencyId(parseInt(e.target.value, 10))
             }}
             optionControler={[
               { option: 'Ardor', value: 0 },
@@ -148,7 +198,7 @@ function Coinpage(): JSX.Element {
                 setCurrencyValue(parseFloat(e.target.value))
               }}
             />
-            <ButtonCurrencyTransaction label='Finish transaction' onclick={handleClose} />
+            <ButtonCurrencyTransaction label='Finish transaction' onclick={ResetModals} />
             {/*             <div className='spin-modal'>
               <Spin spinning={loading} />
             </div> */}
@@ -174,7 +224,9 @@ function Coinpage(): JSX.Element {
                 price={currency.price}
                 icon={currency.iconSet}
                 sigla={currency.sigla}
-                onclick={showModal}
+                onclick={() => {
+                  setModalVisibleCrypto(true)
+                }}
                 product={false}
               />
             )
