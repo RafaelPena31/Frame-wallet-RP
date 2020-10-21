@@ -35,4 +35,4 @@ jobs:
         run: cd mobile && yarn
 
       - name: MOBILE - Check lint
-        run: cd mobile yarn lint
+        run: cd mobile && yarn lint
