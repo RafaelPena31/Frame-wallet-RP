@@ -65,3 +65,4 @@ const LandingScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Ele
 }
 
 export default LandingScreen
+/* Create by Rafael Pena */
