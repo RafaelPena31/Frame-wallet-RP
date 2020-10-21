@@ -2,10 +2,18 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import express = require("express");
 
+const cors = require("cors");
 const app: express.Application = express();
 
 admin.initializeApp();
 const db = admin.firestore();
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  app.use(cors());
+  next();
+});
 /* Users */
 app.post("/users", (request, response) => {
   db.collection("users")

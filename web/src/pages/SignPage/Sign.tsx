@@ -1,14 +1,15 @@
 import { PoweroffOutlined } from '@ant-design/icons'
 import { Button, message, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
-import React, { FormEvent, useContext, useLayoutEffect, useState } from 'react'
+import React, { FormEvent, useContext, useState } from 'react'
 import { BsWallet } from 'react-icons/bs'
 import { useHistory } from 'react-router-dom'
+import api from '../../api/api'
 import ButtonTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import { AppFirebase } from '../../config/AppFirebase'
 import { UserContext } from '../../context/UserContext'
-import db from '../../functions/db'
+import colors from '../../styles/_colors'
 import './Sign.scss'
 
 function Signpage(): JSX.Element {
@@ -58,47 +59,28 @@ function Signpage(): JSX.Element {
     setLoading(false)
   }
 
-  useLayoutEffect(() => {
-    if (currencyUserApp.length !== 0) {
+  /*   useEffect(() => {
+    if (currencyUserApp !== undefined) {
       handleCloseUP()
-      history.push('/home')
+      history.push('/')
     }
-  }, [currencyUserApp, history])
+  }, [currencyUserApp, history]) */
 
   async function handleCreateAccount(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
     try {
-      await AppFirebase.auth().createUserWithEmailAndPassword(emailUP, passUP)
-      const user = AppFirebase.auth().currentUser
-      if (user !== null) {
-        await user.updateProfile({
-          displayName: nameUP
-        })
-      }
+      await AppFirebase.auth()
+        .createUserWithEmailAndPassword(emailUP, passUP)
+        .then(i => {
+          const user = i.user?.uid
 
-      await db.collection('users').doc(user?.uid).set({
-        id: user?.uid,
-        name: user?.displayName,
-        email: emailUP
-      })
-
-      await db
-        .collection('wallets')
-        .add({
-          id: user?.uid,
-          coins: [],
-          totalValue: 0
+          api.post('users', { email: emailUP, uid: user, name: nameUP })
+          api.post('wallet', { uid: user, coins: [], totalValue: 0, capitalValue: 0 })
+          message.info('Success - Your account was created successfully')
         })
-        .then(item => {
-          db.collection('users').doc(user?.uid).update({
-            walletId: item.id
-          })
-          setCurrencyUserApp([{ uid: user?.uid, walletId: item.id }])
-        })
-      message.info('Sign UP success')
-    } catch (err) {
-      message.error(err.toString())
+    } catch (e) {
+      message.error('Error - Account creation denied')
       handleCloseUP()
     }
   }
@@ -109,19 +91,9 @@ function Signpage(): JSX.Element {
     try {
       await AppFirebase.auth().signInWithEmailAndPassword(emailIN, passIN)
       const user = AppFirebase.auth().currentUser
-
-      await db
-        .collection('users')
-        .doc(user?.uid)
-        .get()
-        .then(response => {
-          const arrayCollection = response.data()
-          if (arrayCollection !== undefined) {
-            setCurrencyUserApp([{ uid: user?.uid, walletId: arrayCollection.walletId }])
-          }
-        })
+      setCurrencyUserApp(user?.uid)
     } catch (err) {
-      message.error(err.toString())
+      message.error('Error - Invalid e-mail or password')
       handleCloseUP()
     }
   }
@@ -133,7 +105,7 @@ function Signpage(): JSX.Element {
       message.info('A message with instructions for resetting your password was sent to the email provided')
       handleCloseRESET()
     } catch (err) {
-      message.error(err.toString())
+      message.error('Error - Account update denied')
     }
   }
 
@@ -177,7 +149,7 @@ function Signpage(): JSX.Element {
 
       <main>
         <section>
-          <BsWallet size={30} color='#0A2770' />
+          <BsWallet size={30} color={colors.secondaryDark} />
           <h1>Frame Wallet</h1>
         </section>
         <p>your cryptocurrency wallet</p>

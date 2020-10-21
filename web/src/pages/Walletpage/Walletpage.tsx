@@ -3,13 +3,13 @@ import 'antd/dist/antd.css'
 import firebase from 'firebase'
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { Coin } from '../../../../types/Types'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
 import db from '../../functions/db'
-import { Coin } from '../../../../types/Types'
 import './Walletpage.scss'
 
 function Walletpage(): JSX.Element {
@@ -20,18 +20,10 @@ function Walletpage(): JSX.Element {
 
   const history = useHistory()
 
-  let idWallet = ''
-
-  if (currencyUserApp.length !== 0) {
-    idWallet = currencyUserApp[0].walletId
-  } else {
-    history.push('/')
-  }
-
   useEffect(() => {
-    if (idWallet !== '') {
+    if (currencyUserApp !== '') {
       db.collection('wallets')
-        .doc(idWallet)
+        .doc(currencyUserApp)
         .get()
         .then(response => {
           const arrayCollection = response.data()
@@ -43,16 +35,16 @@ function Walletpage(): JSX.Element {
     } else {
       history.push('/')
     }
-  }, [currencyUserApp, idWallet, setWalletValue, history])
+  }, [currencyUserApp, setWalletValue, history])
 
   useLayoutEffect(() => {
     db.collection('wallets')
-      .doc(idWallet)
+      .doc(currencyUserApp)
       .update({
         coins: walletValue,
         totalValue: firebase.firestore.FieldValue.increment(-totalValue)
       })
-  }, [walletValue, idWallet, totalValue])
+  }, [walletValue, currencyUserApp, totalValue])
 
   async function handleDeleteCurrency(index: number) {
     setTotalValue(walletValue[index].value)

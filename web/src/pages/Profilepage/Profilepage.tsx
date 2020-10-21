@@ -8,9 +8,9 @@ import ButtonTransaction from '../../components/StandardInputForm/ButtonTransact
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
 import { AppFirebase } from '../../config/AppFirebase'
 import { UserContext } from '../../context/UserContext'
+import { WalletContext } from '../../context/WalletContext'
 import db from '../../functions/db'
 import './Profilepage.scss'
-import { WalletContext } from '../../context/WalletContext'
 
 function Profilepage(): JSX.Element {
   const [visibleEMAIL, setVisibleEMAIL] = useState(false)
@@ -27,18 +27,10 @@ function Profilepage(): JSX.Element {
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
   const { setWalletValue } = useContext(WalletContext)
 
-  let idWallet = ''
-
-  if (currencyUserApp.length !== 0) {
-    idWallet = currencyUserApp[0].walletId
-  } else {
-    history.push('/')
-  }
-
   useEffect(() => {
-    if (idWallet !== '') {
+    if (currencyUserApp !== undefined) {
       db.collection('wallets')
-        .doc(idWallet)
+        .doc(currencyUserApp)
         .get()
         .then(response => {
           const arrayCollection = response.data()
@@ -50,7 +42,7 @@ function Profilepage(): JSX.Element {
     } else {
       history.push('/')
     }
-  }, [idWallet, history])
+  }, [currencyUserApp, history])
 
   function showModalUPLOAD() {
     setVisibleEMAIL(true)
@@ -90,11 +82,11 @@ function Profilepage(): JSX.Element {
 
   async function handleAccountDelete() {
     try {
-      await db.collection('wallets').doc(idWallet).delete()
+      await db.collection('wallets').doc(currencyUserApp).delete()
       await db.collection('users').doc(userID).delete()
       await AppFirebase.auth().currentUser?.delete()
       setWalletValue([])
-      setCurrencyUserApp([])
+      setCurrencyUserApp(undefined)
       message.info('Your account has been deleted')
       history.push('/')
     } catch (err) {

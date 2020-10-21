@@ -15,7 +15,7 @@ function Menu(): JSX.Element {
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
 
-  if (currencyUserApp.length !== 0) {
+  if (currencyUserApp !== undefined) {
     if (walletValue.length !== 0) {
       return (
         <nav className='menu'>
@@ -24,7 +24,7 @@ function Menu(): JSX.Element {
             onClick={() => {
               AppFirebase.auth().signOut()
               setWalletValue([])
-              setCurrencyUserApp([])
+              setCurrencyUserApp(undefined)
             }}>
             Sign out
           </Link>
@@ -41,7 +41,7 @@ function Menu(): JSX.Element {
           onClick={() => {
             AppFirebase.auth().signOut()
             setWalletValue([])
-            setCurrencyUserApp([])
+            setCurrencyUserApp(undefined)
           }}>
           Sign out
         </Link>

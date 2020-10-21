@@ -1,8 +1,7 @@
 import { Modal } from 'antd'
 import 'antd/dist/antd.css'
-import firebase from 'firebase'
-import React, { FormEvent, useContext, useEffect, useLayoutEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { FormEvent, useContext, useEffect, useState } from 'react'
+import { Coin } from '../../../../types/Types'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
@@ -12,7 +11,6 @@ import SelectCurrency from '../../components/StandardInputForm/SelectCurrency/Se
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
 import db from '../../functions/db'
-import { Coin } from '../../../../types/Types'
 import './Coinpage.scss'
 
 function Coinpage(): JSX.Element {
@@ -25,54 +23,27 @@ function Coinpage(): JSX.Element {
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { currencyUserApp } = useContext(UserContext)
 
-  const history = useHistory()
-
-  let idWallet = ''
-
-  if (currencyUserApp.length !== 0) {
-    idWallet = currencyUserApp[0].walletId
-  } else {
-    history.push('/')
+  function showModal() {
+    setVisible(true)
   }
 
-  useEffect(() => {
-    if (idWallet !== '') {
-      db.collection('wallets')
-        .doc(idWallet)
-        .get()
-        .then(response => {
-          const arrayCollection = response.data()
-          if (arrayCollection !== undefined) {
-            const walletData: Array<Coin> = arrayCollection.coins
-            setWalletValue(walletData)
-          }
-        })
-    } else {
-      history.push('/')
-    }
-  }, [setWalletValue, idWallet, history])
-
-  useLayoutEffect(() => {
-    db.collection('wallets')
-      .doc(idWallet)
-      .update({
-        coins: walletValue,
-        totalValue: firebase.firestore.FieldValue.increment(totalCurrencyValue)
-      })
-  }, [walletValue, idWallet, totalCurrencyValue])
+  function handleClose() {
+    setVisible(false)
+  }
 
   function handleCreateCurrencyBox(currencyValueToUpdate: number) {
     const { name } = currencyArray[idLocal]
     const walletIndex = walletValue.findIndex(item => item.name === name)
     if (walletIndex === -1) {
-      setWalletValue([...walletValue, { name, value: currencyValueToUpdate, id: idLocal }])
+      setWalletValue([...walletValue, { name, value: currencyValueToUpdate, id: idLocal, realValue: 0 }])
       setTotalCurrencyValue(currencyValueToUpdate)
     } else {
       setWalletValue([
         {
           name: walletValue[walletIndex].name,
           value: walletValue[walletIndex].value + currencyValueToUpdate,
-          id: walletValue[walletIndex].id
+          id: walletValue[walletIndex].id,
+          realValue: 0
         },
         ...walletValue.filter(item => item !== walletValue[walletIndex])
       ])
@@ -86,13 +57,22 @@ function Coinpage(): JSX.Element {
     handleCreateCurrencyBox(currencyValueToUpdate)
   }
 
-  function showModal() {
-    setVisible(true)
-  }
-
-  function handleClose() {
-    setVisible(false)
-  }
+  useEffect(() => {
+    if (currencyUserApp !== undefined) {
+      db.collection('wallets')
+        .doc(currencyUserApp)
+        .get()
+        .then(response => {
+          const arrayCollection = response.data()
+          if (arrayCollection !== undefined) {
+            const walletData: Array<Coin> = arrayCollection.coins
+            setWalletValue(walletData)
+          }
+        })
+    } else {
+      console.log('n')
+    }
+  }, [currencyUserApp])
 
   return (
     <div className='coinpage'>

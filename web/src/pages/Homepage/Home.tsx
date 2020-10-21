@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
 import CurrencyTable from '../../components/CurrencyTable/CurrencyTable'
 import Header from '../../components/Header/Header'
+import colors from '../../styles/_colors'
 import './Home.scss'
 
 function Homepage(): JSX.Element {
-  /*   const [loading, setLoading] = useState(false) */
   const [visible, setVisible] = useState(false)
 
   const currencyStart = [
@@ -35,7 +35,7 @@ function Homepage(): JSX.Element {
       <Modal visible={visible} title='Your cryptocurrency wallet' onCancel={handleClose} footer={[]}>
         <div className='modal-sign'>
           <section>
-            <BsWallet size={30} color='#0A2770' />
+            <BsWallet size={30} color={colors.secondaryDark} />
             <h1>Frame Wallet</h1>
           </section>
           <div>
