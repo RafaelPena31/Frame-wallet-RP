@@ -65,7 +65,8 @@ export function Routes(): JSX.Element {
       <WalletContextProvider>
         <Router>
           <Route path='/' exact component={Homepage} />
-          <Route path='/sign' component={Signpage} /> <PrivateRoute path='/home' component={Coinpage} />
+          <Route path='/sign' component={Signpage} />
+          <PrivateRoute path='/home' component={Coinpage} />
           <PrivateRoute path='/wallet' component={Walletpage} />
           <PrivateRoute path='/account' component={Profilepage} />
         </Router>

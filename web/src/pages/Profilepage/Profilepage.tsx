@@ -18,25 +18,23 @@ function Profilepage(): JSX.Element {
 
   const [data, setData] = useState<string>('')
 
-  const [wallet, setWallet] = useState<number>(0)
+  const [name, setName] = useState<number>(0)
 
   const history = useHistory()
-
-  const userID = AppFirebase.auth().currentUser?.uid
 
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
   const { setWalletValue } = useContext(WalletContext)
 
   useEffect(() => {
     if (currencyUserApp !== undefined) {
-      db.collection('wallets')
+      db.collection('users')
         .doc(currencyUserApp)
         .get()
         .then(response => {
-          const arrayCollection = response.data()
-          if (arrayCollection !== undefined) {
-            const walletData = arrayCollection.totalValue
-            setWallet(walletData)
+          const nameData = response.data()
+          if (nameData !== undefined) {
+            const walletData = nameData.name
+            setName(walletData)
           }
         })
     } else {
@@ -83,7 +81,7 @@ function Profilepage(): JSX.Element {
   async function handleAccountDelete() {
     try {
       await db.collection('wallets').doc(currencyUserApp).delete()
-      await db.collection('users').doc(userID).delete()
+      await db.collection('users').doc(currencyUserApp).delete()
       await AppFirebase.auth().currentUser?.delete()
       setWalletValue([])
       setCurrencyUserApp(undefined)
@@ -134,12 +132,6 @@ function Profilepage(): JSX.Element {
               </button>
             </div>
           </div>
-          <section className='account-value'>
-            <h2>
-              Total:&nbsp;
-              {wallet.toLocaleString('en', { style: 'currency', currency: 'USD' })}
-            </h2>
-          </section>
         </nav>
 
         <section className='account-section'>
@@ -148,17 +140,15 @@ function Profilepage(): JSX.Element {
               <AiOutlineLine size={35} color='$$color-text-monochrome' />
             </div>
             <div className='info-account'>
-              <p>{AppFirebase.auth().currentUser?.displayName}</p>
+              <p>{name}</p>
               <p>
-                {' '}
                 <span>E-mail: </span>
                 {AppFirebase.auth().currentUser?.email}
               </p>
 
               <p>
-                {' '}
                 <span>ID: </span>
-                {userID}
+                {currencyUserApp}
               </p>
             </div>
           </span>

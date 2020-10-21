@@ -6,12 +6,13 @@ interface currencyControler {
   name: string
   sigla: string
   price: number
+  quant?: number
   icon: string
   product: boolean
   onclick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sigla, product, onclick }: currencyControler) => {
+const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sigla, product, quant, onclick }: currencyControler) => {
   if (product) {
     return (
       <div className='currency-table' key={id}>
@@ -23,7 +24,10 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
           {name}
           <span>{sigla}</span>
         </div>
-        <div className='data-table'>{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+        <div className='data-table'>
+          {price.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}
+          <span>Quant: {quant}</span>
+        </div>
         <div className='data-table'>
           <button type='button' onClick={onclick}>
             Sell
@@ -42,7 +46,7 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
         {name}
         <span>{sigla}</span>
       </div>
-      <div className='data-table'>{price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</div>
+      <div className='data-table'>{price.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}</div>
       <div className='data-table'>
         <button type='button' onClick={onclick}>
           Buy
