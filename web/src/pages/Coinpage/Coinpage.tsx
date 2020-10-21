@@ -15,13 +15,9 @@ import { WalletContext } from '../../context/WalletContext'
 import './Coinpage.scss'
 
 function Coinpage(): JSX.Element {
-  /*   const [loading, setLoading] = useState(false) */
   const [modalVisibleCrypto, setModalVisibleCrypto] = useState<boolean>(false)
-  const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
   const [currencyId, setCurrencyId] = useState<number>(0)
   const [currencyValue, setCurrencyValue] = useState(0)
-  const [totalCurrencyValue, setTotalCurrencyValue] = useState(0)
-  const [capitalValue, setCapitalValue] = useState<number>(0)
 
   const { walletValue, setWalletValue } = useContext(WalletContext)
   const { currencyUserApp } = useContext(UserContext)
@@ -30,7 +26,6 @@ function Coinpage(): JSX.Element {
 
   function ResetModals() {
     setModalVisibleCrypto(false)
-    setModalVisibleCapital(false)
   }
 
   async function BuyCurrency(e: FormEvent) {
@@ -107,23 +102,6 @@ function Coinpage(): JSX.Element {
     }
   }
 
-  async function CapitalAdd() {
-    if (capitalValue !== 0) {
-      api.put('walletAdd', {
-        uid: currencyUserApp,
-        coins: walletValue,
-        totalValue: totalValueContext,
-        capitalValue: capitalValueContext + capitalValue
-      })
-      setCapitalValueContext(capitalValueContext + capitalValue)
-      ResetModals()
-    } else {
-      message.error('Invalid value')
-      setCurrencyId(0)
-      setCurrencyValue(0)
-    }
-  }
-
   return (
     <div className='coinpage'>
       <Header />
@@ -136,6 +114,7 @@ function Coinpage(): JSX.Element {
             onchange={e => {
               setCurrencyId(parseInt(e.target.value, 10))
             }}
+            value={currencyId}
             optionControler={[
               { option: 'Ardor', value: 0 },
               { option: 'Ark', value: 1 },
@@ -226,6 +205,7 @@ function Coinpage(): JSX.Element {
                 sigla={currency.sigla}
                 onclick={() => {
                   setModalVisibleCrypto(true)
+                  setCurrencyId(index)
                 }}
                 product={false}
               />

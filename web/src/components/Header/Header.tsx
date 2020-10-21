@@ -4,11 +4,11 @@ import React, { FormEvent, useContext, useState } from 'react'
 import { BsWallet } from 'react-icons/bs'
 import api from '../../api/api'
 import { currencyArray } from '../../assets/currencyArray/currencyArray'
-import ButtonCurrencyTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import { CapitalValue } from '../../context/CapitalValueContext'
 import { TotalValue } from '../../context/TotalValueContext'
 import { UserContext } from '../../context/UserContext'
 import { WalletContext } from '../../context/WalletContext'
+import ButtonCurrencyTransaction from '../StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../StandardInputForm/InputCurrency/InputCurrency'
 import SelectCurrency from '../StandardInputForm/SelectCurrency/SelectCurrency'
 import './Header.scss'
@@ -21,7 +21,6 @@ function Header(): JSX.Element {
   const [modalVisibleCapital, setModalVisibleCapital] = useState<boolean>(false)
   const [currencyId, setCurrencyId] = useState<number>(0)
   const [currencyValue, setCurrencyValue] = useState(0)
-  const [totalCurrencyValue, setTotalCurrencyValue] = useState(0)
   const [capitalValue, setCapitalValue] = useState<number>(0)
 
   const { walletValue, setWalletValue } = useContext(WalletContext)
@@ -108,7 +107,8 @@ function Header(): JSX.Element {
     }
   }
 
-  async function CapitalAdd() {
+  async function CapitalAdd(e: FormEvent) {
+    e.preventDefault()
     if (capitalValue !== 0) {
       api.put('walletAdd', {
         uid: currencyUserApp,
@@ -136,6 +136,7 @@ function Header(): JSX.Element {
               onchange={e => {
                 setCurrencyId(parseInt(e.target.value, 10))
               }}
+              value={currencyId}
               optionControler={[
                 { option: 'Ardor', value: 0 },
                 { option: 'Ark', value: 1 },
@@ -206,6 +207,25 @@ function Header(): JSX.Element {
           </form>
         </Modal>
 
+        <Modal visible={modalVisibleCapital} title='New Cryptocurrency' onCancel={ResetModals} footer={[]}>
+          <form onSubmit={CapitalAdd}>
+            <div className='input-form-currency'>
+              <InputCurrency
+                name='capital-name'
+                type='number'
+                label='Capital to invest:'
+                onchange={e => {
+                  setCapitalValue(parseFloat(e.target.value))
+                }}
+              />
+              <ButtonCurrencyTransaction label='Finish transaction' onclick={ResetModals} />
+              {/*             <div className='spin-modal'>
+              <Spin spinning={loading} />
+            </div> */}
+            </div>
+          </form>
+        </Modal>
+
         <section className='container-logo'>
           <div className='logo'>
             <BsWallet size={30} color='#fff' />
@@ -217,14 +237,15 @@ function Header(): JSX.Element {
         <div className='balance' style={{ display: crypto }}>
           <div className='balance-btn-container'>
             <button
+              type='button'
               className='balance-btn'
               onClick={() => {
-                setCapital('flex')
-                setCrypto('none')
+                setModalVisibleCrypto(true)
               }}>
               Buy Cryptocurrency
             </button>
             <button
+              type='button'
               className='buy-btn'
               onClick={() => {
                 setCapital('flex')
@@ -243,14 +264,15 @@ function Header(): JSX.Element {
         <div className='balance' style={{ display: capital }}>
           <div className='balance-btn-container'>
             <button
+              type='button'
               className='balance-btn'
               onClick={() => {
-                setCapital('flex')
-                setCrypto('none')
+                setModalVisibleCapital(true)
               }}>
-              Buy Cryptocurrency
+              Invest capital
             </button>
             <button
+              type='button'
               className='buy-btn'
               onClick={() => {
                 setCapital('none')
@@ -266,19 +288,18 @@ function Header(): JSX.Element {
         </div>
       </header>
     )
-  } else {
-    return (
-      <header className='header'>
-        <section className='container-logo'>
-          <div className='logo'>
-            <BsWallet size={30} color='#fff' />
-            <h1>Frame Wallet</h1>
-          </div>
-          <Menu />
-        </section>
-      </header>
-    )
   }
+  return (
+    <header className='header'>
+      <section className='container-logo'>
+        <div className='logo'>
+          <BsWallet size={30} color='#fff' />
+          <h1>Frame Wallet</h1>
+        </div>
+        <Menu />
+      </section>
+    </header>
+  )
 }
 
 export default Header

@@ -124,25 +124,39 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
     if (parseFloat(currencyValue) !== 0 && currencyValue !== '') {
       const { name } = currencyArray[currencyId]
       const walletIndex = walletValue.findIndex(item => item.name === name)
-      if (parseFloat(walletValue[walletIndex].value.toFixed(5)) - parseFloat(currencyValue) === 0) {
-        api.put('walletSell', {
-          uid: currencyUserApp,
-          coins: [...walletValue.filter(item => item.name !== walletValue[walletIndex].name)],
-          totalValue: parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)),
-          capitalValue: capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
-        })
-        setWalletValue([...walletValue.filter(item => item.name !== walletValue[walletIndex].name)])
-        setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
-        setCapitalValueContext(capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
-      } else if (parseFloat(walletValue[walletIndex].value.toFixed(5)) - parseFloat(currencyValue) < 0) {
-        Alert.alert('Invalid value')
-        setCurrencyId(0)
-        setCurrencyValue('0')
-      } else {
-        api.put('walletSell', {
-          uid: currencyUserApp,
-          coins: [
-            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+      if (walletIndex !== -1) {
+        if (parseFloat(walletValue[walletIndex].value.toFixed(5)) - parseFloat(currencyValue) === 0) {
+          api.put('walletSell', {
+            uid: currencyUserApp,
+            coins: [...walletValue.filter(item => item.name !== walletValue[walletIndex].name)],
+            totalValue: parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)),
+            capitalValue: capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+          })
+          setWalletValue([...walletValue.filter(item => item.name !== walletValue[walletIndex].name)])
+          setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+          setCapitalValueContext(capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+        } else if (parseFloat(walletValue[walletIndex].value.toFixed(5)) - parseFloat(currencyValue) < 0) {
+          Alert.alert('Invalid value')
+          setCurrencyId(0)
+          setCurrencyValue('0')
+        } else {
+          api.put('walletSell', {
+            uid: currencyUserApp,
+            coins: [
+              ...walletValue.filter(item => item.name !== walletValue[walletIndex].name),
+              {
+                name: walletValue[walletIndex].name,
+                value: walletValue[walletIndex].value - parseFloat(currencyValue),
+                realValue: parseFloat(
+                  (walletValue[walletIndex].realValue - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
+                ),
+                id: walletValue[walletIndex].id
+              }
+            ],
+            totalValue: parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)),
+            capitalValue: capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
+          })
+          setWalletValue([
             {
               name: walletValue[walletIndex].name,
               value: walletValue[walletIndex].value - parseFloat(currencyValue),
@@ -150,25 +164,16 @@ const WalletScreen = ({ navigation }: StackScreenProps<ParamListBase>): JSX.Elem
                 (walletValue[walletIndex].realValue - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
               ),
               id: walletValue[walletIndex].id
-            }
-          ],
-          totalValue: parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)),
-          capitalValue: capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2))
-        })
-        setWalletValue([
-          {
-            name: walletValue[walletIndex].name,
-            value: walletValue[walletIndex].value - parseFloat(currencyValue),
-            realValue: parseFloat(
-              (walletValue[walletIndex].realValue - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)
-            ),
-            id: walletValue[walletIndex].id
-          },
-          ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
-        ])
-        setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
-        setCapitalValueContext(capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+            },
+            ...walletValue.filter(item => item.name !== walletValue[walletIndex].name)
+          ])
+          setTotalValueContext(parseFloat((totalValueContext - parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+          setCapitalValueContext(capitalValueContext + parseFloat((parseFloat(currencyValue) * currencyArray[currencyId].price).toFixed(2)))
+        }
+      } else {
+        Alert.alert('Invalid value', "You don't have this currency in your wallet")
       }
+
       ResetModals()
     } else {
       Alert.alert('Invalid value')

@@ -24,6 +24,8 @@ function Profilepage(): JSX.Element {
 
   const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
   const { setWalletValue } = useContext(WalletContext)
+  const { setCapitalValueContext } = useContext(CapitalValue)
+  const { setTotalValueContext } = useContext(TotalValue)
 
   useEffect(() => {
     if (currencyUserApp !== undefined) {
@@ -85,6 +87,8 @@ function Profilepage(): JSX.Element {
       await AppFirebase.auth().currentUser?.delete()
       setWalletValue([])
       setCurrencyUserApp(undefined)
+      setCapitalValueContext(0)
+      setTotalValueContext(0)
       message.info('Your account has been deleted')
       history.push('/')
     } catch (err) {

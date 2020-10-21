@@ -26,7 +26,10 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
         </div>
         <div className='data-table'>
           {price.toLocaleString('en', { style: 'currency', currency: 'USD', useGrouping: false })}
-          <span>Quant: {quant}</span>
+          <span>
+            Quant:
+            {quant}
+          </span>
         </div>
         <div className='data-table'>
           <button type='button' onClick={onclick}>
@@ -57,7 +60,8 @@ const CurrencyTable: React.FC<currencyControler> = ({ id, name, price, icon, sig
 }
 
 CurrencyTable.defaultProps = {
-  onclick: undefined
+  onclick: undefined,
+  quant: 0
 }
 
 export default CurrencyTable

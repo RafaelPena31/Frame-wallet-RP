@@ -30,7 +30,6 @@ const PrivateRoute = ({ path, component }: RouteProps): JSX.Element => {
 
   useEffect(() => {
     if (currencyUserApp !== null && currencyUserApp !== undefined) {
-      console.log('entrou p')
       db.collection('wallets')
         .doc(currencyUserApp)
         .get()
@@ -43,7 +42,6 @@ const PrivateRoute = ({ path, component }: RouteProps): JSX.Element => {
             setWalletValue(walletDataCoins)
             setTotalValueContext(walletDataTotal)
             setCapitalValueContext(walletDataCapital)
-            console.log(walletDataCapital)
           }
         })
     }

@@ -8,14 +8,15 @@ interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
     option: string
     value: number
   }>
+  value: number
   onchange: (event: React.ChangeEvent<HTMLSelectElement>) => void
 }
 
-const SelectCurrency: React.FC<Props> = ({ name, label, optionControler, onchange }: Props) => {
+const SelectCurrency: React.FC<Props> = ({ name, label, optionControler, value, onchange }: Props) => {
   return (
     <div className='select-currency'>
       <label htmlFor={name}>{label}</label>
-      <select name={name} id={name} onChange={onchange}>
+      <select name={name} id={name} onChange={onchange} value={value}>
         <option value='' disabled>
           Select an option
         </option>

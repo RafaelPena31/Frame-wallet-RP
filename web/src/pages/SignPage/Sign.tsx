@@ -3,7 +3,6 @@ import { Button, message, Modal, Spin } from 'antd'
 import 'antd/dist/antd.css'
 import React, { FormEvent, useContext, useState } from 'react'
 import { BsWallet } from 'react-icons/bs'
-import { useHistory } from 'react-router-dom'
 import api from '../../api/api'
 import ButtonTransaction from '../../components/StandardInputForm/ButtonTransaction/ButtonTransaction'
 import InputCurrency from '../../components/StandardInputForm/InputCurrency/InputCurrency'
@@ -13,7 +12,7 @@ import colors from '../../styles/_colors'
 import './Sign.scss'
 
 function Signpage(): JSX.Element {
-  const { currencyUserApp, setCurrencyUserApp } = useContext(UserContext)
+  const { setCurrencyUserApp } = useContext(UserContext)
 
   const [visibleUP, setVisibleUP] = useState(false)
   const [visibleIN, setVisibleIN] = useState(false)
@@ -29,8 +28,6 @@ function Signpage(): JSX.Element {
   const [emailRESET, setEmailRESET] = useState('')
 
   const [loading, setLoading] = useState(false)
-
-  const history = useHistory()
 
   function showModalUP() {
     setVisibleUP(true)
@@ -59,30 +56,23 @@ function Signpage(): JSX.Element {
     setLoading(false)
   }
 
-  /*   useEffect(() => {
-    if (currencyUserApp !== undefined) {
-      handleCloseUP()
-      history.push('/')
-    }
-  }, [currencyUserApp, history]) */
-
   async function handleCreateAccount(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
-    try {
-      await AppFirebase.auth()
-        .createUserWithEmailAndPassword(emailUP, passUP)
-        .then(i => {
-          const user = i.user?.uid
 
-          api.post('users', { email: emailUP, uid: user, name: nameUP })
-          api.post('wallet', { uid: user, coins: [], totalValue: 0, capitalValue: 0 })
-          message.info('Success - Your account was created successfully')
-        })
-    } catch (e) {
-      message.error('Error - Account creation denied')
-      handleCloseUP()
-    }
+    await AppFirebase.auth()
+      .createUserWithEmailAndPassword(emailUP, passUP)
+      .then(i => {
+        const user = i.user?.uid
+
+        api.post('users', { email: emailUP, uid: user, name: nameUP })
+        api.post('wallet', { uid: user, coins: [], totalValue: 0, capitalValue: 0 })
+        message.info('Success - Your account was created successfully')
+      })
+      .catch(() => {
+        message.error('Error - Account creation denied')
+        handleCloseUP()
+      })
   }
 
   async function handleLogAccount(e: FormEvent) {
